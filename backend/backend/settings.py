@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,12 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    'corsheaders',
+    'chowkidar',
     'user'
 ]
 
 AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +56,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS = [
+"https://domain.com",
+"https://api.domain.com",
+"http://localhost:8000",
+"http://127.0.0.1:5000"
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -124,5 +137,35 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 GRAPHENE = {
-    "SCHEMA": "backend.schema.schema"
+    "SCHEMA": "backend.schema.schema",
+    'MIDDLEWARE': [
+        'chowkidar.auth.ChowkidarAuthMiddleware',
+        'graphene_django.debug.DjangoDebugMiddleware'
+    ],
 }
+
+PROTECT_GRAPHQL = False
+JWT_SECRET_KEY = SECRET_KEY
+JWT_PUBLIC_KEY = None
+JWT_PRIVATE_KEY = None
+JWT_REFRESH_TOKEN_N_BYTES = 20
+JWT_ALGORITHM = 'HS256'
+JWT_EXPIRATION_DELTA = timedelta(seconds=60)
+JWT_REFRESH_TOKEN_EXPIRATION_DELTA = timedelta(seconds=60 * 60 * 24 * 7)
+JWT_LEEWAY = 0
+JWT_ISSUER = None
+JWT_COOKIE_SAME_SITE = 'Lax'
+JWT_COOKIE_SECURE = False
+JWT_COOKIE_HTTP_ONLY = True
+JWT_COOKIE_DOMAIN = 'localhost'
+
+ENABLE_FINGERPRINTING = False
+
+# function with spec (user: User): bool, defaults to True
+ALLOW_USER_TO_LOGIN_ON_AUTH = 'chowkidar.auth.rules.check_if_user_is_allowed_to_login'
+# function with spec (user: User): bool, defaults to False
+REVOKE_OTHER_TOKENS_ON_AUTH_FOR_USER = 'chowkidar.auth.rules.check_if_other_tokens_need_to_be_revoked'
+
+
+UPDATE_USER_LAST_LOGIN_ON_AUTH = True
+UPDATE_USER_LAST_LOGIN_ON_REFRESH = True
