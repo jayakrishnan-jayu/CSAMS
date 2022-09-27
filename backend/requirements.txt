@@ -1,6 +1,3 @@
-chowkidar-graphene==0.8.5
 Django==3.2
 graphene-django==2.15.0
-django-ipware==4.0.2
-PyJWT==2.4.0
 django-cors-headers==3.13.0
