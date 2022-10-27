@@ -31,6 +31,8 @@ services:
       - core
     links:
       - db:db
+    depends_on:
+      - db
   frontend:
     container_name: csams-frontend
     build:

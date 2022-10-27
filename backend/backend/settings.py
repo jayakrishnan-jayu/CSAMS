@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     'corsheaders',
     'user'
 ]
@@ -55,6 +56,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -91,18 +97,18 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'postgres',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'postgres',
+    #     'HOST': 'db',
+    #     'PORT': 5432,
+    # }
 }
 
 
@@ -145,9 +151,19 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 GRAPHENE = {
     "SCHEMA": "backend.schema.schema",
     'MIDDLEWARE': [
-        'graphene_django.debug.DjangoDebugMiddleware'
+        # 'graphene_django.debug.DjangoDebugMiddleware'
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
+}
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
+    'JWT_REUSE_REFRESH_TOKENS': True, # Eliminates creation of new db records every time refreshtoken is requested.
+    'JWT_EXPIRATION_DELTA': timedelta(minutes=5), # Expiry time of token
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7), # Expiry time of refreshToken
 }

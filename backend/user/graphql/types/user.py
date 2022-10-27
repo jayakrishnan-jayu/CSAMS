@@ -1,8 +1,10 @@
 import graphene
 
-class PersonalProfile(graphene.ObjectType):
+class UserType(graphene.ObjectType):
     email = graphene.String()
 
+    
+
 __all__ = [
-    'PersonalProfile'
+    'UserType'
 ]

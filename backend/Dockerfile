@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates gcc postgresql-dev linux-headers musl-dev \
-    libffi-dev jpeg-dev zlib-dev
+    libffi-dev jpeg-dev zlib-dev tk
 
 WORKDIR /app/backend
 RUN pip install --upgrade pip && pip install virtualenv
