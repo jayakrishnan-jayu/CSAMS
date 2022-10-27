@@ -1,4 +1,3 @@
-import email
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
@@ -12,3 +11,61 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.email
+
+
+class Faculty(models.Model):
+    user = models.OneToOneRel(
+        'User',
+        on_delete=models.CASCADE
+    )
+    track = models.ForeignKey(
+        'Track',
+        on_delete=models.PROTECT
+    )
+    designation = models.ForeignKey(
+        'Designation',
+        on_delete=models.PROTECT
+    )
+
+
+class Track(models.Model):
+    TEACHING = 'TH'
+    STANDARD = 'SD'
+    RESEARCH = 'RH'
+
+    name = models.CharField(
+        max_length = 2,
+        choices = [
+            (TEACHING, 'Teaching'),
+            (STANDARD, 'Standard'),
+            (RESEARCH, 'Research'),
+        ],
+    )
+
+
+class Designation(models.Model):
+    ASSISTANT_PROF = 'ASP'
+    ASSOCIATE_PROF = 'ACP'
+    PROFESSOR = 'PRF'
+
+    name = models.CharField(
+        max_length = 3,
+        choices = [
+            (ASSISTANT_PROF, 'Assistant Professor'),
+            (ASSOCIATE_PROF, 'Associate Professor'),
+            (PROFESSOR, 'Professor'),
+        ],
+    )
+
+
+class Workload(models.Model):
+    track = models.ForeignKey(
+        'Track',
+        on_delete=models.PROTECT
+    )
+    designation = models.ForeignKey(
+        'Designation',
+        on_delete=models.PROTECT
+    )
+    min_hours_per_week = models.SmallIntegerField()
+    max_hours_per_week = models.SmallIntegerField()
