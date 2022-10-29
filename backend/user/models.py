@@ -14,7 +14,7 @@ class User(AbstractUser):
 
 
 class Faculty(models.Model):
-    user = models.OneToOneRel(
+    user = models.OneToOneField(
         'User',
         on_delete=models.CASCADE
     )
