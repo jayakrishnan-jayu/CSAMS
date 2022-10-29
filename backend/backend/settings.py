@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'graphene_django',
     "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     'corsheaders',
-    'user'
+    'user',
+    'course',
 ]
 
 AUTH_USER_MODEL = 'user.User'
