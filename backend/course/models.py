@@ -16,6 +16,9 @@ class Course(models.Model):
     p = models.SmallIntegerField()
     is_elective = models.BooleanField()
 
+    def __str__(self) -> str:
+        return f'{self.identifier.code}  {self.identifier.name}'
+
 
 class CourseLab(models.Model):
     course = models.ForeignKey(
@@ -28,10 +31,18 @@ class CourseLab(models.Model):
         on_delete=models.PROTECT,
     )
 
+    # TODO: Add unique(course, lab) constraint
+
+    def __str__(self) -> str:
+        return f'{self.course.identifier.code}  {self.lab.identifier.code}'
+
 
 class CourseIdentifer(models.Model):
     code = models.TextField()
     name = models.TextField()
+
+    def __str__(self) -> str:
+        return f'{self.code} {self.name}'
 
 
 class Batch(models.Model):
@@ -45,7 +56,13 @@ class Batch(models.Model):
     year = models.PositiveSmallIntegerField()
     sem = models.PositiveIntegerField()
 
+    def __str__(self) -> str:
+        return f'{self.program} {self.year} S{self.sem}'
+
 
 class Program(models.Model):
     name = models.TextField()
+
+    def __str__(self) -> str:
+        return self.name
 
