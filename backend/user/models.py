@@ -27,35 +27,47 @@ class Faculty(models.Model):
         on_delete=models.PROTECT
     )
 
-
+# TODO: Make name of track uniuqe
 class Track(models.Model):
     TEACHING = 'TH'
     STANDARD = 'SD'
     RESEARCH = 'RH'
 
+    CHOICES = {
+        TEACHING: 'Teaching',
+        STANDARD: 'Standard',
+        RESEARCH: 'Research',
+    }
+
     name = models.CharField(
         max_length = 2,
-        choices = [
-            (TEACHING, 'Teaching'),
-            (STANDARD, 'Standard'),
-            (RESEARCH, 'Research'),
-        ],
+        choices = CHOICES.items(),
     )
 
+    def __str__(self) -> str:
+        return self.CHOICES[self.name]
 
+
+# TODO: Make name of desgination uniuqe
 class Designation(models.Model):
     ASSISTANT_PROF = 'ASP'
     ASSOCIATE_PROF = 'ACP'
     PROFESSOR = 'PRF'
 
+    CHOICES = {
+        ASSISTANT_PROF: 'Assistant Professor',
+        ASSOCIATE_PROF: 'Associate Professor',
+        PROFESSOR: 'Professor',
+    }
+
     name = models.CharField(
         max_length = 3,
-        choices = [
-            (ASSISTANT_PROF, 'Assistant Professor'),
-            (ASSOCIATE_PROF, 'Associate Professor'),
-            (PROFESSOR, 'Professor'),
-        ],
+        choices = CHOICES.items(),
     )
+
+
+    def __str__(self) -> str:
+        return self.CHOICES[self.name]
 
 
 class Workload(models.Model):
