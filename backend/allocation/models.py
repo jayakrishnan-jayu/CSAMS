@@ -11,7 +11,9 @@ class CourseAllocation(models.Model):
         on_delete=models.PROTECT,
     )
 
-
+def __str__(self) -> str:
+        return f'{self.course} {self.faculty}'
+        
 class LabAllocation(models.Model):
     course = models.ForeignKey(
         'course.Course',
@@ -22,3 +24,6 @@ class LabAllocation(models.Model):
         on_delete=models.PROTECT,
     )
     is_in_charge = models.BooleanField()
+
+    def __str__(self) -> str:
+        return f'{self.course} {self.faculty}'
