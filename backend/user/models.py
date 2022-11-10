@@ -27,6 +27,9 @@ class Faculty(models.Model):
         on_delete=models.PROTECT
     )
 
+    def __str__(self) -> str:
+        return self.user.email
+
 # TODO: Make name of track uniuqe
 class Track(models.Model):
     TEACHING = 'TH'
@@ -82,6 +85,9 @@ class Workload(models.Model):
     min_hours_per_week = models.SmallIntegerField()
     max_hours_per_week = models.SmallIntegerField()
 
+    def __str__(self) -> str:
+        return f'{self.track} {self.designation}'
+
 
 class FacultyExperience(models.Model):
     course = models.ForeignKey(
@@ -93,3 +99,6 @@ class FacultyExperience(models.Model):
         on_delete=models.PROTECT,
     )
     experience = models.SmallIntegerField()
+
+    def __str__(self) -> str:
+        return f'{self.course} {self.faculty}'
