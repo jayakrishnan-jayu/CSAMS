@@ -16,7 +16,8 @@ class User(AbstractUser):
 class Faculty(models.Model):
     user = models.OneToOneField(
         'User',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        unique = True,
     )
     track = models.ForeignKey(
         'Track',
@@ -30,7 +31,6 @@ class Faculty(models.Model):
     def __str__(self) -> str:
         return self.user.email
 
-# TODO: Make name of track uniuqe
 class Track(models.Model):
     TEACHING = 'TH'
     STANDARD = 'SD'
@@ -45,13 +45,13 @@ class Track(models.Model):
     name = models.CharField(
         max_length = 2,
         choices = CHOICES.items(),
+        unique = True,
     )
 
     def __str__(self) -> str:
         return self.CHOICES[self.name]
 
 
-# TODO: Make name of desgination uniuqe
 class Designation(models.Model):
     ASSISTANT_PROF = 'ASP'
     ASSOCIATE_PROF = 'ACP'
@@ -66,6 +66,7 @@ class Designation(models.Model):
     name = models.CharField(
         max_length = 3,
         choices = CHOICES.items(),
+        unique = True,
     )
 
 
@@ -85,6 +86,9 @@ class Workload(models.Model):
     min_hours_per_week = models.SmallIntegerField()
     max_hours_per_week = models.SmallIntegerField()
 
+    class Meta:
+        unique_together = ('track', 'designation')
+
     def __str__(self) -> str:
         return f'{self.track} {self.designation}'
 
@@ -99,6 +103,9 @@ class FacultyExperience(models.Model):
         on_delete=models.PROTECT,
     )
     experience = models.SmallIntegerField()
+
+    class Meta:
+        unique_together = ('course', 'faculty')
 
     def __str__(self) -> str:
         return f'{self.course} {self.faculty}'

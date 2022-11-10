@@ -17,14 +17,19 @@ class Preference(models.Model):
     weigtage = models.PositiveSmallIntegerField()
     experience = models.PositiveSmallIntegerField()
 
+    class Meta:
+        unique_together = ('faculty', 'course')
+
     def __str__(self) -> str:
         return f'{self.preference_sem_identifier} {self.faculty}'
     
 
 class Identifier(models.Model):
-    year = models.PositiveIntegerField()
+    year = models.PositiveSmallIntegerField()
     is_even_sem = models.BooleanField()
 
+    class Meta:
+        unique_together = ('year', 'is_even_sem')
 
     def __str__(self) -> str:
         t = 'Even' if self.is_even_sem else 'Odd'

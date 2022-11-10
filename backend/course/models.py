@@ -31,7 +31,8 @@ class CourseLab(models.Model):
         on_delete=models.PROTECT,
     )
 
-    # TODO: Add unique(course, lab) constraint
+    class Meta:
+        unique_together = ('course', 'lab')
 
     def __str__(self) -> str:
         return f'{self.course.identifier.code}  {self.lab.identifier.code}'
@@ -41,6 +42,8 @@ class CourseIdentifer(models.Model):
     code = models.TextField()
     name = models.TextField()
 
+    # TODO: Make unique Pair(code, name)?
+    
     def __str__(self) -> str:
         return f'{self.code} {self.name}'
 
@@ -61,7 +64,9 @@ class Batch(models.Model):
 
 
 class Program(models.Model):
-    name = models.TextField()
+    name = models.TextField(
+        unique = True,
+    )
 
     def __str__(self) -> str:
         return self.name

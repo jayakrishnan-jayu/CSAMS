@@ -5,11 +5,15 @@ class CourseAllocation(models.Model):
     course = models.ForeignKey(
         'course.Course',
         on_delete=models.PROTECT,
+        unique = True,
     )
     faculty = models.ForeignKey(
         'user.User',
         on_delete=models.PROTECT,
     )
+
+    class Meta:
+        unique_together = ('course', 'faculty')
 
 def __str__(self) -> str:
         return f'{self.course} {self.faculty}'
@@ -24,6 +28,9 @@ class LabAllocation(models.Model):
         on_delete=models.PROTECT,
     )
     is_in_charge = models.BooleanField()
+
+    class Meta:
+        unique_together = ('course', 'faculty')
 
     def __str__(self) -> str:
         return f'{self.course} {self.faculty}'
