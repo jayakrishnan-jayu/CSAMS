@@ -5,7 +5,6 @@ class CourseAllocation(models.Model):
     course = models.ForeignKey(
         'course.Course',
         on_delete=models.PROTECT,
-        unique = True,
     )
     faculty = models.ForeignKey(
         'user.User',
