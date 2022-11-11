@@ -3,9 +3,6 @@ export type Exact<T extends {[key:string]:unknown }> = {[K in keyof T]: T[K] };
 export type MakeOptional<T , K extends  keyof T> = Omit <T,K> & {[SubKey in K ]?: Maybe<T[SubKey]>}      
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 
-// type todoPreview = Omit<Todo , "description">
-
-
 export type Scalars = {
   ID: string;
   String: string;
@@ -14,6 +11,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type UserReturn = {
+  token : Scalars['String'],
+  refreshToken : Scalars['String']
+}
+
 export type CreateUser = {
   __typename? : 'CreateUser',
   username : Scalars['String'],
@@ -21,7 +23,12 @@ export type CreateUser = {
   password : Scalars['String']
 }
 
-//
+//we are passing in the email and password as input 
+//As a result we expect the JWT Token & refresh token as the response.
+// If we don't receive the same , then using typscript conditional typing 
+// we make the the response to be some error string
+
+export type AuthenticatedUserResponse = UserReturn | null ;
 
 
 

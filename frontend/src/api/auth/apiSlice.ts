@@ -15,6 +15,7 @@ interface RefreshToken {
 
 
 
+
 const CreateUser = gql`
     mutation CreateUser(
       $email:String!,
@@ -61,6 +62,8 @@ const baseQuery = fetchBaseQuery({
     },    
 
 })
+
+
 
 
 //button to createuser
