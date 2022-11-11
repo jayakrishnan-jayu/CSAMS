@@ -1,5 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError, CommandParser
-from faker.providers import DynamicProvider
+from django.core.management.base import BaseCommand, CommandParser
 from user.models import User, Faculty, Track, Designation
 from datetime import datetime
 from faker import Faker

@@ -14,19 +14,23 @@ class Course(models.Model):
     l = models.SmallIntegerField()
     t = models.SmallIntegerField()
     p = models.SmallIntegerField()
-    is_elective = models.BooleanField()
+    is_elective = models.BooleanField(default=False)
+
+    @property
+    def is_lab(self):
+        return self.code[-2] == '8',
 
     def __str__(self) -> str:
         return f'{self.identifier.code}  {self.identifier.name}'
 
 
 class CourseLab(models.Model):
-    course = models.ForeignKey(
+    course = models.OneToOneField(
         'Course',
         on_delete=models.PROTECT,
-        related_name = '+'
+        related_name = '+',
     )
-    lab = models.ForeignKey(
+    lab = models.OneToOneField(
         'Course',
         on_delete=models.PROTECT,
     )
@@ -42,7 +46,8 @@ class CourseIdentifer(models.Model):
     code = models.TextField()
     name = models.TextField()
 
-    # TODO: Make unique Pair(code, name)?
+    class Meta:
+        unique_together = ('code', 'name')
     
     def __str__(self) -> str:
         return f'{self.code} {self.name}'

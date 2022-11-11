@@ -26,4 +26,6 @@ class CourseLabAdmin(admin.ModelAdmin):
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['batch', 'identifier', 'credit', 'is_elective']
+    list_filter = ['credit', 'is_elective', 'batch__year', 'batch__sem']
+    search_fields = ['identifier__name', 'identifier__code']
 
