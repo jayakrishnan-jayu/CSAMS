@@ -8,6 +8,6 @@ RUN cd /frontend; yarn install
 
 COPY . /frontend
 
-EXPOSE 3000
+EXPOSE 5134
 
 WORKDIR /frontend
