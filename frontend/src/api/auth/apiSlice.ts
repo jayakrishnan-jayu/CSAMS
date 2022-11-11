@@ -4,14 +4,9 @@ import { BaseQueryFn, createApi, FetchArgs, fetchBaseQuery, FetchBaseQueryError 
 import { setCredentials,logOut, Token, User } from '../../features/auth/authSlice';
 
 import {gql} from 'graphql-tag'
+import { graphqlBaseQuery } from '../../services/BaseQuery';
+import { AuthenticatedUserResponse, LoginMutation, SignUpMutation } from '../../services/types';
 
-
-interface RefreshToken {
-    payload : any ,
-    refreshExpiresIn : number ,
-    token : string,
-    refreshToken : string
-}
 
 
 
@@ -31,6 +26,22 @@ const CreateUser = gql`
 
 `
 
+const Login =  gql`
+mutation tokenAuth(
+  $email:String!,
+  $password: String!   
+)
+{
+    tokenAuth(email:$email , password:$password){
+        user {
+            token,
+            refereshToken
+        }
+    }
+}
+
+`
+
 const GET_REFRESH_TOKEN = gql`
     mutation RefreshToken (
         $refreshToken:String!
@@ -44,24 +55,42 @@ const GET_REFRESH_TOKEN = gql`
     }
 `
 
+export const AuthenticationAPI = createApi({
+   baseQuery: graphqlBaseQuery({baseUrl:"http:localhost:8000/api/graphql"}),
+   endpoints:(builder)=>({
+    SignUp : builder.mutation<SignUpMutation,string>({
+        query: ()=> ({
+            document: CreateUser
+        }) 
+    }),
+    Login: builder.mutation<LoginMutation , AuthenticatedUserResponse>({
+        query : ()=>({
+            document: Login
+        })
+    })
+   })
 
-
-
-
-const baseQuery = fetchBaseQuery({
-    baseUrl: "http:localhost:8000/api/graphql",
-    credentials: 'include' ,
-    //sending http-only secure cookie
-    //With every query the cookie is being sent 
-    prepareHeaders:(headers,{getState})=>{
-    const token = (getState() as RootState).auth.token;
-    if (token) {
-        headers.set("authorization", `Bearer ${token}`)
-    }
-    return headers
-    },    
-
+   
 })
+
+
+
+
+
+// const baseQuery = fetchBaseQuery({
+//     baseUrl: "http:localhost:8000/api/graphql",
+//     credentials: 'include' ,
+//     //sending http-only secure cookie
+//     //With every query the cookie is being sent 
+//     prepareHeaders:(headers,{getState})=>{
+//     const token = (getState() as RootState).auth.token;
+//     if (token) {
+//         headers.set("authorization", `Bearer ${token}`)
+//     }
+//     return headers
+//     },    
+
+// })
 
 
 
