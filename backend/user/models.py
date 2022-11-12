@@ -49,6 +49,13 @@ class Track(models.Model):
         unique = True,
     )
 
+
+    @staticmethod
+    def populate():
+        tracks = [Track(name=choice) for choice in Track.CHOICES]
+        Track.objects.bulk_create(tracks, ignore_conflicts=True)
+
+
     def __str__(self) -> str:
         return self.CHOICES[self.name]
 
@@ -71,6 +78,12 @@ class Designation(models.Model):
     )
 
 
+    @staticmethod
+    def populate():
+        designation = [Designation(name=choice) for choice in Designation.CHOICES]
+        Designation.objects.bulk_create(designation, ignore_conflicts=True)
+
+
     def __str__(self) -> str:
         return self.CHOICES[self.name]
 
@@ -84,8 +97,13 @@ class Workload(models.Model):
         'Designation',
         on_delete=models.PROTECT
     )
-    min_hours_per_week = models.SmallIntegerField()
-    max_hours_per_week = models.SmallIntegerField()
+    min_hours_per_week = models.PositiveSmallIntegerField()
+    max_hours_per_week = models.PositiveSmallIntegerField()
+
+    def save(self, *args, **kwargs):
+        if (self.max_hours_per_week < self.min_hours_per_week):
+            raise ValueError('Maximum hours per week should be greater than Minimum hours per week')
+        super().save(*args, **kwargs)
 
     class Meta:
         unique_together = ('track', 'designation')

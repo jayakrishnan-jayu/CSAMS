@@ -20,7 +20,7 @@ class FacultyAdmin(admin.ModelAdmin):
 @admin.register(FacultyExperience)
 class FacultyExperienceAdmin(admin.ModelAdmin):
     list_display = ['course', 'faculty', 'experience']
-    list_filter = ['faculty']
+    search_fields = ['faculty__email', 'faculty__username']
 
 
 @admin.register(Workload)
