@@ -1,9 +1,8 @@
 import { useRef, useState, useEffect, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+// import { useDispatch } from 'react-redux'
+import { useLoginMutation } from '../../api/auth/apiSlice'
 
-import { useDispatch } from 'react-redux'
-import { setCredentials } from './authSlice'
-import { useLoginMutation } from './authApiSlice'
 
 
 
@@ -12,10 +11,10 @@ import { useLoginMutation } from './authApiSlice'
 
 const Login = ()=>{
     const userRef = useRef() as React.MutableRefObject<HTMLInputElement>; ;
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const errRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [user, setUser] = useState('')
-    const [pwd, setPwd] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setpassword] = useState('')
     const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
 
@@ -29,39 +28,26 @@ const Login = ()=>{
 
     useEffect(()=>{
         setErrMsg('') 
-    }, [user,pwd])
+    }, [email,password])
 
   
 
     const handleSubmit = async(e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault() 
 
-        try{
-            const userData = await login({user,pwd}).unwrap()
-            dispatch(setCredentials({ ...userData, user }))
-            setUser('');
-            setPwd('');
-            navigate('/welcome');
-        }
-        catch(err:any){
-            if (!err?.originalStatus) {
-                // isLoading: true until timeout occurs
-                setErrMsg('No Server Response');
-            } else if (err.originalStatus === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.originalStatus === 401) {
-                setErrMsg('Unauthorized');
-            } else {
-                setErrMsg('Login Failed');
-            }
-            errRef.current?.focus()
-        }
+        
+            const userData = await login({email,password}).unwrap().then((payload)=>{
+                console.log("User exists" + payload)
+                }).catch((error)=>{
+                    console.log(error);
+                })
+           
 
     }
 
-    const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => setUser(e.target.value)
+    const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)
 
-    const handlePwdInput = (e: React.ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)
+    const handlepasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => setpassword(e.target.value)
 
 
     const content = isLoading ? <h1>Loading...</h1> : (
@@ -71,12 +57,12 @@ const Login = ()=>{
             <h1>Employee Login</h1>
 
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="username">Email:</label>
                 <input
                     type="text"
                     id="username"
                     ref={userRef}
-                    value={user}
+                    value={email}
                     onChange={handleUserInput}
                     autoComplete="off"
                     required
@@ -86,8 +72,8 @@ const Login = ()=>{
                 <input
                     type="password"
                     id="password"
-                    onChange={handlePwdInput}
-                    value={pwd}
+                    onChange={handlepasswordInput}
+                    value={password}
                     required
                 />
                 <button>Sign In</button>
