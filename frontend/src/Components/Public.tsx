@@ -1,27 +1,47 @@
 import { Link } from "react-router-dom"
+import AmritaLogo from "../assets/AmritaLogo.jpeg" ;
+import CoursesLogo from "../assets/book.svg" ;
+import MessagesLogo from "../assets/mail.svg"
 
 const Public = () => {
 
     const content = (
-        <section className="public">
-            <header>
-                <h1>Welcome to Repair Store!</h1>
-            </header>
-            <main>
-                <p>Located in Beautiful Downtown Foo City, Repair Store provides a trained staff ready to meet your repair needs.</p>
-                <p>&nbsp;</p>
-                <address>
-                    Repair Store<br />
-                    555 Foo Drive<br />
-                    Foo City, CA 12345<br />
-                    <a href="tel:+15555555555">(555) 555-5555</a>
-                </address>
-            </main>
-            <footer>
-                <Link to="/login">Employee Login</Link>
-            </footer>
-        </section>
+        <div className="max-w-none w-auto  min-h-screen grid grid-cols-[14rem,1fr]">
+        <div className="bg-gray-300 text-white p-10 rounded-lg">
+        <div className="">
+        <img src={AmritaLogo}></img>
+        <div className="text-black text-sm">Course Management System</div>
+        </div>
+        <br />
+        <br />
+        <div className="flex flex-col justify-between items-start  ">
 
+        <div className="flex items-center">
+           
+            <img src={CoursesLogo} className= "" />
+            
+                <button className="mb-3">
+               <div className="inline-block mt-3 ml-2 text-black " >Courses</div>
+               </button>
+            </div>
+           
+           <div className="flex items-center">
+           
+           <img src={MessagesLogo} className= "" />
+           
+               <button className="mb-3">
+              <div className="inline-block mt-3 ml-2 text-black " >Messages</div>
+              </button>
+           </div>
+        
+            
+           
+        </div>
+        
+        </div>
+        
+
+</div>
     )
     return content
 }
