@@ -9,7 +9,7 @@ const Sidebar = () => {
 
     const sidebar = (
 // 
-        <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-400 to bg-slate-600"> 
+        <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 
         {/* Container */}
         <div className="bg-gray-300 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
             {/*Sidebar  */}
@@ -66,13 +66,21 @@ const Sidebar = () => {
           
      <div className="p-10 text-gray-100 font-bold text-3xl">
         My Courses
+     <div className="flex absolute right-24 -mt-12 mb-4">
+        <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" className=" w-12 h-12 object-cover rounded-full object-top border-black" alt="" />
+        <div className="inline-block text-sm absolute left-16 w-auto max-w-none m-14"></div>
+        <div className="text-sm mt-2 p-2">Jane</div>
+     </div>
         <br />
         <br />
-    <div className="grid-flow-col text-lg ">
+    <div className="grid-flow-col text-lg text-gray-800">
         <button className="p-2" >All</button>
         <button className="p-2">Active</button>
         <button className="p-2">Upcoming</button>
         <button className="p-2">Completed</button>
+    </div>
+    <div>
+
     </div>
         </div>
  
