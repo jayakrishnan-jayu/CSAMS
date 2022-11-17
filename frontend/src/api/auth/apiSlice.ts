@@ -29,17 +29,13 @@ const CreateUser = gql`
 `
 
 const Login =  gql`
-mutation tokenAuth(
-  $email:String!,
-  $password: String!   
-)
-{
-    tokenAuth(email:$email , password:$password){
-        user {
-            token,
-            refereshToken
-        }
-    }
+mutation tokenAuth($email: String!, $password: String!) {
+  tokenAuth(email: $email, password: $password) {
+    token
+    payload
+    refreshExpiresIn
+    refreshToken
+  }
 }
 
 `
@@ -57,11 +53,11 @@ const GET_REFRESH_TOKEN = gql`
     }
 `
 
-export const Client = new GraphQLClient("http:localhost:8000/api/graphql" , {
+// export const Client = new GraphQLClient("http://localhost:8000/api/graphql" , {
     
-} )
+// } )
 
-Client.setHeader("Content-type" , "application/json")
+// Client.setHeader("Content-type" , "application/json")
 
 
 //export declare type RequestHeaders = (setHeaders: (headers: RequestInit["headers"] | undefined) => GraphQLClient, setHeader: (key: string, value: string) => GraphQLClient) => ReturnRequestHeaders;
@@ -73,7 +69,7 @@ fetchBaseQuery({
 
 export const AuthenticationAPI = createApi({
    
-   baseQuery: graphqlFetch({url:"http://localhost:8000/api/graphql" , client:Client } ),
+   baseQuery: graphqlFetch({url:"http://localhost:8000/api/graphql/" } ),
    
    endpoints:(builder)=>({
 
