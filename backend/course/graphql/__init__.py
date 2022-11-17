@@ -1,5 +1,5 @@
-from .query import CourseQueries
+from .query import CourseQuery
 
 __all__ = [
-    'CourseQueries',
+    'CourseQuery',
 ]

@@ -1,11 +1,11 @@
 import graphene
 import graphql_jwt
 from user.graphql import UserQueries, UserMutation
-from course.graphql import CourseQueries
+from course.graphql import CourseQuery
 
 class Query(
     UserQueries,
-    CourseQueries,
+    CourseQuery,
     graphene.ObjectType
     ):
     hello = graphene.String(default_value="Hi!")
