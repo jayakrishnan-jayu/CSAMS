@@ -39,7 +39,7 @@ services:
       context: frontend
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 5134:5134
     networks:
       - core
     volumes:

@@ -13,7 +13,7 @@ const Sidebar = () => {
         {/* Container */}
         <div className="bg-gray-300 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
             {/*Sidebar  */}
-        <img src={AmritaLogo}></img>
+        <img src={AmritaLogo} ></img>
         <div className="text-black text-sm">Course Management System</div>
     
         <br />
@@ -66,14 +66,30 @@ const Sidebar = () => {
           
      <div className="p-10 text-gray-100 font-bold text-3xl">
         My Courses
-     <div className="flex absolute right-24 -mt-12 mb-4">
-        <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" className=" w-12 h-12 object-cover rounded-full object-top border-black" alt="" />
-        <div className="inline-block text-sm absolute left-16 w-auto max-w-none m-14"></div>
-        <div className="text-sm mt-2 p-2">Jane</div>
-     </div>
+        {/* Profile Pic */}
+        <div className="flex flex-col justify-between items-start  ">
+        <div className="flex items-center -mt-16 ml-auto">
+           
+          
+           
+               
+              <div className=" mt-3  text-black " >
+                <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" alt="" className="w-14 h-14 object-cover rounded-full object-top" />
+              </div>
+                <div className="text-[16px] ml-4 mt-2">Raj Vikram</div>
+              </div>
+           </div>
+
+
+     {/* <div className="flex absolute right-24 -mt-12 mb-4">
+        <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" className=" w-14 h-14 object-cover rounded-full object-top border-black" alt="" />
+        <div className="inline-block text-sm left-16 p-2"></div>
+        <div className="text-[14px] mt-2 p-2">Jane</div>
+     </div> */}
         <br />
         <br />
-    <div className="grid-flow-col text-lg text-gray-800">
+        {/* Course View Options */}
+    <div className="grid-flow-col text-lg text-gray-800 -mt-24">
         <button className="p-2" >All</button>
         <button className="p-2">Active</button>
         <button className="p-2">Upcoming</button>
