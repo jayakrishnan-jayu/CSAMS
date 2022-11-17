@@ -4,6 +4,7 @@ import CoursesLogo from "../assets/book.svg" ;
 import MessagesLogo from "../assets/mail.svg"
 import LogoutLogo from "../assets/log-out.svg"
 import MenuLogo from "../assets/menu.svg" ;
+import SearchLogo from "../assets/search.svg"
 
 const Sidebar = () => {
 
@@ -46,6 +47,15 @@ const Sidebar = () => {
               <div className="inline-block mt-3 ml-2 text-black " >Add Courses</div>
               </button>
            </div>
+
+           <div className="flex items-center">
+           
+           <img src={SearchLogo} className= "" />
+           
+               <button className="mb-3">
+              <div className="inline-block mt-3 ml-2 text-black  " >Search Courses</div>
+              </button>
+           </div>
          
 
            </div>
@@ -78,7 +88,10 @@ const Sidebar = () => {
               </div>
                 <div className="text-[16px] ml-4 mt-2">Raj Vikram</div>
               </div>
+             
            </div>
+
+       
 
 
      {/* <div className="flex absolute right-24 -mt-12 mb-4">
@@ -95,13 +108,30 @@ const Sidebar = () => {
         <button className="p-2">Upcoming</button>
         <button className="p-2">Completed</button>
     </div>
-    <div>
+    <div className="block max-w-sm p-6 bg-orange-700 border border-gray-200 rounded-lg shadow-md">
+     <div> S3 BCA Regular</div>
+    <h5 className="text-[12px]  tracking-tight text-white">18CSA334 Advanced Java & J2EE Programming</h5>
+</div>
 
-    </div>
+<div className="block max-w-sm p-6 bg-yellow-400 border border-gray-200 rounded-lg shadow-md mt-2">
+     <div> S1 BCA Data Science</div>
+    <h5 className="text-[12px]  tracking-tight text-white">18CSA334 Advanced Java & J2EE Programming</h5>
+</div>
+
+<div className="block max-w-sm p-6 bg-blue-800 border border-gray-200 rounded-lg shadow-md mt-2">
+     <div> S1 CSE</div>
+    <h5 className="text-[12px]  tracking-tight text-white">18CSA334 Advanced Java & J2EE Programming</h5>
+</div>
+
+<div className="block max-w-sm p-6 bg-green-700 border border-gray-200 rounded-lg shadow-md mt-2">
+     <div> S5 MCA</div>
+    <h5 className="text-[12px]  tracking-tight text-white">18CSA314 Advanced Operating System</h5>
+</div>
+
+    
         </div>
  
-           
-                               
+      
                         
 </div>
 
