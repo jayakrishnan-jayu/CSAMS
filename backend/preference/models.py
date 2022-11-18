@@ -16,6 +16,7 @@ class Preference(models.Model):
     )
     weigtage = models.PositiveSmallIntegerField()
     experience = models.PositiveSmallIntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('faculty', 'course')
