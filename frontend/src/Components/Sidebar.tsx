@@ -12,7 +12,7 @@ const Sidebar = () => {
 // 
         <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 
         {/* Container */}
-        <div className="bg-gray-300 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
+        <div className="bg-gray-100 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
             {/*Sidebar  */}
         <img src={AmritaLogo} ></img>
         <div className="text-black text-sm">Course Management System</div>

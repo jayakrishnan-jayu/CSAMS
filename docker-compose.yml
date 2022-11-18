@@ -46,7 +46,7 @@ services:
       - ./frontend:/frontend
       - /var/run/docker.sock:/var/run/docker.sock
     command:
-      "yarn run dev"
+       sh -c "npm rebuild esbuild && yarn dev"
   nginx:
     container_name: csams-nginx
     image: nginx
