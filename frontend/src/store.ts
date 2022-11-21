@@ -4,13 +4,17 @@ import {
   useSelector as useGenericSelector,
   useDispatch as useGenericDispatch
 } from 'react-redux';
+import authSlice from './features/auth/authSlice';
 
 
+const reducers = {
+  []
+} 
 
 
 export default configureStore({
   reducer: {
-   // auth: authSlice.reducer,
+    auth: authSlice.reducer,
    
     /**
      * 
@@ -18,8 +22,8 @@ export default configureStore({
      */
     
   },
-  // middleware: (getDefaultMiddleware) =>
-  // getDefaultMiddleware().concat(apiSlice.middleware)
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware().concat(apiSlice.middleware)
   //RTK Query to cache results
 })
 
