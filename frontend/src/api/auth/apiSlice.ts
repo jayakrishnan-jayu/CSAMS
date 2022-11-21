@@ -1,12 +1,10 @@
 // Actions :
-
-import {  createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { GraphQLClient } from 'graphql-request';
+import { RequestOptions } from '@octokit/types/dist-types/RequestOptions';
+import {  BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react'
+import authSlice from '../../features/auth/authSlice';
 import {gql} from 'graphql-tag'
-import { graphqlFetch, RequestHeaders } from 'rtk-query-graphql';
-// import { graphqlBaseQuery } from '../../services/BaseQuery';
-import { AuthenticatedUserResponse, LoginMutation, SignUpMutation } from '../../services/types';
-
+import { RootState } from '../../store';
+import { selectCurrentAccessToken } from '../../features/auth/authSlice';
 
 
 
@@ -62,36 +60,49 @@ const GET_REFRESH_TOKEN = gql`
 
 //export declare type RequestHeaders = (setHeaders: (headers: RequestInit["headers"] | undefined) => GraphQLClient, setHeader: (key: string, value: string) => GraphQLClient) => ReturnRequestHeaders;
 
+const axiosBaseQuery = () : BaseQueryFn<RequestOptions> => async (requestOpts , {getState})=>{
+try {
+    const token = (getState() as RootState )
+}
 
-fetchBaseQuery({
+}
+
+
+
+export const BaseAPI = createApi({
 
 })
 
-export const AuthenticationAPI = createApi({
-   
-   baseQuery: graphqlFetch({url:"http://localhost:8000/api/graphql/" } ),
-   
-   endpoints:(builder)=>({
 
-    SignUp : builder.mutation<SignUpMutation,string>({
+
+// export const API = createApi({
+   
+//    baseQuery: graphqlFetch({url:"http://localhost:8000/api/graphql/" } )
+   
+// //    endpoints:(builder)=>({
+
+// //     SignUp : builder.mutation<SignUpMutation,string>({
     
-        query: ()=> ({
+// //         query: ()=> ({
             
-            document: CreateUser
-        }) 
-    }),
-    Login: builder.mutation<LoginMutation , AuthenticatedUserResponse>({
-        query : ({email,password})=>({
-            document: Login,
-            variables: {
-                email ,
-                password
-            }
-        })
-    })
-   })
+// //             document: CreateUser
+// //         }) 
+// //     }),
+// //     Login: builder.mutation<LoginMutation , AuthenticatedUserResponse>({
+// //         query : ({email,password})=>({
+// //             document: Login,
+// //             variables: {
+// //                 email ,
+// //                 password
+// //             }
+// //         })
+// //     })
+// //    })
 
    
-})
+// })
 
-export const {useSignUpMutation , useLoginMutation} = AuthenticationAPI ;
+
+
+
+//export const {useSignUpMutation , useLoginMutation} = API ;

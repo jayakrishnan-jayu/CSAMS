@@ -19,12 +19,15 @@ export interface User
 
 export interface Token 
 {
-    token:string | any 
+    AccessToken?:string  ,
+    RefreshToken?: string
+
 }
 
 const initialState : User & Token  = {
     user : {email:"" , first_name: "" , last_name: ""},
-    token: ""
+    AccessToken: undefined,
+    RefreshToken: undefined
 
 }   
 
@@ -34,14 +37,25 @@ const authSlice = createSlice({
     reducers: {
         setCredentials: (state,action:PayloadAction<User&Token>)=>{
             state.user = action.payload.user 
-            state.token = action.payload.token ;
+            state.AccessToken = action.payload.AccessToken ;
+            state.RefreshToken = action.payload.RefreshToken
+            localStorage.setItem("Access-token" , state.AccessToken || "");
+            localStorage.setItem("Refresh-Token", state.RefreshToken || "");
+
         },
         logOut : (state , _)=>{
             state.user = {email:"" , first_name: "" , last_name:""},
-            state.token = ""
-        }
+            state.AccessToken = undefined,
+            state.RefreshToken = undefined 
+        },
+    },
+    extraReducers: (builder)=>{
+        builder.addMatcher()
     }
+
 });
+
+//
 
 
 export  const {setCredentials ,logOut} = authSlice.actions ;
@@ -50,4 +64,6 @@ export default authSlice   ;
 
 export const selectCurrentUser = (state: { auth: { user: User } })=> state.auth.user ;
 
-export const selectCurrentToken  = (state:{auth:{token:Token}})=> state.auth.token ;
+export const selectCurrentRefreshToken  = (state:{auth:{token:Token["RefreshToken"]}})=> state.auth.token ;
+
+export const selectCurrentAccessToken = (state:{auth:{token:Token["AccessToken"]}})=>state.auth.token ;
