@@ -1,0 +1,65 @@
+SEMESTER 1
+20CSA501 Object Oriented Programming Using Java 301 4
+20MAT504 Mathematical Foundations for Computer Applications I 310 4
+20CSA502 Advanced Operating Systems 300 3
+20CSA503 Advanced Computer Networks 301 4
+20CSA504 Python Programming 201 3
+20CSA505 Advanced DBMS 301 4
+18CUL501 Cultural Education 000 0
+
+SEMESTER 2
+20CSA511 Data structures and Algorithms 310 4
+20CSA512 Advanced Web Technologies and Mean Stack 301 4
+20MAT514 Mathematical Foundations for computer Applications II 300 3
+20CSA513 Data mining and Applications 301 4
+20CSA514 Research Methodologies and Case Study 110 2
+20CSA581 Data Structures and Algorithms Lab 001 1
+Elective-I 300 3
+20CSA531 Artificial Intelligence 300 3
+20CSA532 Mobile Application Development 300 3
+20CSA533 Cryptography 300 3
+20CSA534 Compiler Design 300 3
+20CSA535 Big data Analytics and Visualization 300 3
+20CSA536 C# and .NET 300 3 
+Elective-II 300 3
+20CSA537 Parallel and Distributed Computing 300 3
+20CSA538 Advanced Algorithms 300 3
+20CSA539 Deep Learning 300 3
+20CSA540 Software Testing 300 3 
+20CSA541 Natural Language Processing 300 3
+20CSA542 Wireless Networks 300 3
+
+SEMESTER 3
+20CSA601 Machine Learning 301 4
+20CSA602 Software Engineering and Design Patterns 300 3
+20CSA681 IoT and Cloud Lab 001 1
+20CSA698 Dissertation Phase I 000 4
+Open Lab 001 1
+20CSA682 R Programming 001 1
+20CSA683 MATLAB Programming 001 1
+20CSA684 High Performance Computing Lab 001 1
+20CSA685 Natural Language Processing Lab 001 1
+20CSA686 Cyber Security Lab 001 1
+20CSA687 Deep Learning Lab 001 1
+Elective III 300 3
+20CSA543 Bio-informatics 300 3
+20CSA544 Network Management and System Administration 300 3
+20CSA545 Digital Image Processing 300 3
+20CSA546 Information Retrieval 300 3
+20CSA547 Semantic Web 300 3
+20CSA548 Software Defined Networks 300 3
+Elective IV 300 3
+18HU433 Principles of Economics and Management 300 3
+18HU433 Principles of Economics and Management 300 3
+18HU432 Management Information Systems 300 3
+18HU431 Management and Organizational Behaviour 300 3
+Elective V 201 3
+20CSA549 Open Source Systems 300 3
+20CSA550 Network Security 300 3
+20CSA551 Database Administration 300 3
+20CSA552 Pattern Recognition 300 3
+20CSA553 Block Chain Technologies 300 3
+20CSA554 Operations Research And Optimization Techniques 300 3
+
+SEMESTER 4
+20CSA699 Dissertation Phase II 12

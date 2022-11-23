@@ -1,0 +1,621 @@
+{
+     "course": "BCA",
+     "year": "2018",
+     "data": {
+          "SEMESTER 1": [
+               {
+                    "code": "18CUL101",
+                    "name": "Cultural Education I",
+                    "L": "2",
+                    "T": "0",
+                    "P": "0",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18ENG101",
+                    "name": "Communicative English",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18MAT102",
+                    "name": "Mathematical Foundation",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18ENV300",
+                    "name": "Environmental Science and Sustainability",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA103",
+                    "name": "Computer Essentials",
+                    "L": "3",
+                    "T": "0",
+                    "P": "2",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA101",
+                    "name": "Computational Thinking and Problem Solving",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA182",
+                    "name": "Computational Thinking and Problem Solving Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18HIN101",
+                    "name": "Hindi I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18KAN101",
+                    "name": "Kannada I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18MAL101",
+                    "name": "Malayalam I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18SAN101",
+                    "name": "Sanskrit I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18TAM101",
+                    "name": "Tamil I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               }
+          ],
+          "SEMESTER 2": [
+               {
+                    "code": "18CUL111",
+                    "name": "Cultural Education II",
+                    "L": "2",
+                    "T": "0",
+                    "P": "0",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18ENG121",
+                    "name": "Professional Communication",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18MAT112",
+                    "name": "Discrete Mathematics",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA114",
+                    "name": "Database Management System",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA113",
+                    "name": "Programming in C",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA111",
+                    "name": "Computer Organization",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA183",
+                    "name": "Database Management System Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA184",
+                    "name": "Programming in C Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18HIN111",
+                    "name": "Hindi II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18KAN111",
+                    "name": "Kannada II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18MAL111",
+                    "name": "Malayalam II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18SAN111",
+                    "name": "Sanskrit II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18TAM111",
+                    "name": "TAMIL II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               }
+          ],
+          "SEMESTER 3": [
+               {
+                    "code": "18AVP201",
+                    "name": "Amrita Value Programme I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "0",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18SSK201",
+                    "name": "Life Skills I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18MAT208",
+                    "name": "Statistical and Numerical Methods",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA209",
+                    "name": "Data Structures and Algorithms",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA206",
+                    "name": "Object Oriented Programming using C++",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA201",
+                    "name": "Operating System",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA207",
+                    "name": "Principles of Management and Accounting",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA283",
+                    "name": "Data Structures and Algorithms Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA284",
+                    "name": "Object Oriented Programming using C++ Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               }
+          ],
+          "SEMESTER 4": [
+               {
+                    "code": "18AVP211",
+                    "name": "Amrita Value Programme II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "0",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18SSK211",
+                    "name": "Life Skills II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA214",
+                    "name": "Computer Networks",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA215",
+                    "name": "Java Programming",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA216",
+                    "name": "Web Technologies",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA211",
+                    "name": "Software Engineering",
+                    "L": "3",
+                    "T": "0",
+                    "P": "2",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA285",
+                    "name": "Java Programming Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA286",
+                    "name": "Web Technologies Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               }
+          ],
+          "SEMESTER 5": [
+               {
+                    "code": "18SSK301",
+                    "name": "Life skills III",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA307",
+                    "name": "C# and .NET Framework",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA306",
+                    "name": "Advanced Java and J2EE",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA390",
+                    "name": "Live in Labs / Open Elective B",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA389",
+                    "name": "Mobile Application Development Lab",
+                    "L": "0",
+                    "T": "1",
+                    "P": "2",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA388",
+                    "name": "Advanced Java and J2EE Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA391",
+                    "name": "Comprehensive Technical VIVA-Voce",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "2",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA392",
+                    "name": "Minor Project",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA311",
+                    "name": "Artificial Intelligence",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA332",
+                    "name": "Architecture and Deployment of Secure and Scalable WAN",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA333",
+                    "name": "Client Server Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA334",
+                    "name": "Embedded Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA335",
+                    "name": "Enterprise Resource Planning Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA336",
+                    "name": "Knowledge Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               }
+          ],
+          "SEMESTER 6": [
+               {
+                    "code": "18CSA317",
+                    "name": "Computer Graphics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA318",
+                    "name": "Cryptography and Cyber Security",
+                    "L": "4",
+                    "T": "0",
+                    "P": "0",
+                    "C": "4",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA319",
+                    "name": "Python Programming",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA383",
+                    "name": "Computer Graphics Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "2",
+                    "C": "1",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA399",
+                    "name": "Project",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "6",
+                    "is_elective": false
+               },
+               {
+                    "code": "18CSA337",
+                    "name": "LAN Switching and Advanced Routing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA338",
+                    "name": "Micro Processor Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA339",
+                    "name": "Multimedia and Graphics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA340",
+                    "name": "Social and Professional Issues in Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA341",
+                    "name": "Soft Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               },
+               {
+                    "code": "18CSA342",
+                    "name": "Systems and Network Administration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3",
+                    "is_elective": true
+               }
+          ]
+     }
+}
