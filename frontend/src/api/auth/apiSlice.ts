@@ -5,6 +5,9 @@ import authSlice from '../../features/auth/authSlice';
 import {gql} from 'graphql-tag'
 import { RootState } from '../../store';
 import { selectCurrentAccessToken } from '../../features/auth/authSlice';
+import axios from 'axios';
+import { $CombinedState } from '@reduxjs/toolkit';
+import { graphqlBaseQuery } from '../../services/BaseQuery';
 
 
 
@@ -59,17 +62,24 @@ const GET_REFRESH_TOKEN = gql`
 
 
 //export declare type RequestHeaders = (setHeaders: (headers: RequestInit["headers"] | undefined) => GraphQLClient, setHeader: (key: string, value: string) => GraphQLClient) => ReturnRequestHeaders;
+// const baseQuery = axios.create({
+//     baseURL: "localhost/api/graphql",
+//     headers : {
+//         'Content-Type': 'application/json'
+//     },
 
-const axiosBaseQuery = () : BaseQueryFn<RequestOptions> => async (requestOpts , {getState})=>{
-try {
-    const token = (getState() as RootState )
-}
 
-}
+    
+// })
+
+
+
 
 
 
 export const BaseAPI = createApi({
+    reducerPath: "authReducer",
+    baseQuery : graphqlBaseQuery({baseUrl: "http://localhost/api/graphql"})
 
 })
 
