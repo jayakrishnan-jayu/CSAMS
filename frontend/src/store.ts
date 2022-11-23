@@ -1,18 +1,17 @@
-import { Action, combineReducers, configureStore, ThunkAction } from '@reduxjs/toolkit'
-import {
-  TypedUseSelectorHook,
-  useSelector as useGenericSelector,
-  useDispatch as useGenericDispatch
-} from 'react-redux';
+import {  configureStore} from '@reduxjs/toolkit'
+
 import authSlice from './features/auth/authSlice';
 
 
-const reducers = {
-  []
-} 
+// const reducers = {
+//   [authSlice.name] : authReducer
+//   //auth->slice name
+// } 
+
+//const combinedReducer = combineReducers(reducers);
 
 
-export default configureStore({
+export const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
    
@@ -23,17 +22,15 @@ export default configureStore({
     
   },
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat(apiSlice.middleware)
+  getDefaultMiddleware().concat()
   //RTK Query to cache results
 })
-
-const rootReducer = combineReducers({
-  //auth:authSlice.reducer
-})
-
-export type RootState = ReturnType<typeof rootReducer>;
-// export const useAppDispatch = () => useGenericDispatch();
-// export const useSelector: TypedUseSelectorHook<RootState> = useGenericSelector;
+// export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>
+// export const useTypedDispatch = () => useDispatch<AppDispatch>();
+// //export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
+// // export const useAppDispatch = () => useGenericDispatch();
+//  export const useSelector: TypedUseSelectorHook<RootState> = useGenericSelector;
 // export type AppThunk = ThunkAction<void , RootState , unknown , Action>
 
 /**

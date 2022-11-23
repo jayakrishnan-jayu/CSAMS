@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit"
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 
 export interface UserType 
@@ -24,12 +24,28 @@ export interface Token
 
 }
 
-const initialState : User & Token  = {
+
+export interface State 
+{
+    error ?: string,
+    success?: string ,
+    loading?: string
+}
+
+const initialState : User & Token & State  = {
     user : {email:"" , first_name: "" , last_name: ""},
     AccessToken: undefined,
-    RefreshToken: undefined
+    RefreshToken: undefined,
+    error: undefined,
+    success:undefined,
+    loading: undefined
 
-}   
+}
+
+const fetchRefereshToken = createAsyncThunk
+
+
+
 
 const authSlice = createSlice({
     name: 'auth' ,
@@ -48,12 +64,16 @@ const authSlice = createSlice({
             state.AccessToken = undefined,
             state.RefreshToken = undefined 
         },
+
+        
     },
-    extraReducers: (builder)=>{
-        builder.addMatcher()
-    }
+    // extraReducers: (builder)=>{
+    //     builder.addMatcher()
+    // }
 
 });
+
+export const authReducer = authSlice.reducer ;
 
 //
 
