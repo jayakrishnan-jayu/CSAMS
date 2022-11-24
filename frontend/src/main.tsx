@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import {  createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Dashboard from './Components/Sidebar'
 import Login from './features/auth/Login'
-import LoginUI from './Components/LoginUI'
+// import LoginUI from './Components/LoginUI'
 import SignUP from './Components/SignUP'
 
 const router  = createBrowserRouter([
@@ -17,7 +17,7 @@ const router  = createBrowserRouter([
   },
   {
     path:'/login',
-    element: <LoginUI />
+    element: <Login />
 
   },
   {
