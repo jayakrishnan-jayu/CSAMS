@@ -3,16 +3,18 @@ import { DocumentNode } from "graphql";
 import { ClientError,  request } from "graphql-request";
 import { RootState } from "../store";
 
-//const token = (state: RootState) => state.auth.AccessToken ;
+//const token = (state: RootState) => state.AuthAPI ;
+const token = "hi"
 const requestHeaders: HeadersInit = new Headers();
 // requestHeaders.set('Content-Type', 'application/json');
-//requestHeaders.set('authorization' , `Bearer ${token}`);
+requestHeaders.set('authorization' , `Bearer ${token}`);
 
 
 export const graphqlBaseQuery =
-  ({baseUrl }:
+  ({baseUrl , requestHeaders }:
     {
-        baseUrl:string
+        baseUrl:string,
+        requestHeaders?: HeadersInit 
        
     }
     ): BaseQueryFn<{document:string | DocumentNode ; variables?: any } , unknown ,ClientError
