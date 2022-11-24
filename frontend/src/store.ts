@@ -1,7 +1,6 @@
 import {  configureStore} from '@reduxjs/toolkit'
-
-import authSlice from './features/auth/authSlice';
-
+import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query';
+import { AuthAPI } from './api/auth/apiSlice';
 
 // const reducers = {
 //   [authSlice.name] : authReducer
@@ -11,9 +10,10 @@ import authSlice from './features/auth/authSlice';
 //const combinedReducer = combineReducers(reducers);
 
 
+
 export const store = configureStore({
   reducer: {
-    auth: authSlice.reducer,
+    [AuthAPI.reducerPath] : AuthAPI.reducer
    
     /**
      * 
@@ -21,8 +21,8 @@ export const store = configureStore({
      */
     
   },
-  middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware().concat()
+ middleware: getDefaultMiddleware => getDefaultMiddleware().concat(AuthAPI.middleware)
+  
   //RTK Query to cache results
 })
 // export type AppDispatch = typeof store.dispatch;

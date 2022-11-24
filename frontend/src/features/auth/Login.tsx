@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 // import { useDispatch } from 'react-redux'
-import { useLoginMutation } from '../../api/auth/apiSlice'
+import { useCreateUserMutation } from '../../api/auth/apiSlice'
 
 
 
@@ -13,12 +13,12 @@ const Login = ()=>{
     const userRef = useRef() as React.MutableRefObject<HTMLInputElement>; ;
     // const dispatch = useDispatch();
     const errRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [email, setEmail] = useState('')
-    const [password, setpassword] = useState('')
+    const [email, setEmail] = useState<string>('')
+    const [password, setpassword] = useState<string>('')
     const [errMsg, setErrMsg] = useState('')
     const navigate = useNavigate()
 
-    const[login , {isLoading}] = useLoginMutation();
+    const [createuser,{isLoading,isSuccess}] = useCreateUserMutation();
      
 
     useEffect(()=>{
@@ -36,8 +36,8 @@ const Login = ()=>{
         e.preventDefault() 
 
         
-            const userData = await login({email,password}).unwrap().then((payload)=>{
-                console.log("User exists" + payload)
+            const userData = await createuser({email,password}).unwrap().then((payload)=>{
+                console.log("User created" + payload)
                 }).catch((error)=>{
                     console.log(error);
                 })
@@ -82,6 +82,10 @@ const Login = ()=>{
     )
    
 
+
+    // const handleSubmit = async(): Promise<void> =>{ 
+
+ //   }
 
     return content ;
     

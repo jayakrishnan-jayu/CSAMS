@@ -1,13 +1,9 @@
 // Actions :
-import { RequestOptions } from '@octokit/types/dist-types/RequestOptions';
-import {  BaseQueryFn, createApi } from '@reduxjs/toolkit/query/react'
-import authSlice from '../../features/auth/authSlice';
+
+import {createApi } from '@reduxjs/toolkit/query/react'
 import {gql} from 'graphql-tag'
-import { RootState } from '../../store';
-import { selectCurrentAccessToken } from '../../features/auth/authSlice';
-import axios from 'axios';
-import { $CombinedState } from '@reduxjs/toolkit';
 import { graphqlBaseQuery } from '../../services/BaseQuery';
+import { CreateUser, LoginMutation } from '../../services/types';
 
 
 
@@ -74,14 +70,37 @@ const GET_REFRESH_TOKEN = gql`
 
 
 
-
-
-
-export const BaseAPI = createApi({
-    reducerPath: "authReducer",
-    baseQuery : graphqlBaseQuery({baseUrl: "http://localhost/api/graphql"})
+export const AuthAPI = createApi({
+    reducerPath: "AuthAPI",
+    baseQuery: graphqlBaseQuery({baseUrl: "http://localhost/api/graphql/"}),
+    endpoints: (builder)=>({
+        createUser: builder.mutation<CreateUser,LoginMutation>({
+            query: ({email,password})=>({
+                
+                document: CreateUser,
+                variables:{
+                    email,
+                    password
+                }
+                
+            }
+            )
+            
+            
+        })
+        
+    }
+)
 
 })
+
+
+
+// export const BaseAPI = createApi({
+//     reducerPath: "authReducer",
+//     baseQuery : graphqlBaseQuery({baseUrl: "http://localhost/api/graphql"})
+
+// })
 
 
 
@@ -115,4 +134,4 @@ export const BaseAPI = createApi({
 
 
 
-//export const {useSignUpMutation , useLoginMutation} = API ;
+export const {  useCreateUserMutation} =  AuthAPI ;

@@ -1,13 +1,12 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 import { DocumentNode } from "graphql";
-import { ClientError, GraphQLClient, request } from "graphql-request";
-import { useSelector } from "react-redux";
+import { ClientError,  request } from "graphql-request";
 import { RootState } from "../store";
 
-const token = (state: RootState) => state.auth.AccessToken ;
+//const token = (state: RootState) => state.auth.AccessToken ;
 const requestHeaders: HeadersInit = new Headers();
-requestHeaders.set('Content-Type', 'application/json');
-requestHeaders.set('authorization' , `Bearer ${token}`);
+// requestHeaders.set('Content-Type', 'application/json');
+//requestHeaders.set('authorization' , `Bearer ${token}`);
 
 
 export const graphqlBaseQuery =

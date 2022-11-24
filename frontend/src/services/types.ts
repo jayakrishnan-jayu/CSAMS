@@ -35,7 +35,8 @@ export type AuthenticatedUserResponse = UserReturn | null ;
 //TokenAuth
 export type LoginMutation = {
   __typename?: 'Mutation',
-   LoginUser : Pick<CreateUser,"email" | "password">
+   email : string ,
+   password: string
 } 
 
 export type LogoutMutation = {
