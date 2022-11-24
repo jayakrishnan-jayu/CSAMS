@@ -1,4 +1,5 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
 
 
 export interface UserType 
@@ -42,12 +43,7 @@ const initialState : User & Token & State  = {
 
 }
 
-const fetchRefereshToken = createAsyncThunk
-
-
-
-
-const authSlice = createSlice({
+export const authSlice = createSlice({
     name: 'auth' ,
     initialState: initialState ,
     reducers: {
@@ -64,8 +60,6 @@ const authSlice = createSlice({
             state.AccessToken = undefined,
             state.RefreshToken = undefined 
         },
-
-        
     },
     // extraReducers: (builder)=>{
     //     builder.addMatcher()
@@ -74,16 +68,12 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer ;
-
-//
-
-
 export  const {setCredentials ,logOut} = authSlice.actions ;
-
 export default authSlice   ;
-
-export const selectCurrentUser = (state: { auth: { user: User } })=> state.auth.user ;
-
+export const selectCurrentAccessToken = (state:{auth:{token:Token["AccessToken"]}})=>state.auth.token ;
 export const selectCurrentRefreshToken  = (state:{auth:{token:Token["RefreshToken"]}})=> state.auth.token ;
 
-export const selectCurrentAccessToken = (state:{auth:{token:Token["AccessToken"]}})=>state.auth.token ;
+// export const selectCurrentUser = (state: { auth: { user: User } })=> state.auth.user ;
+
+// 
+
