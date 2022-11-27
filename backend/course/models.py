@@ -87,8 +87,6 @@ class ExtraCourse(AbstractCourse, models.Model):
     )
 
 
-
-
 class Batch(models.Model):
     curriculum = models.ForeignKey(
         'Curriculum',
@@ -97,9 +95,6 @@ class Batch(models.Model):
     )
     extras = models.ManyToManyField(
         'CurriculumExtras'
-    )
-    advisors = models.ManyToManyField(
-        'user.User',
     )
     year = models.PositiveSmallIntegerField()
     sem = models.PositiveIntegerField()

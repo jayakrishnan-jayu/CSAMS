@@ -29,9 +29,12 @@ def create_fake_courses():
                 for extra in extras:
                     is_elective = extra.lower().__contains__('elective')
                     course_type, new = CurriculumExtras.objects.get_or_create(curriculum=curriculum, name=extra)
+                    batch.extras.add(course_type)
+                    print(course_type)
                     for ec in output['extra'][extra]:
-                        print(ec)
+                        # print(ec)
                         ExtraCourse.objects.get_or_create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=course_type, is_elective=is_elective)
+                batch.save()
                 
 
 
