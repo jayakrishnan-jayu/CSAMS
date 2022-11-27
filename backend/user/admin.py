@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Designation, Faculty, FacultyExperience, Track, Workload
+from .models import User, Designation, Faculty, Track, Workload
 
 
 @admin.register(User)
@@ -17,10 +17,10 @@ class FacultyAdmin(admin.ModelAdmin):
     list_filter = ['track', 'designation']
 
 
-@admin.register(FacultyExperience)
-class FacultyExperienceAdmin(admin.ModelAdmin):
-    list_display = ['course', 'faculty', 'experience']
-    search_fields = ['faculty__email', 'faculty__username']
+# @admin.register(FacultyExperience)
+# class FacultyExperienceAdmin(admin.ModelAdmin):
+#     list_display = ['course', 'faculty', 'experience']
+#     search_fields = ['faculty__email', 'faculty__username']
 
 
 @admin.register(Workload)

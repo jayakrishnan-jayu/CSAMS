@@ -76,7 +76,7 @@
 18OEL291 Kerala Mural Art and Painting 202 3
 18OEL292 Painting 202 3
 18OEL293 Reporting Rural Issues 300 3
-18CSA390 Live in Labs
+18CSA390 Live in Labs 300 3
 
 +Elective A 300 3
 18CSA311 Artificial Intelligence 300 3

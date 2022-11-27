@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Batch, Course, CourseIdentifer, CourseLab, Program
+from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, ExtraCourse
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
@@ -8,14 +8,28 @@ class ProgramAdmin(admin.ModelAdmin):
 
 @admin.register(Batch)
 class BatchAdmin(admin.ModelAdmin):
-    list_display = ['program', 'year', 'sem']
-    list_filter = ['program__name', 'year', 'sem']
-    search_fields = ['program__name', 'year', 'sem']
+    list_display = ['curriculum', 'year', 'sem']
+    list_filter = ['curriculum__program__name', 'year', 'sem']
+    search_fields = ['curriculum__program_name', 'year', 'sem']
 
 
-@admin.register(CourseIdentifer)
-class CourseIdentifer(admin.ModelAdmin):
-    list_display = ['code', 'name']
+@admin.register(Curriculum)
+class CurriculumAdmin(admin.ModelAdmin):
+    list_display = ['program', 'year']
+    list_filter = ['year']
+
+
+@admin.register(CurriculumExtras)
+class CurriculumExtrasAdmin(admin.ModelAdmin):
+    list_display = ['name', 'curriculum']
+    search_fields = ['name']
+
+
+@admin.register(ExtraCourse)
+class ExtraCourseAdmin(admin.ModelAdmin):
+    list_display = ['code', 'name', 'course_type', 'credit', 'is_elective']
+    list_filter = ['credit', 'is_elective']
+
 
 
 @admin.register(CourseLab)
@@ -25,7 +39,6 @@ class CourseLabAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['batch', 'identifier', 'credit', 'is_elective']
-    list_filter = ['credit', 'is_elective', 'batch__year', 'batch__sem']
-    search_fields = ['identifier__name', 'identifier__code']
+    list_display = ['code', 'name', 'batch', 'credit']
+    list_filter = ['credit', 'batch__curriculum__program__name', 'batch__year', 'batch__sem']
 

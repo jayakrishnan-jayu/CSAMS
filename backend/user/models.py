@@ -112,19 +112,19 @@ class Workload(models.Model):
         return f'{self.track} {self.designation}'
 
 
-class FacultyExperience(models.Model):
-    course = models.ForeignKey(
-        'course.CourseIdentifer',
-        on_delete=models.PROTECT
-    )
-    faculty = models.ForeignKey(
-        'user.User',
-        on_delete=models.PROTECT,
-    )
-    experience = models.SmallIntegerField()
+# class FacultyExperience(models.Model):
+#     course = models.ForeignKey(
+#         'course.CourseIdentifer',
+#         on_delete=models.PROTECT
+#     )
+#     faculty = models.ForeignKey(
+#         'user.User',
+#         on_delete=models.PROTECT,
+#     )
+#     experience = models.SmallIntegerField()
 
-    class Meta:
-        unique_together = ('course', 'faculty')
+#     class Meta:
+#         unique_together = ('course', 'faculty')
 
-    def __str__(self) -> str:
-        return f'{self.course} {self.faculty}'
+#     def __str__(self) -> str:
+#         return f'{self.course} {self.faculty}'

@@ -50,7 +50,7 @@ class CourseType(graphene.ObjectType):
     l = graphene.Int()
     t = graphene.Int()
     p = graphene.Int()
-    is_elective = graphene.Boolean()
+    # is_elective = graphene.Boolean()
 
 
     def resolve_code(self, info):
