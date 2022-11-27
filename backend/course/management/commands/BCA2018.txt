@@ -1,0 +1,158 @@
++Language I 200 2
+18HIN101 Hindi I 102 2
+18KAN101 Kannada I 102 2
+18MAL101 Malayalam I 102 2
+18SAN101 Sanskrit I 102	2
+18TAM101 Tamil I 102 2
+
++Language II 110 2
+18HIN111 Hindi II 102 2
+18KAN111 Kannada II 102	2
+18MAL111 Malayalam II 102 2
+18SAN111 Sanskrit II 102 2
+18TAM111 TAMIL II 102 2
+
++Open Elective A 300 3
+18OEL231 Advertising 300 3
+18OEL232 Basic Statistics 300 3
+18OEL233 Citizen Journalismh 300 3
+18OEL234 Creative Writing for Beginners 300 3
+18OEL235 Desktop Support and Services 300 3
+18OEL236 Development Journalism 300 3
+18OEL237 Digital Photography 300 3
+18OEL238 Emotional Intelligence 300 3
+18OEL239 Essence of Spiritual Literature 300 3
+18OEL240 Film Theory 300 3
+18OEL241 Fundamentals of Network Administration 300 3
+18OEL242 Gender Studies 300 3
+18OEL243 Glimpses of Indian Economy and Polity 300 3
+18OEL244 Graphics and Web-designing Tools 300 3
+18OEL245 Green Marketing 300 3
+18OEL246 Healthcare and Technology 300 3
+18OEL247 History of English Literature 300 3
+18OEL248 Indian Writing in English 300 3
+18OEL249 Industrial Relations and Labour Welfare 300 3
+18OEL250 Introduction to Ancient Indian Yogic and Vedic Wisdom 300 3
+18OEL251 Introduction to Computer Hardware 300 3
+18OEL252 Introduction to Event Management 300 3
+18OEL253 Introduction to Media 300 3
+18OEL254 Introduction to Right to Information Act 300 3
+18OEL255 Introduction to Translation 300 3
+18OEL256 Linguistic Abilities 300 3
+18OEL257 Literary Criticism and Theory 300 3
+18OEL258 Macro Economics 300 3
+18OEL259 Managing Failure 300 3
+18OEL260 Media Management 300 3
+18OEL261 Micro Economics 300 3
+18OEL262 Micro Finance, Small Group Management and Cooperatives 300 3
+18OEL263 Negotiation and Counselling 300 3
+18OEL264 New Literatures 300 3
+18OEL265 Non-Profit Organisation 300 3
+18OEL266 Personal Effectiveness 300 3
+18OEL267 Perspectives in Astrophysics and Cosmology 300 3
+18OEL268 Principles of Marketing 300 3
+18OEL269 Principles of Public Relations 300 3
+18OEL270 Science, Society and Culture 300 3
+18OEL271 Statistical Analysis 300 3
+18OEL272 Teamwork and Collaboration 300 3
+18OEL273 The Message of Bhagwad Gita 300 3
+18OEL274 Understanding Travel and Tourism 300 3
+18OEL275 Videography 300 3
+18OEL276 Vistas of English Literature 300 3
+18OEL277 Web-Designing Techniques 300 3
+18OEL278 Organic Farming 300 3
+18OEL279 Basic Legal Awareness on Protection of Women and Rights 300 3
+18OEL280 Ritual Performances of Kerala 300 3
+18OEL281 Documenting Social Issues 300 3
+18OEL282 Fabrication of Advanced Solar Cell 300 3
+18OEL283 Basic Concepts of X-ray Diffraction 300 3
+18OEL284 Introduction to FORTRAN and GNUPLOT 300 3
+18OEL285 Introduction to Porous Materials 300 3
+18OEL286 Forensic Science 300 3
+18OEL287 Introduction to solar Physics 300 3
+18OEL288 Recycling Recovery and Treatment Methods for Wastes 300 3
+18OEL289 Acting and Dramatic Presentation 202 3
+18OEL290 Computerised Accounting 202 3
+18OEL291 Kerala Mural Art and Painting 202 3
+18OEL292 Painting 202 3
+18OEL293 Reporting Rural Issues 300 3
+18CSA390 Live in Labs
+
++Elective A 300 3
+18CSA311 Artificial Intelligence 300 3
+18CSA332 Architecture and Deployment of Secure and Scalable WAN 300 3
+18CSA333 Client Server Computing 300 3
+18CSA334 Embedded Systems 300 3
+18CSA335 Enterprise Resource Planning Management 300 3
+18CSA336 Knowledge Management 300 3
+
++Elective B 300 3
+18CSA337 LAN Switching and Advanced Routing 300	3
+18CSA338 Micro Processor Systems 300 3
+18CSA339 Multimedia and Graphics 300 3
+18CSA340 Social and Professional Issues in Computing 300 3
+18CSA341 Soft Computing	300 3
+18CSA342 Systems and Network Administration 300	3
+
+SEMESTER 1
+18CUL101 Cultural Education I	200 2
+18ENG101 Communicative English 202 3
+18MAT102 Mathematical Foundation 310 4
+18ENV300 Environmental Science and Sustainability 300 3
+18CSA103 Computer Essentials 302 4
+18CSA101 Computational Thinking and Problem Solving 300 3
+18CSA182 Computational Thinking and Problem Solving Lab 002	1
++Language I 200 2
+
+SEMESTER 2
+18CUL111 Cultural Education II 200 2
+18ENG121 Professional Communication	102 2
+18MAT112 Discrete Mathematics	310 4
+18CSA114 Database Management System	310 4
+18CSA113 Programming in C 310	4
+18CSA111 Computer Organization 310 4
+18CSA183 Database Management System Lab 002 1
+18CSA184 Programming in C Lab	002 1
++Language II 110 2
+
+SEMESTER 3
+18AVP201 Amrita Value Programme I 100 1
+18SSK201 Life Skills I 102 2
+18MAT208 Statistical and Numerical Methods 310 4
+18CSA209 Data Structures and Algorithms 310 4
+18CSA206 Object Oriented Programming using C++ 310 4
+18CSA201 Operating System 310 4
+18CSA207 Principles of Management and Accounting 300 3
+18CSA283 Data Structures and Algorithms Lab 002 1
+18CSA284 Object Oriented Programming using C++ Lab 002 1
+
+SEMESTER 4
+18AVP211 Amrita Value Programme II 100 1
+18SSK211 Life Skills II	102 2
+18CSA214 Computer Networks 310 4
+18CSA215 Java Programming 310 4
+18CSA216 Web Technologies 310 4
+18CSA211 Software Engineering 302 4
+18CSA285 Java Programming Lab 002 1
+18CSA286 Web Technologies Lab 002 1
++Open Elective A 300 3
+
+SEMESTER 5
+18SSK301 Life skills III 102 2
+18CSA307 C# and .NET Framework 202 3
+18CSA306 Advanced Java and J2EE 300	3
+18CSA389 Mobile Application Development Lab 012 2
+18CSA388 Advanced Java and J2EE Lab	002 1
+18CSA391 Comprehensive Technical VIVA-Voce 000 2
+18CSA392 Minor Project 000 3
++Open Elective A 300 3
++Elective A 300 3
+
+SEMESTER 6
+18CSA317 Computer Graphics 300 3
+18CSA318 Cryptography and Cyber Security 400 4
+18CSA319 Python Programming 202 3
+18CSA383 Computer Graphics Lab 002 1
+18CSA399 Project 000 6
++Elective B 300 3
+

@@ -1,0 +1,600 @@
+{
+    "course": "MCA",
+    "year": "2018",
+    "extra": {
+        "Lab": [
+            {
+                "code": "18CA381 ",
+                "name": "Data Structures and DBMS Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA386 ",
+                "name": "Android Application Development",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA380 ",
+                "name": "Algorithms Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA480 ",
+                "name": "Python Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA485 ",
+                "name": "Computer Organization and Architecture lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA486 ",
+                "name": "C# and .NET Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA487 ",
+                "name": "Functional programming Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA488 ",
+                "name": "Linux and Shell Programming Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            },
+            {
+                "code": "18CA489 ",
+                "name": "Mean Stack Lab",
+                "L": "0",
+                "T": "0",
+                "P": "1",
+                "C": "1"
+            }
+        ],
+        "Elective I": [
+            {
+                "code": "18CA313 ",
+                "name": "Web Services and Cloud",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA331 ",
+                "name": "Big Data Analytics and Visualization",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA332 ",
+                "name": "Bioinformatic",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA333 ",
+                "name": "Business Intelligence",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA334 ",
+                "name": "Computational Intelligence",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA335 ",
+                "name": "Computer Graphics and Visualization",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA336 ",
+                "name": "Database Administration",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA338 ",
+                "name": "Digital Image Processing",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA339 ",
+                "name": "Distributed Computing",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            }
+        ],
+        "Elective II": [
+            {
+                "code": "18CA431 ",
+                "name": "Information Retrieval",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA433 ",
+                "name": "Modern Web Application Development using Mean Stack",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA434 ",
+                "name": "Network Management and System Administration",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA436 ",
+                "name": "Open-Source Systems",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA437 ",
+                "name": "Semantic Web Technologies",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA438 ",
+                "name": "Software Quality Assurance",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA439 ",
+                "name": "Structure and Interpretation of Computer",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA440 ",
+                "name": "Wireless Communications and Networks",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA451 ",
+                "name": "Cloud Computing",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            }
+        ],
+        "Elective III": [
+            {
+                "code": "18CA452 ",
+                "name": "Deep Learning",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA453 ",
+                "name": "Graph Theory",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA454 ",
+                "name": "Information Security",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA455 ",
+                "name": "Intelligent Systems",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA456 ",
+                "name": "Internet of Things",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA457 ",
+                "name": "Machine Learning",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA458 ",
+                "name": "Natural Language Processing",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA459 ",
+                "name": "Secure Applications for Mobile Devices",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18CA460 ",
+                "name": "Software Testing",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            }
+        ],
+        "Elective IV": [
+            {
+                "code": "18HU433 ",
+                "name": "Principles of Economics and Management",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18HU434 ",
+                "name": "Software Project Management",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18HU432 ",
+                "name": "Management Information Systems",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            },
+            {
+                "code": "18HU431 ",
+                "name": "Management and Organizational Behaviour",
+                "L": "3",
+                "T": "0",
+                "P": "0",
+                "C": "3"
+            }
+        ]
+    },
+    "semsters": {
+        "1": {
+            "courses": [
+                {
+                    "code": "18MA201",
+                    "name": "Discrete Structures",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18EN281",
+                    "name": "English for Professional Purposes",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA201",
+                    "name": "Computer Organization and Architecture",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA202",
+                    "name": "Computer Programming",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA203",
+                    "name": "Database Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA204",
+                    "name": "Problem Solving Techniques",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CUL60",
+                    "name": " Cultural Education",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "0"
+                }
+            ],
+            "extra": []
+        },
+        "2": {
+            "courses": [
+                {
+                    "code": "18CA212",
+                    "name": "Microprocessors and Embedded Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA213",
+                    "name": "Object Oriented Programming",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA211",
+                    "name": "Data Structures using C++",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA214",
+                    "name": "Operating Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA215",
+                    "name": "Software Engineering Techniques",
+                    "L": "2",
+                    "T": "0",
+                    "P": "1",
+                    "C": "3"
+                },
+                {
+                    "code": "18HU211",
+                    "name": "Financial Accounting",
+                    "L": "2",
+                    "T": "0",
+                    "P": "0",
+                    "C": "2"
+                }
+            ],
+            "extra": [
+                "Lab"
+            ]
+        },
+        "3": {
+            "courses": [
+                {
+                    "code": "18CA307",
+                    "name": "Web Applications Development",
+                    "L": "2",
+                    "T": "0",
+                    "P": "1",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA305",
+                    "name": "Design and Analysis of Algorithms",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA306",
+                    "name": "Computer Networking and Internet",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18MA301",
+                    "name": "Probability and Statistics",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA302",
+                    "name": "Advanced Databases",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA308",
+                    "name": "Programming with Java",
+                    "L": "2",
+                    "T": "0",
+                    "P": "1",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA381",
+                    "name": "Data Structures and DBMS Lab (Only for lateral students)",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                }
+            ],
+            "extra": [
+                "Lab"
+            ]
+        },
+        "4": {
+            "courses": [
+                {
+                    "code": "18CA314",
+                    "name": "Cryptography and Network Security",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA312",
+                    "name": "Data Mining and Applications",
+                    "L": "3",
+                    "T": "0",
+                    "P": "1",
+                    "C": "4"
+                },
+                {
+                    "code": "18MA311",
+                    "name": "Numerical Analysis and Optimization Techniques",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA391",
+                    "name": "Research Learning and Problem Formulation",
+                    "L": "1",
+                    "T": "0",
+                    "P": "1",
+                    "C": "2"
+                },
+                {
+                    "code": "18CA382",
+                    "name": "Competitive Programming Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                }
+            ],
+            "extra": [
+                "Lab",
+                "Elective I",
+                "Elective II"
+            ]
+        },
+        "5": {
+            "courses": [
+                {
+                    "code": "18CA403",
+                    "name": "Mobile Applications Development",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA404",
+                    "name": "Compiler Design",
+                    "L": "3",
+                    "T": "1",
+                    "P": "0",
+                    "C": "4"
+                },
+                {
+                    "code": "18CA496",
+                    "name": "Dissertation Phase I",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "5"
+                }
+            ],
+            "extra": [
+                "Lab",
+                "Lab",
+                "Elective III",
+                "Elective IV"
+            ]
+        }
+    }
+}
