@@ -1,4 +1,4 @@
-+Language I	200	2
++Language I 200 2
 21HIN101 Hindi I 200 2
 21KAN101 Kannada I 200 2
 21MAL101 Malayalam I 200 2
@@ -6,11 +6,11 @@
 21TAM101 Tamil I 200 2
 
 +Language II 110 2
-18HIN111 Hindi II	110 2
-18KAN111 Kannada II 110	2
+18HIN111 Hindi II 110 2
+18KAN111 Kannada II 110 2
 18MAL111 Malayalam II 110 2
 18SAN111 Sanskrit II 110 2
-18TAM111 TAMIL II	110 2
+18TAM111 TAMIL II 110 2
 
 +Mathematics core I 310 4
 21MAT231 Mathematical Foundation for Computer Science 310 4
@@ -121,7 +121,7 @@ SEMESTER 1
 21CSA103 Computer Essentials 301 4
 21CSA106 Problem Solving and Algorithmic Thinking 300 3
 21CSA182 Problem Solving and Algorithmic Thinking Lab 001 1
-+Language I	200	2
++Language I 200 2
 +Mathematics core I 310 4
 
 SEMESTER 2
