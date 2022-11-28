@@ -2,12 +2,12 @@
 18HIN101 Hindi I 102 2
 18KAN101 Kannada I 102 2
 18MAL101 Malayalam I 102 2
-18SAN101 Sanskrit I 102	2
+18SAN101 Sanskrit I 102 2
 18TAM101 Tamil I 102 2
 
 +Language II 110 2
 18HIN111 Hindi II 102 2
-18KAN111 Kannada II 102	2
+18KAN111 Kannada II 102 2
 18MAL111 Malayalam II 102 2
 18SAN111 Sanskrit II 102 2
 18TAM111 TAMIL II 102 2
@@ -87,32 +87,32 @@
 18CSA336 Knowledge Management 300 3
 
 +Elective B 300 3
-18CSA337 LAN Switching and Advanced Routing 300	3
+18CSA337 LAN Switching and Advanced Routing 300 3
 18CSA338 Micro Processor Systems 300 3
 18CSA339 Multimedia and Graphics 300 3
 18CSA340 Social and Professional Issues in Computing 300 3
-18CSA341 Soft Computing	300 3
-18CSA342 Systems and Network Administration 300	3
+18CSA341 Soft Computing 300 3
+18CSA342 Systems and Network Administration 300 3
 
 SEMESTER 1
-18CUL101 Cultural Education I	200 2
+18CUL101 Cultural Education I 200 2
 18ENG101 Communicative English 202 3
 18MAT102 Mathematical Foundation 310 4
 18ENV300 Environmental Science and Sustainability 300 3
 18CSA103 Computer Essentials 302 4
 18CSA101 Computational Thinking and Problem Solving 300 3
-18CSA182 Computational Thinking and Problem Solving Lab 002	1
+18CSA182 Computational Thinking and Problem Solving Lab 002 1
 +Language I 200 2
 
 SEMESTER 2
 18CUL111 Cultural Education II 200 2
-18ENG121 Professional Communication	102 2
-18MAT112 Discrete Mathematics	310 4
-18CSA114 Database Management System	310 4
-18CSA113 Programming in C 310	4
+18ENG121 Professional Communication 102 2
+18MAT112 Discrete Mathematics 310 4
+18CSA114 Database Management System 310 4
+18CSA113 Programming in C 310 4
 18CSA111 Computer Organization 310 4
 18CSA183 Database Management System Lab 002 1
-18CSA184 Programming in C Lab	002 1
+18CSA184 Programming in C Lab 002 1
 +Language II 110 2
 
 SEMESTER 3
@@ -128,7 +128,7 @@ SEMESTER 3
 
 SEMESTER 4
 18AVP211 Amrita Value Programme II 100 1
-18SSK211 Life Skills II	102 2
+18SSK211 Life Skills II 102 2
 18CSA214 Computer Networks 310 4
 18CSA215 Java Programming 310 4
 18CSA216 Web Technologies 310 4
@@ -140,9 +140,9 @@ SEMESTER 4
 SEMESTER 5
 18SSK301 Life skills III 102 2
 18CSA307 C# and .NET Framework 202 3
-18CSA306 Advanced Java and J2EE 300	3
+18CSA306 Advanced Java and J2EE 300 3
 18CSA389 Mobile Application Development Lab 012 2
-18CSA388 Advanced Java and J2EE Lab	002 1
+18CSA388 Advanced Java and J2EE Lab 002 1
 18CSA391 Comprehensive Technical VIVA-Voce 000 2
 18CSA392 Minor Project 000 3
 +Open Elective A 300 3

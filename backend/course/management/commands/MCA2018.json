@@ -595,6 +595,19 @@
                 "Elective III",
                 "Elective IV"
             ]
+        },
+        "6": {
+            "courses": [
+                {
+                    "code": "18CA497",
+                    "name": "Dissertation Phase II ",
+                    "L": "0",
+                    "T": "0",
+                    "P": "0",
+                    "C": "12"
+                }
+            ],
+            "extra": []
         }
     }
 }

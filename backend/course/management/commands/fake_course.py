@@ -23,8 +23,14 @@ def create_fake_courses():
                 print(curriculum, year, int(sem))
                 batch, new = Batch.objects.get_or_create(curriculum=curriculum, year=year, sem=int(sem))
                 print(f'Batch id {batch.id}')
-                courses = [Course(code=c['code'], name=c['name'], batch=batch, l=c['L'], t=c['T'], p=c['P'], credit=c['C'], hours=0) for c in semsters[sem]['courses']]
-                Course.objects.bulk_create(courses, ignore_conflicts=True)
+                courses = [Course.objects.get_or_create(code=c['code'], name=c['name'], batch=batch, l=c['L'], t=c['T'], p=c['P'], credit=c['C'], hours=0)[0] for c in semsters[sem]['courses']]
+                labs = [c for c in courses if 'Lab' in c.name]
+                for lab in labs:
+                    c_name = lab.name.split(' Lab')[0]
+                    qs = Course.objects.filter(name=c_name)
+                    if qs.count() == 1:
+                        CourseLab.objects.get_or_create(course=qs.first(), lab=lab)
+                
                 extras = semsters[sem]["extra"]
                 for extra in extras:
                     is_elective = extra.lower().__contains__('elective')
