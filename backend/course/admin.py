@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, ExtraCourse
+from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, ExtraCourse, BatchCurriculumExtra
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
@@ -23,6 +23,11 @@ class CurriculumAdmin(admin.ModelAdmin):
 class CurriculumExtrasAdmin(admin.ModelAdmin):
     list_display = ['name', 'curriculum']
     search_fields = ['name']
+
+@admin.register(BatchCurriculumExtra)
+class BatchCurriculumExtraAdmin(admin.ModelAdmin):
+    list_display = ['batch', 'extra', 'count']
+    list_filter = ['batch__curriculum__program__name']
 
 
 @admin.register(ExtraCourse)

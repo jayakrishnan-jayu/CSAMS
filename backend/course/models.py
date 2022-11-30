@@ -1,4 +1,5 @@
 from django.db import models
+from typing import List
 
 class AbstractCourse(models.Model):
     code = models.TextField()
@@ -93,15 +94,50 @@ class Batch(models.Model):
         null=True,
         on_delete=models.PROTECT,
     )
-    extras = models.ManyToManyField(
-        'CurriculumExtras'
-    )
     year = models.PositiveSmallIntegerField()
     sem = models.PositiveIntegerField()
+
+
+    def add_extra(self, ce: CurriculumExtras):
+        bce, new = BatchCurriculumExtra.objects.get_or_create(batch=self, extra=ce)
+        print(bce.batch, bce.extra, bce.count)
+        if not new:
+            print("Not new")
+            bce.count += 1
+            bce.save()
+    
+    def remove_extra(self, ce: CurriculumExtras):
+        qs = BatchCurriculumExtra.objects.filter(batch=self, extra=ce)
+        if qs.exists():
+            bce = qs.first()
+            if bce.count > 1:
+                bce.count -= 1
+                bce.save()
+                return
+            bce.delete()
+
+    @property
+    def extras(self) -> List['BatchCurriculumExtra']:
+        return [*BatchCurriculumExtra.objects.filter(batch=self)]
+
 
     def __str__(self) -> str:
         return f'{self.curriculum.program.name} {self.year} S{self.sem}'
 
+
+class BatchCurriculumExtra(models.Model):
+    batch = models.ForeignKey(
+        'Batch',
+        on_delete=models.PROTECT,
+    )
+    extra = models.ForeignKey(
+        'CurriculumExtras',
+        on_delete=models.PROTECT,
+    )
+    count = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        unique_together = ('batch', 'extra')
 
 class Program(models.Model):
     name = models.TextField(
