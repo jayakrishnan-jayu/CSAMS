@@ -30,7 +30,19 @@ class Course(AbstractCourse, models.Model):
     batch = models.ForeignKey(
         'Batch',
         on_delete=models.PROTECT,
+        null=True,
     )
+    is_extra = models.BooleanField(default=False)
+    is_elective = models.BooleanField(default=False)
+    course_type = models.ForeignKey(
+        'CurriculumExtras',
+        on_delete=models.PROTECT,
+        null=True,
+    )
+
+    @property
+    def is_selected(self):
+        return self.is_extra and not self.batch == None
 
 
 class CourseLab(models.Model):
@@ -79,13 +91,13 @@ class CurriculumExtras(models.Model):
         return self.name
 
 
-class ExtraCourse(AbstractCourse, models.Model):
-    selected = models.ManyToManyField('Batch')
-    is_elective = models.BooleanField(default=False)
-    course_type = models.ForeignKey(
-        'CurriculumExtras',
-        on_delete=models.PROTECT,
-    )
+# class ExtraCourse(AbstractCourse, models.Model):
+#     selected = models.ManyToManyField('Batch')
+#     is_elective = models.BooleanField(default=False)
+#     course_type = models.ForeignKey(
+#         'CurriculumExtras',
+#         on_delete=models.PROTECT,
+#     )
 
 
 class Batch(models.Model):

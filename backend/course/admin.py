@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, ExtraCourse, BatchCurriculumExtra
+from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, BatchCurriculumExtra
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
@@ -30,10 +30,10 @@ class BatchCurriculumExtraAdmin(admin.ModelAdmin):
     list_filter = ['batch__curriculum__program__name']
 
 
-@admin.register(ExtraCourse)
-class ExtraCourseAdmin(admin.ModelAdmin):
-    list_display = ['code', 'name', 'course_type', 'credit', 'is_elective']
-    list_filter = ['credit', 'is_elective']
+# @admin.register(ExtraCourse)
+# class ExtraCourseAdmin(admin.ModelAdmin):
+#     list_display = ['code', 'name', 'course_type', 'credit', 'is_elective']
+#     list_filter = ['credit', 'is_elective']
 
 
 
@@ -44,6 +44,6 @@ class CourseLabAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['code', 'name', 'batch', 'credit']
-    list_filter = ['credit', 'batch__curriculum__program__name', 'batch__year', 'batch__sem']
+    list_display = ['code', 'name', 'batch', 'credit', 'is_extra']
+    list_filter = ['credit', 'batch__curriculum__program__name', 'batch__year', 'batch__sem', 'is_extra']
 

@@ -1,6 +1,6 @@
 import graphene
 from user.graphql.types.user import FacultyType
-from course.models import Batch, Program, Course, BatchCurriculumExtra, ExtraCourse
+from course.models import Batch, Program, Course, BatchCurriculumExtra
 from backend.api import APIException
 from typing import List
 
@@ -93,8 +93,7 @@ class SemesterCourseType(graphene.ObjectType):
     def resolve_courses(self, info):
         if not isinstance(self, Batch):
             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-        qs = Course.objects.filter(batch=self)
-        print("course qs",qs)
+        qs = Course.objects.filter(batch=self, is_extra=False)
         if not qs.exists():
             raise APIException('Courses not found', 'COURSE_NOT_FOUND')
         return qs
@@ -102,8 +101,7 @@ class SemesterCourseType(graphene.ObjectType):
     def resolve_extra(self, info):
         if not isinstance(self, Batch):
             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-        qs = ExtraCourse.objects.filter(selected__id=self.id)
-        print("extra course qs",qs)
+        qs = Course.objects.filter(batch=self, is_extra=True)
         return qs
 
 __all__ = [

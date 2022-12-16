@@ -1,6 +1,6 @@
 import graphene
 from course.graphql.types.course import CourseType, CourseLabType, ExtraCourseType, SemesterCourseType
-from course.models import Course, Program, Batch, CourseLab, Curriculum, ExtraCourse
+from course.models import Course, Program, Batch, CourseLab, Curriculum
 from backend.api import APIException
 from graphql_jwt.decorators import login_required
 
@@ -22,11 +22,6 @@ class CourseQueries(graphene.ObjectType):
         program=graphene.String(description="Department Program eg BCA", required=True),
         year=graphene.Int(description="Year of Batch", required=True),
         sem=graphene.Int(description="Semster of Batch"),
-    )
-
-    extraCourse = graphene.List(
-        ExtraCourseType,
-        extra_id=graphene.ID(description="Extra Course ID", required=True)
     )
 
     @login_required
@@ -70,15 +65,6 @@ class CourseQueries(graphene.ObjectType):
         except Program.DoesNotExist:
             raise APIException("Program not found", code="PROGRAM_NOT_FOUND")
     
-    @login_required
-    def resolve_extraCourse(self, info, extra_id:int=None):
-        if extra_id is None:
-            raise APIException("Curriculum ID OR Curriculum Extra ID Required", code="INVALID INPUT")
-        try:
-            c = ExtraCourse.objects.filter(course_type_id=extra_id)
-            return c
-        except ExtraCourse.DoesNotExist:
-            raise APIException("Invalid Curriculum Extra ID", code="INVALID_ID")
     
 __all__ = [
     'CourseQueries'

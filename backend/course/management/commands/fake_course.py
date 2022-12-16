@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from course.models import Course, Curriculum, CourseLab, Batch, Program, ExtraCourse, CurriculumExtras
+from course.models import Course, Curriculum, CourseLab, Batch, Program, CurriculumExtras
 from datetime import datetime
 from random import randint
 import json
@@ -36,19 +36,19 @@ def create_fake_courses():
                     is_elective = extra.lower().__contains__('elective')
                     course_type, new = CurriculumExtras.objects.get_or_create(curriculum=curriculum, name=extra)
                     batch.add_extra(course_type)
-                    extraCourses += [ExtraCourse.objects.get_or_create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=course_type, is_elective=is_elective)[0] for ec in output['extra'][extra] ]
+                    extraCourses += [Course.objects.get_or_create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, is_extra=True, course_type=course_type, is_elective=is_elective)[0] for ec in output['extra'][extra] ]
                 
                 # Randomly Assign Extra Courses to Batch Courses
                 for bce in batch.extras:
                     ce = bce.extra
                     batch = bce.batch
                     for _ in range(bce.count):
-                        qs = ExtraCourse.objects.filter(course_type=ce)
+                        qs = Course.objects.filter(course_type=ce)
                         while True:
                             extra_course = qs[randint(0, qs.count()-1)]
-                            if batch in extra_course.selected.all():
+                            if extra_course.is_selected:
                                 continue
-                            extra_course.selected.add(batch)
+                            extra_course.batch = batch 
                             extra_course.save()
                             print(extra_course)
                             break
