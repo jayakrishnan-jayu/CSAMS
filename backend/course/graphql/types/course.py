@@ -1,7 +1,8 @@
 import graphene
 from user.graphql.types.user import FacultyType
-from course.models import Batch, Program, ExtraCourse
+from course.models import Batch, Program, Course, BatchCurriculumExtra, ExtraCourse
 from backend.api import APIException
+from typing import List
 
 class ProgramType(graphene.ObjectType):
     name = graphene.String()
@@ -18,14 +19,19 @@ class CurriculumExtraType(graphene.ObjectType):
     name = graphene.String()
 
 class BatchType(graphene.ObjectType):
+    id = graphene.ID()
     curriculum = graphene.Field(CurriculumType)
-    extras = graphene.List(CurriculumExtraType)
+    extra = graphene.List(graphene.String)
     year = graphene.Int()
     sem = graphene.Int()
 
 
-    def resolve_extras(self, info):
-        return self.extras.all()
+    def resolve_extra(self, info):
+        extras: List[BatchCurriculumExtra] = self.extras
+        result = []
+        for bce in extras:
+            result += [bce.extra]*bce.count
+        return result
 
 
 class BatchYearSemType(graphene.ObjectType):
@@ -40,6 +46,10 @@ class ExtraCourseType(graphene.ObjectType):
     l = graphene.Int()
     t = graphene.Int()
     p = graphene.Int()
+    course_type = graphene.String()
+
+    def resolve_course_type(self, info):
+        return self.course_type.name
      
 class BatchInfoType(graphene.ObjectType):
     program = graphene.String()
@@ -74,6 +84,27 @@ class CourseType(graphene.ObjectType):
 class CourseLabType(graphene.ObjectType):
     course = graphene.Field(CourseType)
     lab = graphene.Field(CourseType)
+
+
+class SemesterCourseType(graphene.ObjectType):
+    courses = graphene.List(CourseType)
+    extra = graphene.List(ExtraCourseType)
+
+    def resolve_courses(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        qs = Course.objects.filter(batch=self)
+        print("course qs",qs)
+        if not qs.exists():
+            raise APIException('Courses not found', 'COURSE_NOT_FOUND')
+        return qs
+
+    def resolve_extra(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        qs = ExtraCourse.objects.filter(selected__id=self.id)
+        print("extra course qs",qs)
+        return qs
 
 __all__ = [
     'ProgramType'

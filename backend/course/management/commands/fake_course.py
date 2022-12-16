@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from course.models import Course, Curriculum, CourseLab, Batch, Program, ExtraCourse, CurriculumExtras
 from datetime import datetime
+from random import randint
 import json
 
 class Command(BaseCommand):
@@ -20,9 +21,7 @@ def create_fake_courses():
             curriculum, new = Curriculum.objects.get_or_create(program=program, year=year)
             semsters = output['semsters']
             for sem in semsters:
-                print(curriculum, year, int(sem))
                 batch, new = Batch.objects.get_or_create(curriculum=curriculum, year=year, sem=int(sem))
-                print(f'Batch id {batch.id}')
                 courses = [Course.objects.get_or_create(code=c['code'], name=c['name'], batch=batch, l=c['L'], t=c['T'], p=c['P'], credit=c['C'], hours=0)[0] for c in semsters[sem]['courses']]
                 labs = [c for c in courses if 'Lab' in c.name]
                 for lab in labs:
@@ -32,14 +31,27 @@ def create_fake_courses():
                         CourseLab.objects.get_or_create(course=qs.first(), lab=lab)
                 
                 extras = semsters[sem]["extra"]
+                extraCourses = []
                 for extra in extras:
                     is_elective = extra.lower().__contains__('elective')
                     course_type, new = CurriculumExtras.objects.get_or_create(curriculum=curriculum, name=extra)
-                    batch.extras.add(course_type)
-                    print(course_type)
-                    for ec in output['extra'][extra]:
-                        # print(ec)
-                        ExtraCourse.objects.get_or_create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=course_type, is_elective=is_elective)
+                    batch.add_extra(course_type)
+                    extraCourses += [ExtraCourse.objects.get_or_create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=course_type, is_elective=is_elective)[0] for ec in output['extra'][extra] ]
+                
+                # Randomly Assign Extra Courses to Batch Courses
+                for bce in batch.extras:
+                    ce = bce.extra
+                    batch = bce.batch
+                    for _ in range(bce.count):
+                        qs = ExtraCourse.objects.filter(course_type=ce)
+                        while True:
+                            extra_course = qs[randint(0, qs.count()-1)]
+                            if batch in extra_course.selected.all():
+                                continue
+                            extra_course.selected.add(batch)
+                            extra_course.save()
+                            print(extra_course)
+                            break
                 batch.save()
                 
 

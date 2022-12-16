@@ -39,13 +39,12 @@ class BatchQueries(graphene.ObjectType):
         if program is not None:
             try:
                 p = Program.objects.get(name=program)
-                curriculums.filter(program=p)
+                curriculums = curriculums.filter(program=p)
             except Program.DoesNotExist:
                 raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
         
         if not curriculums.exists():
-            raise APIException('Curriculums not found', 'Curriculums_NOT_FOUND')
-        print(curriculums)
+            raise APIException('Curriculums not found', 'CURRICULUM_NOT_FOUND')
         return curriculums
     
 
@@ -61,7 +60,7 @@ class BatchQueries(graphene.ObjectType):
         if program is not None:
             try:
                 p = Program.objects.get(name=program)
-                batches.filter(curriculum__program=p)
+                batches = batches.filter(curriculum__program=p)
             except Program.DoesNotExist:
                 raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
         if year is not None:
