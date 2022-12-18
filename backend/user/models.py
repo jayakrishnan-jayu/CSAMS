@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
+from preference.models import Identifier
+from allocation.models import CourseAllocation, LabAllocation
+from course.models import Course, Batch
+
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
@@ -12,25 +16,6 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.email
-
-
-class Faculty(models.Model):
-    user = models.OneToOneField(
-        'User',
-        on_delete=models.CASCADE,
-        unique = True,
-    )
-    track = models.ForeignKey(
-        'Track',
-        on_delete=models.PROTECT
-    )
-    designation = models.ForeignKey(
-        'Designation',
-        on_delete=models.PROTECT
-    )
-
-    def __str__(self) -> str:
-        return self.user.email
 
 class Track(models.Model):
     TEACHING = 'TH'
@@ -110,6 +95,41 @@ class Workload(models.Model):
 
     def __str__(self) -> str:
         return f'{self.track} {self.designation}'
+
+
+class Faculty(models.Model):
+    user = models.OneToOneField(
+        'User',
+        on_delete=models.CASCADE,
+        unique = True,
+    )
+    track = models.ForeignKey(
+        'Track',
+        on_delete=models.PROTECT
+    )
+    designation = models.ForeignKey(
+        'Designation',
+        on_delete=models.PROTECT
+    )
+
+    @property
+    def min_workload(self) -> int: # minimum workload in hours
+        return Workload.objects.first(track=self.track, designation=self.designation).min_hours_per_week
+
+    @property
+    def max_workload(self) -> int: # minimum workload in hours
+        return Workload.objects.first(track=self.track, designation=self.designation).max_hours_per_week
+    
+    def workload(self, preference_sem_identifier: Identifier) -> int:
+        batches = Batch.objects.filter(year=preference_sem_identifier.year, sem=preference_sem_identifier.se)
+        courses = Course.objects.filter()
+        # CourseAllocation.objects.filter(faculty=self, courses_in=courses)
+        return 
+
+    def __str__(self) -> str:
+        return self.user.email
+
+
 
 
 # class FacultyExperience(models.Model):

@@ -12,8 +12,8 @@ def create_fake_config():
     if not Config.objects.exists():
         print("Initializing config..")
         identifier, ok = Identifier.objects.get_or_create(
-            year=datetime.now().year, 
-            is_even_sem=datetime.now().month <= 6,
+            year=2019, 
+            is_even_sem=True,
         )
         Config.objects.create(
             current_preference_sem=identifier,

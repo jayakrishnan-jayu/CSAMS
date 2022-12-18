@@ -1,13 +1,9 @@
 from django.db import models
-from typing import List
+from typing import List, Tuple
 
 class AbstractCourse(models.Model):
     code = models.TextField()
     name = models.TextField()
-    # identifier = models.ForeignKey(
-    #     'CourseIdentifer',
-    #     on_delete=models.PROTECT,
-    # )
     credit = models.SmallIntegerField()
     hours = models.SmallIntegerField()
     l = models.SmallIntegerField()
@@ -15,7 +11,6 @@ class AbstractCourse(models.Model):
     p = models.SmallIntegerField()
    
     class Meta:
-        unique_together = ('code', 'name')
         abstract = True 
 
     @property
@@ -27,22 +22,18 @@ class AbstractCourse(models.Model):
         
 
 class Course(AbstractCourse, models.Model):
+    is_extra = models.BooleanField(default=False)
     batch = models.ForeignKey(
         'Batch',
         on_delete=models.PROTECT,
-        null=True,
     )
-    is_extra = models.BooleanField(default=False)
+
+class ExtraCourse(AbstractCourse, models.Model):
     is_elective = models.BooleanField(default=False)
     course_type = models.ForeignKey(
         'CurriculumExtras',
         on_delete=models.PROTECT,
-        null=True,
     )
-
-    @property
-    def is_selected(self):
-        return self.is_extra and not self.batch == None
 
 
 class CourseLab(models.Model):
@@ -91,13 +82,6 @@ class CurriculumExtras(models.Model):
         return self.name
 
 
-# class ExtraCourse(AbstractCourse, models.Model):
-#     selected = models.ManyToManyField('Batch')
-#     is_elective = models.BooleanField(default=False)
-#     course_type = models.ForeignKey(
-#         'CurriculumExtras',
-#         on_delete=models.PROTECT,
-#     )
 
 
 class Batch(models.Model):
@@ -108,6 +92,7 @@ class Batch(models.Model):
     )
     year = models.PositiveSmallIntegerField()
     sem = models.PositiveIntegerField()
+    selected_extra_courses = models.ManyToManyField(ExtraCourse)
 
 
     def add_extra(self, ce: CurriculumExtras):
@@ -127,11 +112,25 @@ class Batch(models.Model):
                 bce.save()
                 return
             bce.delete()
+    
+    def add_selected_extra_course(self, ec: ExtraCourse):
+        self.selected_extra_courses.add(ec)
+        self.save()
+    
+    def remove_selected_extra_course(self, ec: ExtraCourse):
+        self.selected_extra_courses.remove(ec)
+        self.save()
 
+    # def sem_identifier(self) -> Tuple[int, bool]:
+    #     increment = (self.sem - 1) // 2
+    #     return (self.year, False)
     @property
     def extras(self) -> List['BatchCurriculumExtra']:
         return [*BatchCurriculumExtra.objects.filter(batch=self)]
 
+    # @property
+    # def selectedExtraCourses(self) -> List['CourseExtraSelected']:
+    #     return [*CourseExtraSelected.objects.filter(batch=self)]
 
     def __str__(self) -> str:
         return f'{self.curriculum.program.name} {self.year} S{self.sem}'
