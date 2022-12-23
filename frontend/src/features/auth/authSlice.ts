@@ -2,17 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
 
-export interface UserType 
-{
-    email: string
-    first_name:string
-    last_name : string 
-    
-}
+
 
 export interface User 
 {
-    user : UserType    
+    email?: string
+    name?: string
 
 }
 
@@ -34,7 +29,8 @@ export interface State
 }
 
 const initialState : User & Token & State  = {
-    user : {email:"" , first_name: "" , last_name: ""},
+    email: undefined ,
+    name : undefined ,
     AccessToken: undefined,
     RefreshToken: undefined,
     error: undefined,
@@ -48,7 +44,9 @@ export const authSlice = createSlice({
     initialState: initialState ,
     reducers: {
         setCredentials: (state,action:PayloadAction<User&Token>)=>{
-            state.user = action.payload.user 
+            
+            state.email = action.payload.email;
+            state.name = action.payload.name ;
             state.AccessToken = action.payload.AccessToken ;
             state.RefreshToken = action.payload.RefreshToken
             localStorage.setItem("Access-token" , state.AccessToken || "");
@@ -56,7 +54,8 @@ export const authSlice = createSlice({
 
         },
         logOut : (state , _)=>{
-            state.user = {email:"" , first_name: "" , last_name:""},
+            state.email = "";
+            state.name = "" ;
             state.AccessToken = undefined,
             state.RefreshToken = undefined 
         },

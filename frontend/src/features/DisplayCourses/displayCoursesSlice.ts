@@ -29,9 +29,9 @@ export interface CourseData
 // 1. One possible usage of having a reducer 
 
 
-const displayCourseSlices = createSlice({
-    setfieldValues : 
-})
+// const displayCourseSlices = createSlice({
+//     setfieldValues : 
+// })
 
 
 

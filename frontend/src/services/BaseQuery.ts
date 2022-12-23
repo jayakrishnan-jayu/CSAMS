@@ -1,7 +1,7 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/dist/query";
 import { DocumentNode } from "graphql";
 import { ClientError,  request } from "graphql-request";
-import { RootState } from "../store";
+
 
 //const token = (state: RootState) => state.AuthAPI ;
 const token = "hi"
