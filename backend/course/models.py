@@ -1,5 +1,5 @@
 from django.db import models
-from typing import List, Tuple
+from typing import List
 
 class AbstractCourse(models.Model):
     code = models.TextField()
@@ -16,6 +16,10 @@ class AbstractCourse(models.Model):
     @property
     def is_lab(self):
         return self.code[-2] == '8',
+    
+    @property
+    def workload(self) -> int:
+        return self.l + self.t + self.p;
 
     def __str__(self) -> str:
         return f'{self.code}  {self.name}'

@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from .managers import CustomUserManager
 from preference.models import Identifier
 from allocation.models import CourseAllocation, LabAllocation
+from django.db.models import F
+from django.db.models import Sum
 from course.models import Course, Batch
 
 
@@ -114,17 +116,22 @@ class Faculty(models.Model):
 
     @property
     def min_workload(self) -> int: # minimum workload in hours
-        return Workload.objects.first(track=self.track, designation=self.designation).min_hours_per_week
+        return Workload.objects.filter(track=self.track, designation=self.designation).first().min_hours_per_week
 
     @property
     def max_workload(self) -> int: # minimum workload in hours
-        return Workload.objects.first(track=self.track, designation=self.designation).max_hours_per_week
+        return Workload.objects.filter(track=self.track, designation=self.designation).first().max_hours_per_week
     
-    def workload(self, preference_sem_identifier: Identifier) -> int:
-        batches = Batch.objects.filter(year=preference_sem_identifier.year, sem=preference_sem_identifier.se)
-        courses = Course.objects.filter()
-        # CourseAllocation.objects.filter(faculty=self, courses_in=courses)
-        return 
+    def workload(self, identifier: Identifier) -> int:
+        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not identifier.is_even_sem, sem_year=identifier.year)
+        courses = Course.objects.filter(batch__in=batches)
+        course_hours = CourseAllocation.objects.filter(course__in=courses).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
+        lab_hours = LabAllocation.objects.filter(course__in=courses).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
+        if course_hours is None:
+            course_hours = 0
+        if lab_hours is None:
+            lab_hours = 0
+        return course_hours + lab_hours
 
     def __str__(self) -> str:
         return self.user.email
