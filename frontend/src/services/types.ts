@@ -11,10 +11,10 @@ export type Scalars = {
   Float: number;
 };
 
-// export type UserReturn = {
-//   token : Scalars['String'],
-//   refreshToken : Scalars['String']
-// }
+export type UserReturn = {
+  token : Scalars['String'],
+  refreshToken : Scalars['String']
+}
 
 // export type CreateUser = {
 //   __typename? : 'CreateUser',

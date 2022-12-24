@@ -3,6 +3,7 @@
 import {createApi } from '@reduxjs/toolkit/query/react'
 import {gql} from 'graphql-tag'
 import { graphqlBaseQuery } from '../../services/BaseQuery';
+import { UserReturn } from '../../services/types';
 // import { CreateUser, LoginMutation , AuthenticatedUserResponse } from '../../services/types';
 
 
@@ -60,7 +61,7 @@ export const AuthAPI = createApi({
     reducerPath: "SignUpAPI",
     baseQuery: graphqlBaseQuery({baseUrl: "http://localhost/api/graphql/"}),
     endpoints: (builder)=>({
-        createUser: builder.mutation<any,any>({
+        createUser: builder.mutation<UserReturn,any>({
             query: ({email,password})=>({
                 
                 document: CreateUser,

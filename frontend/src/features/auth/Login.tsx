@@ -1,9 +1,13 @@
 import { useRef, useState, useEffect, FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
+
+import { Link, Navigate, redirect, Route, useNavigate } from 'react-router-dom'
 // import { useDispatch } from 'react-redux'
 import { useCreateUserMutation, useLoginUserMutation } from '../../api/auth/apiConfig'
-import { useAppDispatch } from '../../services/hooks';
-import { setCredentials, Token, User } from './authSlice';
+import { Dashboard } from '../../Pages/Dasboard';
+import { useAppDispatch , useAppSelector } from '../../services/hooks';
+// import { setCredentials, Token, User } from './authSlice';
+import { store } from '../../store';
+import authSlice from './authSlice';
 
 
 
@@ -22,11 +26,12 @@ const Login = ()=>{
   
     let result ;  
     const [createuser] = useCreateUserMutation();
-    const[LoginUser , {isLoading, isError}] = useLoginUserMutation(); 
-
+    const[LoginUser , {isLoading, isError , isSuccess}] = useLoginUserMutation(); 
+    
    
 
     const dispatch = useAppDispatch();
+    const selector = useAppSelector ;
 
     useEffect(()=>{
         userRef.current?.focus()
@@ -38,9 +43,10 @@ const Login = ()=>{
     }, [email,password])
 
 
-    useEffect(() => {
-            handleSubmit
-      }, [isLoading, isError  ])
+    // useEffect(() => {
+    //         handleSubmit
+           
+    //   }, [isLoading, isError , isSuccess  ])
     
 
 
@@ -49,8 +55,18 @@ const Login = ()=>{
     const handleSubmit =async (e:FormEvent<HTMLFormElement>)=>{
         e.preventDefault() 
         try {
-           result = (await LoginUser({email,password}).unwrap())
-            console.log(result);
+            result = (await LoginUser({email,password}).unwrap())
+            console.log(result["tokenAuth"]["refreshToken"]);
+            dispatch(authSlice.actions.getToken(result));
+            //d25e68cfb20d8808f63d164576ef6ee079a43f6f
+         
+            if(result)
+            {
+                console.log("Succesful!!!");
+                // NavigateToDashBoard();
+                
+            }
+           
         } catch (error) {
             console.log(isError)
         }  
@@ -63,7 +79,9 @@ const Login = ()=>{
             //     console.log("User created" + payload)
             //     }).catch((error)=>{
             //         console.log(error);
-            //     })x     
+            //     })x 
+
+
             
     }
 
@@ -71,8 +89,10 @@ const Login = ()=>{
 
     const handlepasswordInput = (e: React.ChangeEvent<HTMLInputElement>) => setpassword(e.target.value)
 
+   
 
-    const content = isLoading ? <h1>Loading...</h1> : (
+
+    const content = isSuccess ? <Navigate to="/"/> : (
         <section className="login">
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
 
@@ -109,7 +129,7 @@ const Login = ()=>{
 
  //   }
 
-    return content ;
+    return isError ? <div>Auth Details Invalid.. Try Again</div> : content ;
     
 
 }
