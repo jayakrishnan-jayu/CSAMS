@@ -45,4 +45,5 @@ class CourseLabAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ['code', 'name', 'batch', 'credit']
     list_filter = ['credit', 'batch__curriculum__program__name', 'batch__year', 'batch__sem']
+    search_fields = ['name', 'code']
 

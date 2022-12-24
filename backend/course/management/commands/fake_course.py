@@ -28,7 +28,7 @@ def create_fake_courses():
                     labs = [c for c in courses if 'Lab' in c.name]
                     for lab in labs:
                         c_name = lab.name.split(' Lab')[0]
-                        qs = Course.objects.filter(name=c_name)
+                        qs = Course.objects.filter(name=c_name, batch=batch)
                         if qs.count() == 1:
                             CourseLab.objects.get_or_create(course=qs.first(), lab=lab)
                     

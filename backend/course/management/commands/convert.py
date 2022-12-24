@@ -21,10 +21,10 @@ for file in files:
                 start = i+1
     for key in temp:
         if key.startswith('+'):
-            output['extra'][key[1:-6]] = [{'code': line[:8], 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key]]
+            output['extra'][key[1:-6]] = [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key]]
         else:
             output['semsters'][int(key[-2:])] = {
-                'courses': [{'code': line[:7], 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key] if not line.startswith('+')],
+                'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key] if not line.startswith('+')],
                 'extra': [line[1:-6]for line in temp[key] if line.startswith('+')],
             }
 

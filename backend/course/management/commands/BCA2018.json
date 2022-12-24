@@ -705,7 +705,7 @@
         "1": {
             "courses": [
                 {
-                    "code": "18CUL10",
+                    "code": "18CUL101",
                     "name": " Cultural Education I",
                     "L": "2",
                     "T": "0",
@@ -713,7 +713,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18ENG10",
+                    "code": "18ENG101",
                     "name": " Communicative English",
                     "L": "2",
                     "T": "0",
@@ -721,7 +721,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18MAT10",
+                    "code": "18MAT102",
                     "name": " Mathematical Foundation",
                     "L": "3",
                     "T": "1",
@@ -729,7 +729,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18ENV30",
+                    "code": "18ENV300",
                     "name": " Environmental Science and Sustainability",
                     "L": "3",
                     "T": "0",
@@ -737,7 +737,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA10",
+                    "code": "18CSA103",
                     "name": " Computer Essentials",
                     "L": "3",
                     "T": "0",
@@ -745,7 +745,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA10",
+                    "code": "18CSA101",
                     "name": " Computational Thinking and Problem Solving",
                     "L": "3",
                     "T": "0",
@@ -753,7 +753,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA18",
+                    "code": "18CSA182",
                     "name": " Computational Thinking and Problem Solving Lab",
                     "L": "0",
                     "T": "0",
@@ -768,7 +768,7 @@
         "2": {
             "courses": [
                 {
-                    "code": "18CUL11",
+                    "code": "18CUL111",
                     "name": " Cultural Education II",
                     "L": "2",
                     "T": "0",
@@ -776,7 +776,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18ENG12",
+                    "code": "18ENG121",
                     "name": " Professional Communication",
                     "L": "1",
                     "T": "0",
@@ -784,7 +784,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18MAT11",
+                    "code": "18MAT112",
                     "name": " Discrete Mathematics",
                     "L": "3",
                     "T": "1",
@@ -792,7 +792,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA11",
+                    "code": "18CSA114",
                     "name": " Database Management System",
                     "L": "3",
                     "T": "1",
@@ -800,7 +800,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA11",
+                    "code": "18CSA113",
                     "name": " Programming in C",
                     "L": "3",
                     "T": "1",
@@ -808,7 +808,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA11",
+                    "code": "18CSA111",
                     "name": " Computer Organization",
                     "L": "3",
                     "T": "1",
@@ -816,7 +816,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA18",
+                    "code": "18CSA183",
                     "name": " Database Management System Lab",
                     "L": "0",
                     "T": "0",
@@ -824,7 +824,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18CSA18",
+                    "code": "18CSA184",
                     "name": " Programming in C Lab",
                     "L": "0",
                     "T": "0",
@@ -839,7 +839,7 @@
         "3": {
             "courses": [
                 {
-                    "code": "18AVP20",
+                    "code": "18AVP201",
                     "name": " Amrita Value Programme I",
                     "L": "1",
                     "T": "0",
@@ -847,7 +847,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18SSK20",
+                    "code": "18SSK201",
                     "name": " Life Skills I",
                     "L": "1",
                     "T": "0",
@@ -855,7 +855,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18MAT20",
+                    "code": "18MAT208",
                     "name": " Statistical and Numerical Methods",
                     "L": "3",
                     "T": "1",
@@ -863,7 +863,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA20",
+                    "code": "18CSA209",
                     "name": " Data Structures and Algorithms",
                     "L": "3",
                     "T": "1",
@@ -871,7 +871,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA20",
+                    "code": "18CSA206",
                     "name": " Object Oriented Programming using C++",
                     "L": "3",
                     "T": "1",
@@ -879,7 +879,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA20",
+                    "code": "18CSA201",
                     "name": " Operating System",
                     "L": "3",
                     "T": "1",
@@ -887,7 +887,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA20",
+                    "code": "18CSA207",
                     "name": " Principles of Management and Accounting",
                     "L": "3",
                     "T": "0",
@@ -895,7 +895,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA28",
+                    "code": "18CSA283",
                     "name": " Data Structures and Algorithms Lab",
                     "L": "0",
                     "T": "0",
@@ -903,7 +903,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18CSA28",
+                    "code": "18CSA284",
                     "name": " Object Oriented Programming using C++ Lab",
                     "L": "0",
                     "T": "0",
@@ -916,7 +916,7 @@
         "4": {
             "courses": [
                 {
-                    "code": "18AVP21",
+                    "code": "18AVP211",
                     "name": " Amrita Value Programme II",
                     "L": "1",
                     "T": "0",
@@ -924,7 +924,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18SSK21",
+                    "code": "18SSK211",
                     "name": " Life Skills II",
                     "L": "1",
                     "T": "0",
@@ -932,7 +932,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18CSA21",
+                    "code": "18CSA214",
                     "name": " Computer Networks",
                     "L": "3",
                     "T": "1",
@@ -940,7 +940,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA21",
+                    "code": "18CSA215",
                     "name": " Java Programming",
                     "L": "3",
                     "T": "1",
@@ -948,7 +948,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA21",
+                    "code": "18CSA216",
                     "name": " Web Technologies",
                     "L": "3",
                     "T": "1",
@@ -956,7 +956,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA21",
+                    "code": "18CSA211",
                     "name": " Software Engineering",
                     "L": "3",
                     "T": "0",
@@ -964,7 +964,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA28",
+                    "code": "18CSA285",
                     "name": " Java Programming Lab",
                     "L": "0",
                     "T": "0",
@@ -972,7 +972,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18CSA28",
+                    "code": "18CSA286",
                     "name": " Web Technologies Lab",
                     "L": "0",
                     "T": "0",
@@ -987,7 +987,7 @@
         "5": {
             "courses": [
                 {
-                    "code": "18SSK30",
+                    "code": "18SSK301",
                     "name": " Life skills III",
                     "L": "1",
                     "T": "0",
@@ -995,7 +995,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18CSA30",
+                    "code": "18CSA307",
                     "name": " C# and .NET Framework",
                     "L": "2",
                     "T": "0",
@@ -1003,7 +1003,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA30",
+                    "code": "18CSA306",
                     "name": " Advanced Java and J2EE",
                     "L": "3",
                     "T": "0",
@@ -1011,7 +1011,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA38",
+                    "code": "18CSA389",
                     "name": " Mobile Application Development Lab",
                     "L": "0",
                     "T": "1",
@@ -1019,7 +1019,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18CSA38",
+                    "code": "18CSA388",
                     "name": " Advanced Java and J2EE Lab",
                     "L": "0",
                     "T": "0",
@@ -1027,7 +1027,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18CSA39",
+                    "code": "18CSA391",
                     "name": " Comprehensive Technical VIVA-Voce",
                     "L": "0",
                     "T": "0",
@@ -1035,7 +1035,7 @@
                     "C": "2"
                 },
                 {
-                    "code": "18CSA39",
+                    "code": "18CSA392",
                     "name": " Minor Project",
                     "L": "0",
                     "T": "0",
@@ -1051,7 +1051,7 @@
         "6": {
             "courses": [
                 {
-                    "code": "18CSA31",
+                    "code": "18CSA317",
                     "name": " Computer Graphics",
                     "L": "3",
                     "T": "0",
@@ -1059,7 +1059,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA31",
+                    "code": "18CSA318",
                     "name": " Cryptography and Cyber Security",
                     "L": "4",
                     "T": "0",
@@ -1067,7 +1067,7 @@
                     "C": "4"
                 },
                 {
-                    "code": "18CSA31",
+                    "code": "18CSA319",
                     "name": " Python Programming",
                     "L": "2",
                     "T": "0",
@@ -1075,7 +1075,7 @@
                     "C": "3"
                 },
                 {
-                    "code": "18CSA38",
+                    "code": "18CSA383",
                     "name": " Computer Graphics Lab",
                     "L": "0",
                     "T": "0",
@@ -1083,7 +1083,7 @@
                     "C": "1"
                 },
                 {
-                    "code": "18CSA39",
+                    "code": "18CSA399",
                     "name": " Project",
                     "L": "0",
                     "T": "0",
