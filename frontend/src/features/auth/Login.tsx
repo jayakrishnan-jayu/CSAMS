@@ -56,8 +56,10 @@ const Login = ()=>{
         e.preventDefault() 
         try {
             result = (await LoginUser({email,password}).unwrap())
-            console.log(result["tokenAuth"]["refreshToken"]);
+            // console.log(result["tokenAuth"]["payload"].exp);
+            // console.log(result["tokenAuth"]["refreshToken"]);
             dispatch(authSlice.actions.getToken(result));
+        
             //d25e68cfb20d8808f63d164576ef6ee079a43f6f
          
             if(result)

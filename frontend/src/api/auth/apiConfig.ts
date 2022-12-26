@@ -31,6 +31,7 @@ mutation tokenAuth($email: String!, $password: String!) {
   tokenAuth(email: $email, password: $password) {
     token
     refreshToken
+    payload
   }
 }
 
@@ -42,9 +43,9 @@ const GET_REFRESH_TOKEN = gql`
     )
     {
         refreshToken(refreshToken:$refreshToken) {
-            refresh{
+                token
                 refreshToken
-            }
+            
         }
     }
 `
@@ -83,11 +84,24 @@ export const AuthAPI = createApi({
                 } 
             }
             )  
+        }),
+
+        UpdateJWTTokens : builder.mutation<any,any>({
+            query:({refreshToken})=>({
+                document : GET_REFRESH_TOKEN,
+                variables :{
+                    refreshToken
+                }
+            }
+            )
         })
+
+        
+
     }
 )
 })
-export const {useCreateUserMutation, useLoginUserMutation} = AuthAPI
+export const {useCreateUserMutation, useLoginUserMutation , useUpdateJWTTokensMutation} = AuthAPI
 
 
 

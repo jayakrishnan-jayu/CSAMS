@@ -3,10 +3,13 @@ import { DocumentNode } from "graphql";
 import { ClientError,  request } from "graphql-request";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useAppSelector } from "./hooks";
 
 
 //const token = (state: RootState) => state.AuthAPI ;
 const token = (state:RootState)=>state.UserDetails.AccessToken
+
+//const token = useAppSelector((state=>state.UserDetails.AccessToken));
 const requestHeaders: HeadersInit = new Headers();
 // requestHeaders.set('Content-Type', 'application/json');
 

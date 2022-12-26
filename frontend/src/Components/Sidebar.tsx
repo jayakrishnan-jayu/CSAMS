@@ -5,11 +5,50 @@ import MessagesLogo from "../assets/mail.svg"
 import LogoutLogo from "../assets/log-out.svg"
 import MenuLogo from "../assets/menu.svg" ;
 import SearchLogo from "../assets/search.svg"
+import { useAppSelector } from "../services/hooks";
+import dayjs from "dayjs";
+import { useCallback, useEffect, useRef } from "react";
+import { useUpdateJWTTokensMutation } from "../api/auth/apiConfig";
+import { useDispatch } from "react-redux";
+import authSlice from "../features/auth/authSlice";
+import { SilentLogin } from "../utils/SilentLogin";
+
+
+
+
+// const intervalRef = useRef<number>();
 
 const Sidebar = () => {
+    
+const [UpdateJWTTokens , {isSuccess, isLoading , isError}] = useUpdateJWTTokensMutation();
+const dispatch  = useDispatch();
+const intervalRef = useRef<number>();
 
-    const sidebar = (
-// 
+//console.log("sidebar refresh token", currentRefreshToken);
+
+
+    const getNewTokens = async () => {
+        try {let currentRefreshToken = useAppSelector((state=>state.UserDetails.RefreshToken))
+            console.log("getNewTokens token:", currentRefreshToken);
+            const getNewToken = await UpdateJWTTokens({currentRefreshToken}).unwrap();
+            console.log(getNewToken);
+           // dispatch(authSlice.actions.UpdateToken({currentRefreshToken}));
+        } catch (error) {
+            console.log(error)
+        }
+      
+        
+    } 
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+         getNewTokens()
+        }, 1000*2);
+        intervalRef.current = interval
+        return () => clearInterval(interval);
+      }, []);
+
+    return (
         <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 
         {/* Container */}
         <div className="bg-gray-100 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
@@ -136,8 +175,14 @@ const Sidebar = () => {
 </div>
 
 
-
     )
-    return sidebar
+    
+    
 }
-export default Sidebar
+
+
+
+
+
+
+export default Sidebar ;

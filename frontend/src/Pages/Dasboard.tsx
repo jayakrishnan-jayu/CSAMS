@@ -6,8 +6,7 @@ export function Dashboard ()
 
     //const accessToken = useAppSelector(())
 
-    GetNewAccessToken();
-
+   
     return (
         <div>
             <Sidebar />
@@ -19,8 +18,8 @@ export function Dashboard ()
 
 
 const GetNewAccessToken = ()=>{
-    const ExpireAt = useAppSelector((state=>state.UserDetails.AccessToken));
-    console.log(ExpireAt);
+    console.log("hi");
+    
 }
 
 
