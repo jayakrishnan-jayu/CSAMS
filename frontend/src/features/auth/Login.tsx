@@ -59,7 +59,7 @@ const Login = ()=>{
             // console.log(result["tokenAuth"]["payload"].exp);
             // console.log(result["tokenAuth"]["refreshToken"]);
             dispatch(authSlice.actions.getToken(result));
-        
+            console.log(useAppSelector((state=>state.UserDetails.AccessToken)));
             //d25e68cfb20d8808f63d164576ef6ee079a43f6f
          
             if(result)

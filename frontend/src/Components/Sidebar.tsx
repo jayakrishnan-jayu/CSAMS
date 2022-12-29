@@ -7,7 +7,7 @@ import MenuLogo from "../assets/menu.svg" ;
 import SearchLogo from "../assets/search.svg"
 import { useAppSelector } from "../services/hooks";
 import dayjs from "dayjs";
-import { useCallback, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useUpdateJWTTokensMutation } from "../api/auth/apiConfig";
 import { useDispatch } from "react-redux";
 import authSlice from "../features/auth/authSlice";
@@ -23,30 +23,38 @@ const Sidebar = () => {
 const [UpdateJWTTokens , {isSuccess, isLoading , isError}] = useUpdateJWTTokensMutation();
 const dispatch  = useDispatch();
 const intervalRef = useRef<number>();
+const currentRefreshToken = useAppSelector((state=>state.UserDetails.RefreshToken));
+var RefreshTokenRef = useRef<string>() ;
+RefreshTokenRef.current = currentRefreshToken
+console.log("sidebar refresh", RefreshTokenRef.current);
 
-//console.log("sidebar refresh token", currentRefreshToken);
 
-
-    const getNewTokens = async () => {
-        try {let currentRefreshToken = useAppSelector((state=>state.UserDetails.RefreshToken))
-            console.log("getNewTokens token:", currentRefreshToken);
-            const getNewToken = await UpdateJWTTokens({currentRefreshToken}).unwrap();
-            console.log(getNewToken);
-           // dispatch(authSlice.actions.UpdateToken({currentRefreshToken}));
+    const getNewTokens = useCallback(async () => {
+        try {
+            // console.log("getNewTokens token:", RefreshTokenRef.current);
+            const val = RefreshTokenRef.current
+            // console.log(val);
+            const getNewToken = await UpdateJWTTokens({"refreshToken":val}).unwrap();
+            // console.log("New access token    " + getNewToken["refreshToken"]["token"]);
+            // console.log("New refresh token    " + getNewToken["refreshToken"]["refreshToken"]);
+            dispatch(authSlice.actions.UpdateToken(getNewToken));
+            // console.log("Successful")
         } catch (error) {
             console.log(error)
         }
       
         
-    } 
+    }, []);
 
     useEffect(() => {
         const interval = setInterval(() => {
          getNewTokens()
-        }, 1000*2);
+        }, 1000*60*6);
         intervalRef.current = interval
         return () => clearInterval(interval);
       }, []);
+
+
 
     return (
         <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 

@@ -38,9 +38,9 @@ mutation tokenAuth($email: String!, $password: String!) {
 `
 
 const GET_REFRESH_TOKEN = gql`
-    mutation RefreshToken (
-        $refreshToken:String!
-    )
+    mutation RefreshToken ($refreshToken:String!)
+    
+    
     {
         refreshToken(refreshToken:$refreshToken) {
                 token

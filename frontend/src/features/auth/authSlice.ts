@@ -55,14 +55,14 @@ export const authSlice = createSlice({
         getToken: (state, action:PayloadAction<any>)=>{
             state.AccessToken = action.payload["tokenAuth"]["token"]
             state.RefreshToken = action.payload["tokenAuth"]["refreshToken"]
-            state.ExpireAt = action.payload["tokenAuth"]["payload"].exp ;
+
 
 
         },
         UpdateToken: (state, action:PayloadAction<any>)=>{
             state.AccessToken = action.payload["refreshToken"]["token"]
             state.RefreshToken = action.payload["refreshToken"]["refreshToken"]
-            state.ExpireAt = action.payload["refreshToken"]["payload"].exp ;
+            // state.ExpireAt = action.payload["refreshToken"]["payload"].exp ;
         
         }
         
