@@ -21,5 +21,5 @@ class Command(BaseCommand):
                         track=track, 
                         designation=designation, 
                         min_hours_per_week=randint(2, 5),
-                        max_hours_per_week=randint(5, 8)
+                        max_hours_per_week=randint(25, 30)
                         )

@@ -39,7 +39,7 @@ class ExtraCourseAdmin(admin.ModelAdmin):
 @admin.register(CourseLab)
 class CourseLabAdmin(admin.ModelAdmin):
     list_display = ['course', 'lab']
-
+    list_filter = ['course__credit', 'lab__credit','course__batch__curriculum__program__name', 'course__batch__year', 'course__batch__sem']
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):

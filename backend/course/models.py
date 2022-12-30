@@ -1,6 +1,24 @@
 from django.db import models
 from typing import List
 
+class CourseLab(models.Model):
+    course = models.OneToOneField(
+        'Course',
+        on_delete=models.PROTECT,
+        related_name = '+',
+    )
+    lab = models.OneToOneField(
+        'Course',
+        on_delete=models.PROTECT,
+    )
+
+    class Meta:
+        unique_together = ('course', 'lab')
+
+    def __str__(self) -> str:
+        return f'{self.course.code}  {self.lab.code}'
+
+
 class AbstractCourse(models.Model):
     code = models.TextField()
     name = models.TextField()
@@ -15,7 +33,11 @@ class AbstractCourse(models.Model):
 
     @property
     def is_lab(self):
-        return self.code[-2] == '8',
+        return self.code[-2] == '8'
+    
+    @property
+    def is_lab_only(self):
+        return self.is_lab and not CourseLab.objects.filter(lab=self).exists()
     
     @property
     def workload(self) -> int:
@@ -38,24 +60,6 @@ class ExtraCourse(AbstractCourse, models.Model):
         'CurriculumExtras',
         on_delete=models.PROTECT,
     )
-
-
-class CourseLab(models.Model):
-    course = models.OneToOneField(
-        'Course',
-        on_delete=models.PROTECT,
-        related_name = '+',
-    )
-    lab = models.OneToOneField(
-        'Course',
-        on_delete=models.PROTECT,
-    )
-
-    class Meta:
-        unique_together = ('course', 'lab')
-
-    def __str__(self) -> str:
-        return f'{self.course.code}  {self.lab.code}'
 
 
 class Curriculum(models.Model):

@@ -12,12 +12,13 @@ class Allocation:
         self.max_pref_count = Config.objects.get(id=1).preference_count
         self.score_range = self.generate_score_range()
         self.allocated_faculties = {}
+        self.course_lab_workload = {} # {course: {'lab': course, 'workload': int}}
 
     # [1,3] -> 1, [4,6] -> 2, [7, 9] -> 3 ....
     @staticmethod
-    def score_from_exp(exp: int) -> int:
+    def score_from_exp(exp: int):
         if exp < 1:
-            return 0
+            return 0.1
         if exp < 4:
             return 1
         return (exp - 1) // 3 + 1
@@ -48,8 +49,16 @@ class Allocation:
 
     def best_preference(self, prefs: List['Preference']) -> Preference:
         best_pref: Preference = prefs.first()
+        # while True:
+        #     if best_pref.faculty in skip:
+        #         prefs = 
+
+
         best_score = 0
         for pref in prefs:
+            # if pref.faculty in skip:
+            #     continue
+
             faculty_score = self.score(pref.experience, pref.weigtage)
             if faculty_score > best_score:  # Iterate and find out the preference with highest score
                 best_score = faculty_score
@@ -57,6 +66,14 @@ class Allocation:
                 continue
 
             if faculty_score == best_score:  # if there are two preference with same score,
+                if best_pref.experience != pref.experience:
+                    if pref.experience > best_pref.experience:
+                        best_pref = pref
+                        continue
+                if best_pref.weigtage != pref.weigtage:
+                    if pref.weigtage < best_pref.weigtage:
+                        best_pref = pref
+                        continue
                 best_faculty_workload = best_pref.faculty.workload(self.identifier)
                 current_faculty_workload = pref.faculty.workload(self.identifier)
                 # if both preferred faculties have the same workload, then allocate based on time.
@@ -85,20 +102,23 @@ class Allocation:
         courses_in_batches = Course.objects.filter(batch__in=batches)
         courses_in_batches_ids = [c.id for c in courses_in_batches]
 
-        preferred_course_labs = CourseLab.objects.filter(course__id__in=preferred_course_ids)
+        preferred_course_labs = [(cl, preferences.filter(course_id=cl.course.id).count()) for cl in CourseLab.objects.filter(course__id__in=preferred_course_ids)]
+        preferred_course_labs = [x[0] for x in sorted(preferred_course_labs, key=lambda x: x[1])]
         not_preferred_course_labs = CourseLab.objects.filter(course__id__in=courses_in_batches_ids).exclude(id__in=[c.id for c in preferred_course_labs])
+
+        for cl in [*preferred_course_labs, *not_preferred_course_labs]:
+            self.course_lab_workload[cl.course] = {'lab': cl.lab, 'workload': cl.course.workload + cl.lab.workload}
         
         preferred_course_of_course_labs = [cl.course for cl in preferred_course_labs]
         preferred_course_of_course_labs_ids = [c.id for c in preferred_course_of_course_labs]
         not_preferred_course_of_course_labs = [cl.course for cl in not_preferred_course_labs]
         
-        preferred_courses = Course.objects.filter(id__in=preferred_course_ids).exclude(id__in=preferred_course_of_course_labs_ids)
+        preferred_courses = [(c, preferences.filter(course_id=c.id).count()) for c in Course.objects.filter(id__in=preferred_course_ids).exclude(id__in=preferred_course_of_course_labs_ids)]
+        preferred_courses = [x[0] for x in sorted(preferred_courses, key=lambda x: x[1])]
         not_prefered_courses = courses_in_batches.exclude(id__in=preferred_course_ids).exclude(id__in=preferred_course_of_course_labs_ids)
 
         preferred_faculties = Faculty.objects.filter(id__in=preferred_faculty_ids)
         not_preferred_faculties = Faculty.objects.all().exclude(id__in=preferred_faculty_ids)
-
-        
 
 
         print()
@@ -107,10 +127,10 @@ class Allocation:
         print()
         print(f"{courses_in_batches.count()=}")
         print()
-        print(f"{preferred_course_labs.count()=}")
+        print(f"{len(preferred_course_labs)=}")
         print(f"{not_preferred_course_labs.count()=}")
         print()
-        print(f"{preferred_courses.count()=}")
+        print(f"{len(preferred_courses)=}")
         print(f"{not_prefered_courses.count()=}")
         print()
         print(f"{preferred_faculties.count()=}")
@@ -121,37 +141,36 @@ class Allocation:
         
 
         # First, allocate course labs
-        for c in [*preferred_course_of_course_labs, *preferred_courses]:
+        for c in preferred_course_of_course_labs:
+        # for c in [*preferred_course_of_course_labs, *preferred_courses]:
             prefs = preferences.filter(course_id=c.id)
+            print(len(prefs))
+            
             best_pref = self.best_preference(prefs)
 
             print((best_pref.faculty.user.username, best_pref.experience, best_pref.weigtage, self.score(best_pref.experience, best_pref.weigtage)))
-                
+            
+            def allocation_data(course):
+                return {'workload': course.workload, 'course': course}
+            lab_course = self.course_lab_workload[best_pref.course]['lab']
+            print(f'{lab_course=}')
             if best_pref.faculty in self.allocated_faculties:
-                self.allocated_faculties[best_pref.faculty]['total_workload'] += best_pref.course.workload
-                self.allocated_faculties[best_pref.faculty]['courses'].append({'workload': best_pref.course.workload, 'course': best_pref.course})
+                self.allocated_faculties[best_pref.faculty]['total_workload'] += self.course_lab_workload[best_pref.course]['workload']
+                self.allocated_faculties[best_pref.faculty]['courses'].append(allocation_data(best_pref.course))
+                self.allocated_faculties[best_pref.faculty]['courses'].append(allocation_data(lab_course))
             else:
                 self.allocated_faculties[best_pref.faculty] = {
-                    'total_workload': best_pref.course.workload,
-                    'courses': [{'workload': best_pref.course.workload, 'course': best_pref.course}]
+                    'total_workload': self.course_lab_workload[best_pref.course]['workload'],
+                    'courses': [allocation_data(best_pref.course), allocation_data(lab_course)]
                 }
-                # arr = [(pref.faculty.user.username, pref.experience, pref.weigtage, self.score(pref.experience, pref.weigtage)) for pref in prefs]
-                # arr = sorted(arr, key = lambda x: x[3], reverse=True)    
-                # for i in arr:
-                #     print(i)
-                #     break
-            
-                # print()
+            # print(c.name, c.batch)
+            # prefs = preferences.filter(course_id=c.id)
+            # arr = [(pref.faculty.user.username, pref.experience, pref.weigtage, self.score(pref.experience, pref.weigtage)) for pref in prefs]
+            # arr = sorted(arr, key = lambda x: x[3], reverse=True)
 
-            # for course in courses:
-            #     print(course.name, course.batch)
-            #     prefs = preferences.filter(course_id=course.id)
-            #     arr = [(pref.faculty.user.username, pref.experience, pref.weigtage, score(pref.experience, pref.weigtage, max_pref_count), 1) for pref in prefs]
-            #     arr = sorted(arr, key = lambda x: x[3], reverse=True)
-
-            #     for i in arr:
-            #         print(i)
-            #     print()
+            # for i in arr:
+            #     print(i)
+            # print()
         for fa in self.allocated_faculties:
             print(fa, f"{self.allocated_faculties[fa]['total_workload']=}")
             for x in self.allocated_faculties[fa]['courses']:
