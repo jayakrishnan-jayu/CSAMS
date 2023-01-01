@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import AmritaLogo from "../assets/AmritaLogo.jpeg" ;
 import CoursesLogo from "../assets/book.svg" ;
 import MessagesLogo from "../assets/mail.svg"
@@ -26,6 +26,7 @@ const intervalRef = useRef<number>();
 const currentRefreshToken = useAppSelector((state=>state.UserDetails.RefreshToken));
 var RefreshTokenRef = useRef<string>() ;
 RefreshTokenRef.current = currentRefreshToken
+const navigate = useNavigate() ;
 console.log("sidebar refresh", RefreshTokenRef.current);
 
 
@@ -140,7 +141,7 @@ console.log("sidebar refresh", RefreshTokenRef.current);
 
        
 
-
+{/*  */}
      {/* <div className="flex absolute right-24 -mt-12 mb-4">
         <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" className=" w-14 h-14 object-cover rounded-full object-top border-black" alt="" />
         <div className="inline-block text-sm left-16 p-2"></div>
@@ -152,15 +153,15 @@ console.log("sidebar refresh", RefreshTokenRef.current);
     <div className="grid-flow-col text-lg text-gray-800 -mt-24">
         <button className="p-2" >All</button>
         <button className="p-2">Active</button>
-        <button className="p-2">Upcoming</button>
+        <button className="p-2" onClick={()=>{navigate('upcomingcourses', {replace:false} )}}>Upcoming</button>
         <button className="p-2">Completed</button>
     </div>
-    <div className="block max-w-sm p-6 bg-orange-700 border border-gray-200 rounded-lg shadow-md">
+    {/* <div className="block max-w-sm p-6 bg-orange-700 border border-gray-200 rounded-lg shadow-md">
      <div> S3 BCA Regular</div>
     <h5 className="text-[12px]  tracking-tight text-white">18CSA334 Advanced Java & J2EE Programming</h5>
-</div>
+</div> */}
 
-<div className="block max-w-sm p-6 bg-yellow-400 border border-gray-200 rounded-lg shadow-md mt-2">
+{/* <div className="block max-w-sm p-6 bg-yellow-400 border border-gray-200 rounded-lg shadow-md mt-2">
      <div> S1 BCA Data Science</div>
     <h5 className="text-[12px]  tracking-tight text-white">18CSA334 Advanced Java & J2EE Programming</h5>
 </div>
@@ -173,13 +174,13 @@ console.log("sidebar refresh", RefreshTokenRef.current);
 <div className="block max-w-sm p-6 bg-green-700 border border-gray-200 rounded-lg shadow-md mt-2">
      <div> S5 MCA</div>
     <h5 className="text-[12px]  tracking-tight text-white">18CSA314 Advanced Operating System</h5>
-</div>
-
+</div> */}
+  <Outlet />     
     
         </div>
  
       
-                        
+                 
 </div>
 
 

@@ -8,11 +8,18 @@ import Dashboard from './Components/Sidebar'
 import Login from './features/auth/Login'
 // import LoginUI from './Components/LoginUI'
 import SignUP from './Components/SignUP'
+import { UpcomingCourses } from './Components/UpcomingCourses'
 
 const router  = createBrowserRouter([
   {
-    path:'/',
-    element: <Dashboard />
+    path: "/",
+    element: <Dashboard />,
+    children: [
+          {
+            path: "UpcomingCourses",
+            element: <UpcomingCourses />
+          }
+    ]
   
   },
   {
@@ -23,7 +30,15 @@ const router  = createBrowserRouter([
   {
     path:'/signup',
     element:<SignUP />
+  },
+
+  {
+
+  path:"upcomingcourses",
+  element: <UpcomingCourses />
+
   }
+
  
 ])
 

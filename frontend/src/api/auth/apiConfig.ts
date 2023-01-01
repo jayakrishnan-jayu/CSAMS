@@ -4,13 +4,6 @@ import {createApi } from '@reduxjs/toolkit/query/react'
 import {gql} from 'graphql-tag'
 import { graphqlBaseQuery } from '../../services/BaseQuery';
 import { UserReturn } from '../../services/types';
-// import { CreateUser, LoginMutation , AuthenticatedUserResponse } from '../../services/types';
-
-
-
-
-
-
 const CreateUser = gql`
     mutation CreateUser(
       $email:String!,
@@ -25,7 +18,6 @@ const CreateUser = gql`
     }
 
 `
-
 const Login =  gql`
 mutation tokenAuth($email: String!, $password: String!) {
   tokenAuth(email: $email, password: $password) {
@@ -36,7 +28,6 @@ mutation tokenAuth($email: String!, $password: String!) {
 }
 
 `
-
 const GET_REFRESH_TOKEN = gql`
     mutation RefreshToken ($refreshToken:String!)
     
@@ -49,14 +40,6 @@ const GET_REFRESH_TOKEN = gql`
         }
     }
 `
-
-
-
-// const RequestHeaders: HeadersInit = new Headers();
-// // requestHeaders.set('Content-Type', 'application/json');
-// //requestHeaders.set('authorization' , `Bearer ${token}`);
-
-
 
 export const AuthAPI = createApi({
     reducerPath: "SignUpAPI",

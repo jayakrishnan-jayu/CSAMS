@@ -16,41 +16,23 @@ export type UserReturn = {
   refreshToken : Scalars['String']
 }
 
-// export type CreateUser = {
-//   __typename? : 'CreateUser',
-//   username : Scalars['String'],
-//   email    : Scalars['String'],
-//   password : Scalars['String']
-// }
-
-// //we are passing in the email and password as input 
-// //As a result we expect the JWT Token & refresh token as the response.
-// // If we don't receive the same , then using typscript conditional typing 
-// // we make the the response to be some error string
-
-// export type AuthenticatedUserResponse = any ;
-
-
-
-// //TokenAuth
-// export type LoginMutation = {
-//   __typename?: 'Mutation',
-//    email : string ,
-//    password: string
-// } 
-
-// export type LogoutMutation = {
-
-// }
-
-
-
-
-// //CreateUser
-// export type SignUpMutation = {
-//  __typename?:'Mutation' ;
-//  CreateUser : Required<CreateUser>;
-// }
+export type CreateUser = {
+  __typename? : 'CreateUser',
+  username : Scalars['String'],
+  email    : Scalars['String'],
+  password : Scalars['String']
+}
+//TokenAuth
+export type LoginMutation = {
+  __typename?: 'Mutation',
+   email : string ,
+   password: string
+} 
+//CreateUser
+export type SignUpMutation = {
+ __typename?:'Mutation' ;
+ CreateUser : Required<CreateUser>;
+}
 
 
 
