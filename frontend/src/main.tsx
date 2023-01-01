@@ -32,12 +32,7 @@ const router  = createBrowserRouter([
     element:<SignUP />
   },
 
-  {
 
-  path:"upcomingcourses",
-  element: <UpcomingCourses />
-
-  }
 
  
 ])

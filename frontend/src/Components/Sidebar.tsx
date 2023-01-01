@@ -22,7 +22,7 @@ const Sidebar = () => {
     
 const [UpdateJWTTokens , {isSuccess, isLoading , isError}] = useUpdateJWTTokensMutation();
 const dispatch  = useDispatch();
-const intervalRef = useRef<number>();
+const intervalRef = useRef<any>();
 const currentRefreshToken = useAppSelector((state=>state.UserDetails.RefreshToken));
 var RefreshTokenRef = useRef<string>() ;
 RefreshTokenRef.current = currentRefreshToken
@@ -58,7 +58,7 @@ console.log("sidebar refresh", RefreshTokenRef.current);
 
 
     return (
-        <div className="max-w-none w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 
+        <div className="max-w-none max-h-0 w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600"> 
         {/* Container */}
         <div className="bg-gray-100 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
             {/*Sidebar  */}
@@ -122,7 +122,7 @@ console.log("sidebar refresh", RefreshTokenRef.current);
      
      {/* Main Dashboard */}
           
-     <div className="p-10 text-gray-100 font-bold text-3xl">
+     <div className="p-10 text-slate-800 font-bold text-3xl">
         My Courses
         {/* Profile Pic */}
         <div className="flex flex-col justify-between items-start  ">
