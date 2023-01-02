@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@reduxjs/toolkit": "^1.8.6",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",

@@ -1,0 +1,18 @@
+/* #preferences-main {
+    margin: 0 auto;
+    display: flex;
+} */
+
+
+.main-container {
+    margin: o auto;
+    text-align: center;
+}
+
+/* input[type=text] {
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding-left: 40px;
+} */
