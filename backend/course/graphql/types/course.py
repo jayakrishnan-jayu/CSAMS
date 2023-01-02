@@ -88,7 +88,7 @@ class CourseLabType(graphene.ObjectType):
 
 class SemesterCourseType(graphene.ObjectType):
     courses = graphene.List(CourseType)
-    extra = graphene.List(ExtraCourseType)
+    # extra = graphene.List(ExtraCourseType)
 
     def resolve_courses(self, info):
         if not isinstance(self, Batch):
@@ -98,11 +98,11 @@ class SemesterCourseType(graphene.ObjectType):
             raise APIException('Courses not found', 'COURSE_NOT_FOUND')
         return qs
 
-    def resolve_extra(self, info):
-        if not isinstance(self, Batch):
-            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-        qs = Course.objects.filter(batch=self, is_extra=True)
-        return qs
+    # def resolve_extra(self, info):
+    #     if not isinstance(self, Batch):
+    #         raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+    #     qs = Course.objects.filter(batch=self, is_extra=True)
+    #     return qs
 
 __all__ = [
     'ProgramType'

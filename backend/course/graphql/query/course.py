@@ -12,7 +12,7 @@ class CourseQueries(graphene.ObjectType):
 
     courses = graphene.Field(
         SemesterCourseType,
-        curriculum_id=graphene.ID(description="Curriculum ID", required=True),
+        program=graphene.String(description="program Name", required=True),
         year=graphene.Int(description="Year of Batch", required=True),
         sem=graphene.Int(description="Semster of Batch", required=True),
     )
@@ -34,13 +34,16 @@ class CourseQueries(graphene.ObjectType):
     
 
     @login_required
-    def resolve_courses(self, info, curriculum_id:int, year:int, sem:int):
+    def resolve_courses(self, info, program:str, year:int, sem:int):
         try:
-            batch = Batch.objects.get(curriculum_id=curriculum_id, year=year, sem=sem)
-            print("Batch:", batch)
-            return batch
-        except Batch.DoesNotExist as e:
-            raise APIException("Batch or Curriculum not found", code="INVALID_INPUT")
+            p = Program.objects.get(name=program)
+            curriculums = Curriculum.objects.filter(program=p)
+            batch = Batch.objects.filter(curriculum__in=curriculums, year=year, sem=sem)
+            if batch.count == 0:
+                raise APIException("Batch not found", code="BATCH_NOT_FOUND")
+            return batch.first()
+        except Program.DoesNotExist:
+            raise APIException("Program not found", code="PROGRAM_NOT_FOUND")
     
 
     @login_required
