@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+
 const initialState   = {
     email: "" ,
     name : "" ,
@@ -7,6 +8,7 @@ const initialState   = {
     ExpireAt : 1
 
 }
+
 export const authSlice = createSlice({
     name: 'auth' ,
     initialState: initialState ,

@@ -8,7 +8,7 @@ export const UpcomingCourses = ()=>{
       
        
 
-<div className="overflow-x-auto relative shadow-md sm:rounded-lg">
+<div className="overflow-x-auto relative shadow-2xl sm:rounded-lg ">
     <div className="flex justify-between items-center pb-4 bg-white">
    
        
@@ -72,7 +72,7 @@ export const UpcomingCourses = ()=>{
                     </div>
                 </th>
                 <td className="py-4 px-6">
-                    Designer
+                   S2 MCA
                 </td>
                 <td className="py-4 px-6">
                     <div className="flex items-center">
@@ -96,7 +96,7 @@ export const UpcomingCourses = ()=>{
                     </div>
                 </th>
                 <td className="py-4 px-6">
-                    Vue JS Developer
+                    S3 BCA
                 </td>
                 <td className="py-4 px-6">
                     <div className="flex items-center">
@@ -120,7 +120,7 @@ export const UpcomingCourses = ()=>{
                     </div>
                 </th>
                 <td className="py-4 px-6">
-                    UI/UX Engineer
+                    S1 CSE
                 </td>
                 <td className="py-4 px-6">
                     <div className="flex items-center">
@@ -140,12 +140,12 @@ export const UpcomingCourses = ()=>{
                 <th scope="row" className="flex items-center py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                    
                     <div className="pl-3">
-                        <div className="text-base font-semibold text-black">Leslie Livingston</div>
-                        <div className="font-normal text-gray-500">leslie@flowbite.com</div>
+                        <div className="text-base font-semibold text-black">17CSA233 Operating System</div>
+                        <div className="font-normal text-gray-500"></div>
                     </div>
                 </th>
                 <td className="py-4 px-6">
-                    SEO Specialist
+                    S8 CSE
                 </td>
                 <td className="py-4 px-6">
                     <div className="flex items-center">

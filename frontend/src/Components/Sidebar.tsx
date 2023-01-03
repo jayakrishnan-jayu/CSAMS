@@ -134,9 +134,11 @@ console.log("sidebar refresh", RefreshTokenRef.current);
               <div className=" mt-3  text-black " >
                 <img src="https://emojigraph.org/media/apple/woman-teacher_1f469-200d-1f3eb.png" alt="" className="w-14 h-14 object-cover rounded-full object-top" />
               </div>
-                <div className="text-[16px] ml-4 mt-2">Raj Vikram</div>
+              <div className="flex flex-col">
+                <div className="text-[19px] ml-6 mt-2">Jane Doe</div>
+                <div className="text-[11px] font-bold text-white ml-6">Assistant Professor</div>
               </div>
-             
+              </div>
            </div>
 
        
@@ -151,7 +153,7 @@ console.log("sidebar refresh", RefreshTokenRef.current);
         <br />
         {/* Course View Options */}
     <div className="grid-flow-col text-lg text-gray-800 -mt-24">
-        <button className="p-2" >All</button>
+    
         <button className="p-2">Active</button>
         <button className="p-2" onClick={()=>{navigate('upcomingcourses', {replace:false} )}}>Upcoming</button>
         <button className="p-2">Completed</button>
