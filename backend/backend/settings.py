@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'backend.api.middleware.Auth0Middleware'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -159,7 +160,8 @@ GRAPHENE = {
     "SCHEMA": "backend.schema.schema",
     'MIDDLEWARE': [
         # 'graphene_django.debug.DjangoDebugMiddleware'
-        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+        # "graphql_jwt.middleware.JSONWebTokenMiddleware",
+        # "backend.api.middleware.Auth0Middlware"
     ],
 }
 
