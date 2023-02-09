@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-    "graphql_jwt.refresh_token.apps.RefreshTokenConfig",
     'corsheaders',
     'user',
     'course',
@@ -65,7 +64,6 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'graphql_jwt.backends.JSONWebTokenBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -160,15 +158,6 @@ GRAPHENE = {
     "SCHEMA": "backend.schema.schema",
     'MIDDLEWARE': [
         # 'graphene_django.debug.DjangoDebugMiddleware'
-        # "graphql_jwt.middleware.JSONWebTokenMiddleware",
         # "backend.api.middleware.Auth0Middlware"
     ],
-}
-
-GRAPHQL_JWT = {
-    "JWT_VERIFY_EXPIRATION": True,
-    "JWT_LONG_RUNNING_REFRESH_TOKEN": True,
-    'JWT_REUSE_REFRESH_TOKENS': True, # Eliminates creation of new db records every time refreshtoken is requested.
-    'JWT_EXPIRATION_DELTA': timedelta(minutes=5), # Expiry time of token
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7), # Expiry time of refreshToken
 }
