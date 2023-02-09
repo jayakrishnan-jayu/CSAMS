@@ -4,7 +4,6 @@ import graphene
 from django.contrib.auth import get_user_model
 
 from user.graphql.types.user import UserType, FacultyType
-# from graphql_jwt.decorators import login_required
 from backend.api import APIException
 from user.models import Faculty
 from backend.api.decorator import login_required, resolve_user

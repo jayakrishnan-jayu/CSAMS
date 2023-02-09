@@ -2,7 +2,7 @@ import graphene
 from course.graphql.types.course import CourseType, CourseLabType, ExtraCourseType, SemesterCourseType
 from course.models import Course, Program, Batch, CourseLab, Curriculum
 from backend.api import APIException
-from graphql_jwt.decorators import login_required
+from backend.api.decorator import login_required
 
 class CourseQueries(graphene.ObjectType):
     course = graphene.Field(
