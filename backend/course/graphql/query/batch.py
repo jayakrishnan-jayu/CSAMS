@@ -1,8 +1,8 @@
 import graphene
 from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType
 from course.models import Batch, Program, Curriculum
-from graphql_jwt.decorators import login_required
 from backend.api import APIException
+from backend.api.decorator import login_required
 
 class BatchQueries(graphene.ObjectType):
     programs = graphene.List(
