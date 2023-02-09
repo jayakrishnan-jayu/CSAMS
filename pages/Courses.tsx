@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-function Upcoming() {
-    const Upcoming = (
+// const intervalRef = useRef<number>();
+
+function Courses() {
+    return (
         <div className="max-w-none max-h-0 w-auto   min-h-screen grid grid-cols-[14rem,1fr] bg-gradient-to-r from-slate-200 to bg-slate-600">
             {/* Container */}
             <div className="bg-gray-100 text-white p-10 rounded-tr-3xl rounded-tl-md rounded-b-xl">
@@ -143,11 +145,10 @@ function Upcoming() {
                             Completed
                         </Link>
                     </div>
-                    <div>Upcoming page</div>
                 </div>
             </div>
         </div>
     );
-    return Upcoming;
 }
-export default Upcoming;
+
+export default Courses;

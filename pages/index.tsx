@@ -22,72 +22,70 @@ function Sidebar() {
                 </div>
                 <br />
                 <br />
-                <div className="flex flex-col justify-between items-start  ">
+                <div className="flex flex-col justify-between items-start">
                     {/* Sidebar item 1 */}
                     <div className="flex items-center">
-                        <Link href={'/Courses/Courses'}>
-                            <Image
-                                src="/book.svg"
-                                width={30}
-                                height={30}
-                                alt="book"
-                                unoptimized
-                                priority
-                            />
-                            <button className="mb-3">
-                                <div className="inline-block mt-3 ml-2 text-black">
-                                    Courses
-                                </div>
-                            </button>
+                        <Image
+                            src="/book.svg"
+                            width={25}
+                            height={25}
+                            alt="book"
+                            unoptimized
+                            priority
+                        />
+                        <Link href={'/Courses'}>
+                            <div className="mb-3 inline-block mt-3 ml-2 text-black">
+                                Courses
+                            </div>
                         </Link>
                     </div>
 
                     <div className="flex items-center">
                         <Image
                             src="/mail.svg"
-                            width={30}
-                            height={30}
+                            width={25}
+                            height={25}
                             alt="mail"
                             unoptimized
                             priority
                         />
-                        <button className="mb-3">
-                            <div className="inline-block mt-3 ml-2 text-black ">
+                        <Link href={'/Messages'}>
+                            <div className="mb-3 inline-block mt-3 ml-2 text-black ">
                                 Messages
                             </div>
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="flex items-center">
                         <Image
                             src="/menu.svg"
-                            width={30}
-                            height={30}
+                            width={25}
+                            height={25}
                             alt="menu"
                             unoptimized
                             priority
                         />
-                        <button className="mb-3">
-                            <div className="inline-block mt-3 ml-2 text-black ">
+                        <Link href={'/Add'}>
+                            <div className="mb-3 inline-block mt-3 ml-2 text-black ">
                                 Add Courses
                             </div>
-                        </button>
+                        </Link>
                     </div>
 
                     <div className="flex items-center">
                         <Image
                             src="/search.svg"
-                            width={30}
-                            height={30}
+                            width={25}
+                            height={25}
                             alt="search"
                             unoptimized
                             priority
                         />
-                        <button className="mb-3">
-                            <div className="inline-block mt-3 ml-1 text-black  ">
+                        <Link href={'/Search'}>
+                            <div className="mb-3 inline-block mt-3 ml-1 text-black  ">
                                 Search Courses
                             </div>
-                        </button>
+                        </Link>
                     </div>
                 </div>
                 <div className="bottom-0 absolute -mr-60">
@@ -100,11 +98,11 @@ function Sidebar() {
                             unoptimized
                             priority
                         />
-                        <button className="mb-3">
-                            <div className="inline-block mt-3 ml-2 text-black ">
+                        <Link href={'/logout'}>
+                            <div className="mb-3 inline-block mt-3 ml-2 text-black ">
                                 Log out
                             </div>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -112,7 +110,7 @@ function Sidebar() {
             {/* Main Dashboard */}
             <div>
                 <div className="p-10 text-slate-800 font-bold text-3xl">
-                    My Courses
+                    Dashboard
                     {/* Profile Pic */}
                     <div className="flex flex-col justify-between items-start  ">
                         <div className="flex items-center -mt-16 ml-auto">
@@ -136,33 +134,11 @@ function Sidebar() {
                     <br />
                     <br />
                     {/* Course View Options */}
-                    <div className="grid-flow-col text-lg text-gray-800 -mt-24">
-                        <button
-                            className="p-2"
-                            // onClick={() => {
-                            //     navigate('activecourses', { replace: true });
-                            // }}
-                        >
-                            Active
-                        </button>
-                        <button
-                            className="p-2"
-                            // onClick={() => {
-                            //     navigate('upcomingcourses', { replace: true });
-                            // }}
-                        >
-                            Upcoming
-                        </button>
-                        <button
-                            className="p-2"
-                            // onClick={() => {
-                            //     navigate('completedcourses', { replace: true });
-                            // }}
-                        >
-                            Completed
-                        </button>
-                    </div>
-                    {/* <Outlet /> */}
+                    {/* <div className="grid-flow-col text-lg text-gray-800 -mt-24">
+                        <Link href="/components/Active">Active</Link>
+                        <Link href="/components/Upcoming">Upcoming</Link>
+                        <Link href="/components/Completed">Completed</Link>
+                    </div> */}
                 </div>
             </div>
         </div>
