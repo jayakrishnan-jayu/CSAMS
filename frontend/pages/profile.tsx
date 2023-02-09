@@ -1,8 +1,14 @@
 import { NextPage } from "next"
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { useMeQuery } from "@/graphql/generated/graphql";
 
 const Profile: NextPage = () => {
   const { user, error, isLoading } = useUser();
+  
+  const [result] = useMeQuery();
+  const {fetching, stale, data, operation} = result;
+  console.log(fetching, stale, data, operation);
+
   console.log(user, error, isLoading)
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>{error.message}</div>
