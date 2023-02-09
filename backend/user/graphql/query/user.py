@@ -4,9 +4,10 @@ import graphene
 from django.contrib.auth import get_user_model
 
 from user.graphql.types.user import UserType, FacultyType
-from graphql_jwt.decorators import login_required
+# from graphql_jwt.decorators import login_required
 from backend.api import APIException
 from user.models import Faculty
+from backend.api.decorator import login_required, resolve_user
 
 class UserQueries(graphene.ObjectType):
     me = graphene.Field(UserType)
@@ -18,15 +19,18 @@ class UserQueries(graphene.ObjectType):
     def resolve_users(self, info):
         return get_user_model().objects.all()
     
+    @login_required
+    @resolve_user
     def resolve_me(self, info):
-        user = info.context.user
+        user = info.context.resolved_user
         if user.is_anonymous:
             raise Exception('Authentication Failure!')
         return user
     
     @login_required
+    @resolve_user
     def resolve_faculty(self, info):
-        user = info.context.user
+        user = info.context.resolved_user
         try:
             faculty = Faculty.objects.get(user_id = user.id)
         except Faculty.DoesNotExist:

@@ -3,5 +3,7 @@ django-cors-headers==3.13.0
 django-graphql-jwt==0.3.4
 graphene-django==3.0.0
 gunicorn==19.9.0
+python-jose==3.3.0
+requests==2.28.2
 Faker==15.3.1
 psycopg2-binary==2.9.3
