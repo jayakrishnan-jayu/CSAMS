@@ -1,2 +1,2 @@
-schema: http://localhost:8000/api/graphql/
+schema: http://127.0.0.1:8000/api/graphql/
 documents: graphql/**/*.{graphql,js,ts,jsx,tsx}
