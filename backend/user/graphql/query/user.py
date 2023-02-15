@@ -38,7 +38,11 @@ class UserQueries(graphene.ObjectType):
 
     @login_required
     def resolve_faculties(self,info):
-        faculties = Faculty.objects
+        faculties = Faculty.objects.all()
+        if not faculties.exists() :
+            raise APIException("Faculty details not found")
+        return faculties
+        
 
 
     # @login_required
