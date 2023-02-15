@@ -12,7 +12,7 @@ class UserQueries(graphene.ObjectType):
     me = graphene.Field(UserType)
     users = graphene.List(UserType)
     faculty = graphene.Field(FacultyType,faculty_id=graphene.ID(description= "Id of the faculty"))
-    faculties = graphene.Field(FacultyType)
+    faculties = graphene.List(FacultyType)
     
     
     @login_required
@@ -43,7 +43,6 @@ class UserQueries(graphene.ObjectType):
             raise APIException("Faculty details not found")
         return faculties
         
-
 
     # @login_required
     # @resolve_user
