@@ -5,9 +5,7 @@ from backend.api import APIException
 from backend.api.decorator import login_required
 
 class BatchQueries(graphene.ObjectType):
-    programs = graphene.List(
-        ProgramType
-    )
+    programs = graphene.List(ProgramType)
     curriculums = graphene.List(
         CurriculumType,
         program=graphene.String(description="Department Program eg BCA"),
