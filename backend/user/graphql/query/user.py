@@ -1,6 +1,5 @@
 import graphene
 
-
 from django.contrib.auth import get_user_model
 
 from user.graphql.types.user import UserType, FacultyType
