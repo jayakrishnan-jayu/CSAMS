@@ -5,8 +5,6 @@ from user.graphql.types.user import FacultyType
 from backend.api import APIException
 from typing import List
 
-class CourseAllocationType(graphene.ObjectType):
-    courses = graphene.List(CourseType)
-    faculty = graphene.List(FacultyType)
-
-
+class CourseAndFacultyType(graphene.ObjectType):
+    courses = graphene.Field(CourseType)
+    faculties = graphene.Field(FacultyType)
