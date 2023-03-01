@@ -8,4 +8,4 @@ from typing import List
 
 class CourseAndFacultyType(graphene.ObjectType):
     courses = graphene.Field(CourseType)
-    faculties = graphene.Field(UserType)
+    faculties = graphene.Field(FacultyType)
