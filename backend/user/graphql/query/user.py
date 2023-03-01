@@ -12,6 +12,7 @@ class UserQueries(graphene.ObjectType):
     users = graphene.List(UserType)
     faculty = graphene.Field(FacultyType,faculty_id=graphene.ID(description= "Id of the faculty"))
     faculties = graphene.List(FacultyType)
+    faculty_profile = graphene.Field(FacultyType)
     
     
     @login_required
@@ -41,6 +42,16 @@ class UserQueries(graphene.ObjectType):
         if not faculties.exists() :
             raise APIException("Faculty details not found")
         return faculties
+    
+    @login_required
+    @resolve_user
+    def resolve_faculty_profile(self,info):
+        user = info.context.resolved_user
+        if user.is_anonymous:
+            raise Exception("User resolution failed.")
+        else :
+            faculty = Faculty.objects.get(user_id = user.id)
+            return faculty
         
 
     # @login_required
