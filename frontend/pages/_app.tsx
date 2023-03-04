@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <UserProvider>
             <UrqlProvider>
-                <Component {...pageProps} />;
+                <Component {...pageProps} />
             </UrqlProvider>
         </UserProvider>
     )
