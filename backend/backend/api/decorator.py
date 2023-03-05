@@ -5,6 +5,7 @@ from .APIException import APIException
 import requests
 
 User = get_user_model()
+
 def login_required(func):
     def wrapper(parent, info, *args, **kwargs):
         sub = getattr(info.context, "sub", None)
@@ -33,6 +34,18 @@ def login_required(func):
         info.context.userID = sub
         return func(parent, info, *args, **kwargs)
 
+    return wrapper
+
+def staff_privilege_required(func):
+    def wrapper(parent, info, *args, **kwargs):
+        user = getattr(info.context, "resolved_user", None)
+        print(user)
+        if not user or not isinstance(user, User):
+            print(user)
+            raise APIException(message='User not authenticated', code='AUTHENTICATION_FAILURE')
+        if not user.is_staff:
+            raise APIException(message='User is not staff', code='AUTHENTICATION_FAILURE')
+        return func(parent, info, *args, **kwargs)
     return wrapper
 
 def resolve_user(func):

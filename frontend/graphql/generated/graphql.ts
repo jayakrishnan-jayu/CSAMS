@@ -97,6 +97,7 @@ export type Query = {
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
   courses?: Maybe<SemesterCourseType>;
   curriculums?: Maybe<Array<Maybe<CurriculumType>>>;
+  faculties?: Maybe<Array<Maybe<FacultyType>>>;
   faculty?: Maybe<FacultyType>;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<UserType>;
@@ -151,6 +152,8 @@ export type UserType = {
   email?: Maybe<Scalars['String']>;
   firstName?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
+  isActive?: Maybe<Scalars['Boolean']>;
+  isStaff?: Maybe<Scalars['Boolean']>;
   lastName?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
 };
@@ -158,7 +161,17 @@ export type UserType = {
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null };
+
+export type FacultyQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FacultyQuery = { __typename?: 'Query', faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null } | null };
+
+export type FacultiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FacultiesQuery = { __typename?: 'Query', faculties?: Array<{ __typename?: 'FacultyType', track?: string | null, designation?: string | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null } | null> | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -686,6 +699,18 @@ export default {
             ]
           },
           {
+            "name": "faculties",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FacultyType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "faculty",
             "type": {
               "kind": "OBJECT",
@@ -786,6 +811,22 @@ export default {
             "args": []
           },
           {
+            "name": "isActive",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isStaff",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "lastName",
             "type": {
               "kind": "SCALAR",
@@ -821,10 +862,52 @@ export const MeDocument = gql`
     firstName
     lastName
     username
+    isStaff
   }
 }
     `;
 
 export function useMeQuery(options?: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'>) {
   return Urql.useQuery<MeQuery, MeQueryVariables>({ query: MeDocument, ...options });
+};
+export const FacultyDocument = gql`
+    query faculty {
+  faculty {
+    user {
+      id
+      email
+      firstName
+      lastName
+      username
+      isStaff
+    }
+    track
+    designation
+  }
+}
+    `;
+
+export function useFacultyQuery(options?: Omit<Urql.UseQueryArgs<FacultyQueryVariables>, 'query'>) {
+  return Urql.useQuery<FacultyQuery, FacultyQueryVariables>({ query: FacultyDocument, ...options });
+};
+export const FacultiesDocument = gql`
+    query faculties {
+  faculties {
+    user {
+      id
+      email
+      firstName
+      lastName
+      username
+      isStaff
+      isActive
+    }
+    track
+    designation
+  }
+}
+    `;
+
+export function useFacultiesQuery(options?: Omit<Urql.UseQueryArgs<FacultiesQueryVariables>, 'query'>) {
+  return Urql.useQuery<FacultiesQuery, FacultiesQueryVariables>({ query: FacultiesDocument, ...options });
 };

@@ -6,6 +6,8 @@ class UserType(graphene.ObjectType):
     first_name = graphene.String()
     last_name = graphene.String()
     username = graphene.String()
+    is_staff = graphene.Boolean()
+    is_active = graphene.Boolean()
 
 
 class FacultyType(graphene.ObjectType):

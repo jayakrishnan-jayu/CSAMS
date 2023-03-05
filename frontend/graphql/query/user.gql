@@ -5,5 +5,37 @@ query me {
         firstName
         lastName
         username
+        isStaff
     }
+}
+
+query faculty {
+  faculty{
+    user{
+      id
+      email
+      firstName
+      lastName
+      username
+      isStaff
+    }
+    track
+    designation
+  }
+}
+
+query faculties {
+  faculties{
+    user{
+      id
+      email
+      firstName
+      lastName
+      username
+      isStaff
+      isActive
+    }
+    track
+    designation
+  }
 }
