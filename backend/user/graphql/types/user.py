@@ -15,6 +15,11 @@ class FacultyType(graphene.ObjectType):
     track = graphene.String()
     designation = graphene.String()
 
+class WorkloadType(graphene.ObjectType):
+    track = graphene.String()
+    designation = graphene.String()
+    min_hours_per_week = graphene.Int()
+    max_hours_per_week = graphene.Int()
 
 __all__ = [
     'UserType',

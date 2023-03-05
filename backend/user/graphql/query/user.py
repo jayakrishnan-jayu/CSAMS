@@ -3,9 +3,9 @@ import graphene
 
 from django.contrib.auth import get_user_model
 
-from user.graphql.types.user import UserType, FacultyType
+from user.graphql.types.user import UserType, FacultyType, WorkloadType
 from backend.api import APIException
-from user.models import Faculty
+from user.models import Faculty, Workload
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 
 class UserQueries(graphene.ObjectType):
@@ -13,7 +13,7 @@ class UserQueries(graphene.ObjectType):
     users = graphene.List(UserType)
     faculty = graphene.Field(FacultyType)
     faculties = graphene.List(FacultyType)
-    
+    workloads = graphene.List(WorkloadType)
     
     @login_required
     def resolve_users(self, info):
@@ -41,9 +41,13 @@ class UserQueries(graphene.ObjectType):
     @resolve_user
     @staff_privilege_required
     def resolve_faculties(self, info):
-        faculties = Faculty.objects.all()
-        return faculties
-
+        return Faculty.objects.all()
+    
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def resolve_workloads(self, info):
+        return Workload.objects.all()
 
 __all__ = [
     'UserQueries'
