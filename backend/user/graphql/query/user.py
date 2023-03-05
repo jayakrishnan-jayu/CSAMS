@@ -41,9 +41,7 @@ class UserQueries(graphene.ObjectType):
     @resolve_user
     @staff_privilege_required
     def resolve_faculties(self, info):
-        print("resolving")
         faculties = Faculty.objects.all()
-        print(faculties)
         return faculties
 
 
