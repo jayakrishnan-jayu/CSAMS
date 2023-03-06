@@ -54,11 +54,6 @@ export type CourseType = {
   t?: Maybe<Scalars['Int']>;
 };
 
-export type CreateUser = {
-  __typename?: 'CreateUser';
-  user?: Maybe<UserType>;
-};
-
 export type CurriculumType = {
   __typename?: 'CurriculumType';
   id?: Maybe<Scalars['ID']>;
@@ -75,13 +70,15 @@ export type FacultyType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createUser?: Maybe<CreateUser>;
+  updateWorkload?: Maybe<UpdateWorkload>;
 };
 
 
-export type MutationCreateUserArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+export type MutationUpdateWorkloadArgs = {
+  designation: Scalars['String'];
+  maxHoursPerWeek: Scalars['Int'];
+  minHoursPerWeek: Scalars['Int'];
+  track: Scalars['String'];
 };
 
 export type ProgramType = {
@@ -103,6 +100,7 @@ export type Query = {
   me?: Maybe<UserType>;
   programs?: Maybe<Array<Maybe<ProgramType>>>;
   users?: Maybe<Array<Maybe<UserType>>>;
+  workloads?: Maybe<Array<Maybe<WorkloadType>>>;
 };
 
 
@@ -147,6 +145,11 @@ export type SemesterCourseType = {
   courses?: Maybe<Array<Maybe<CourseType>>>;
 };
 
+export type UpdateWorkload = {
+  __typename?: 'UpdateWorkload';
+  workload?: Maybe<WorkloadType>;
+};
+
 export type UserType = {
   __typename?: 'UserType';
   email?: Maybe<Scalars['String']>;
@@ -157,6 +160,24 @@ export type UserType = {
   lastName?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
 };
+
+export type WorkloadType = {
+  __typename?: 'WorkloadType';
+  designation?: Maybe<Scalars['String']>;
+  maxHoursPerWeek?: Maybe<Scalars['Int']>;
+  minHoursPerWeek?: Maybe<Scalars['Int']>;
+  track?: Maybe<Scalars['String']>;
+};
+
+export type UpdateWorkloadMutationVariables = Exact<{
+  TRACK: Scalars['String'];
+  DESIGNATION: Scalars['String'];
+  MINHOURS: Scalars['Int'];
+  MAXHOURS: Scalars['Int'];
+}>;
+
+
+export type UpdateWorkloadMutation = { __typename?: 'Mutation', updateWorkload?: { __typename?: 'UpdateWorkload', workload?: { __typename?: 'WorkloadType', track?: string | null, designation?: string | null, minHoursPerWeek?: number | null, maxHoursPerWeek?: number | null } | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -172,6 +193,11 @@ export type FacultiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FacultiesQuery = { __typename?: 'Query', faculties?: Array<{ __typename?: 'FacultyType', track?: string | null, designation?: string | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null } | null> | null };
+
+export type WorkloadsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type WorkloadsQuery = { __typename?: 'Query', workloads?: Array<{ __typename?: 'WorkloadType', track?: string | null, designation?: string | null, minHoursPerWeek?: number | null, maxHoursPerWeek?: number | null } | null> | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -387,22 +413,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "CreateUser",
-        "fields": [
-          {
-            "name": "user",
-            "type": {
-              "kind": "OBJECT",
-              "name": "UserType",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
         "name": "CurriculumType",
         "fields": [
           {
@@ -469,15 +479,15 @@ export default {
         "name": "Mutation",
         "fields": [
           {
-            "name": "createUser",
+            "name": "updateWorkload",
             "type": {
               "kind": "OBJECT",
-              "name": "CreateUser",
+              "name": "UpdateWorkload",
               "ofType": null
             },
             "args": [
               {
-                "name": "email",
+                "name": "designation",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -487,7 +497,27 @@ export default {
                 }
               },
               {
-                "name": "password",
+                "name": "maxHoursPerWeek",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "minHoursPerWeek",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "track",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -759,6 +789,18 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "workloads",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "WorkloadType",
+                "ofType": null
+              }
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -776,6 +818,22 @@ export default {
                 "name": "CourseType",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateWorkload",
+        "fields": [
+          {
+            "name": "workload",
+            "type": {
+              "kind": "OBJECT",
+              "name": "WorkloadType",
+              "ofType": null
             },
             "args": []
           }
@@ -846,6 +904,45 @@ export default {
         "interfaces": []
       },
       {
+        "kind": "OBJECT",
+        "name": "WorkloadType",
+        "fields": [
+          {
+            "name": "designation",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "maxHoursPerWeek",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "minHoursPerWeek",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "track",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
         "kind": "SCALAR",
         "name": "Any"
       }
@@ -854,6 +951,27 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const UpdateWorkloadDocument = gql`
+    mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!) {
+  updateWorkload(
+    track: $TRACK
+    designation: $DESIGNATION
+    minHoursPerWeek: $MINHOURS
+    maxHoursPerWeek: $MAXHOURS
+  ) {
+    workload {
+      track
+      designation
+      minHoursPerWeek
+      maxHoursPerWeek
+    }
+  }
+}
+    `;
+
+export function useUpdateWorkloadMutation() {
+  return Urql.useMutation<UpdateWorkloadMutation, UpdateWorkloadMutationVariables>(UpdateWorkloadDocument);
+};
 export const MeDocument = gql`
     query me {
   me {
@@ -910,4 +1028,18 @@ export const FacultiesDocument = gql`
 
 export function useFacultiesQuery(options?: Omit<Urql.UseQueryArgs<FacultiesQueryVariables>, 'query'>) {
   return Urql.useQuery<FacultiesQuery, FacultiesQueryVariables>({ query: FacultiesDocument, ...options });
+};
+export const WorkloadsDocument = gql`
+    query workloads {
+  workloads {
+    track
+    designation
+    minHoursPerWeek
+    maxHoursPerWeek
+  }
+}
+    `;
+
+export function useWorkloadsQuery(options?: Omit<Urql.UseQueryArgs<WorkloadsQueryVariables>, 'query'>) {
+  return Urql.useQuery<WorkloadsQuery, WorkloadsQueryVariables>({ query: WorkloadsDocument, ...options });
 };

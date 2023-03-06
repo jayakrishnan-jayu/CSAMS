@@ -39,3 +39,12 @@ query faculties {
     designation
   }
 }
+
+query workloads{
+  workloads{
+    track
+    designation
+    minHoursPerWeek
+    maxHoursPerWeek
+  }
+}

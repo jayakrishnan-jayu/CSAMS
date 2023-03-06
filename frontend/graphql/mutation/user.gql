@@ -1,0 +1,10 @@
+mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!){
+  updateWorkload(track: $TRACK, designation:$DESIGNATION , minHoursPerWeek: $MINHOURS, maxHoursPerWeek: $MAXHOURS) {
+    workload{
+      track
+      designation
+      minHoursPerWeek
+      maxHoursPerWeek
+    }
+  }
+}
