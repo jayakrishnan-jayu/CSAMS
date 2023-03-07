@@ -4,8 +4,8 @@ files = ['BCA2018.txt', 'MCA2018.txt']
 for file in files:
     output = {
         'course': file[:-8],
-        'year': file[-8:-4],
-        'extra': {},
+        'year': int(file[-8:-4]),
+        'extra': [],
         'semsters': {},
     }
     temp = {}
@@ -21,7 +21,8 @@ for file in files:
                 start = i+1
     for key in temp:
         if key.startswith('+'):
-            output['extra'][key[1:-6]] = [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key]]
+            obj = {key[1:-6] : [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key]]}
+            output['extra'].append(obj)
         else:
             output['semsters'][int(key[-2:])] = {
                 'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key] if not line.startswith('+')],

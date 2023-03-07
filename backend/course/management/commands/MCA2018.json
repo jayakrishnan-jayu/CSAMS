@@ -1,338 +1,348 @@
 {
     "course": "MCA",
-    "year": "2018",
-    "extra": {
-        "Lab": [
-            {
-                "code": "18CA381",
-                "name": "Data Structures and DBMS Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA386",
-                "name": "Android Application Development",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA380",
-                "name": "Algorithms Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA480",
-                "name": "Python Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA485",
-                "name": "Computer Organization and Architecture lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA486",
-                "name": "C# and .NET Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA487",
-                "name": "Functional programming Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA488",
-                "name": "Linux and Shell Programming Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            },
-            {
-                "code": "18CA489",
-                "name": "Mean Stack Lab",
-                "L": "0",
-                "T": "0",
-                "P": "1",
-                "C": "1"
-            }
-        ],
-        "Elective I": [
-            {
-                "code": "18CA313",
-                "name": "Web Services and Cloud",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA331",
-                "name": "Big Data Analytics and Visualization",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA332",
-                "name": "Bioinformatic",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA333",
-                "name": "Business Intelligence",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA334",
-                "name": "Computational Intelligence",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA335",
-                "name": "Computer Graphics and Visualization",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA336",
-                "name": "Database Administration",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA338",
-                "name": "Digital Image Processing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA339",
-                "name": "Distributed Computing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ],
-        "Elective II": [
-            {
-                "code": "18CA431",
-                "name": "Information Retrieval",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA433",
-                "name": "Modern Web Application Development using Mean Stack",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA434",
-                "name": "Network Management and System Administration",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA436",
-                "name": "Open-Source Systems",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA437",
-                "name": "Semantic Web Technologies",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA438",
-                "name": "Software Quality Assurance",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA439",
-                "name": "Structure and Interpretation of Computer",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA440",
-                "name": "Wireless Communications and Networks",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA451",
-                "name": "Cloud Computing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ],
-        "Elective III": [
-            {
-                "code": "18CA452",
-                "name": "Deep Learning",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA453",
-                "name": "Graph Theory",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA454",
-                "name": "Information Security",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA455",
-                "name": "Intelligent Systems",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA456",
-                "name": "Internet of Things",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA457",
-                "name": "Machine Learning",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA458",
-                "name": "Natural Language Processing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA459",
-                "name": "Secure Applications for Mobile Devices",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CA460",
-                "name": "Software Testing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ],
-        "Elective IV": [
-            {
-                "code": "18HU433",
-                "name": "Principles of Economics and Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18HU434",
-                "name": "Software Project Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18HU432",
-                "name": "Management Information Systems",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18HU431",
-                "name": "Management and Organizational Behaviour",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ]
-    },
+    "year": 2018,
+    "extra": [
+        {
+            "Lab": [
+                {
+                    "code": "18CA381",
+                    "name": "Data Structures and DBMS Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA386",
+                    "name": "Android Application Development",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA380",
+                    "name": "Algorithms Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA480",
+                    "name": "Python Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA485",
+                    "name": "Computer Organization and Architecture lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA486",
+                    "name": "C# and .NET Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA487",
+                    "name": "Functional programming Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA488",
+                    "name": "Linux and Shell Programming Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                },
+                {
+                    "code": "18CA489",
+                    "name": "Mean Stack Lab",
+                    "L": "0",
+                    "T": "0",
+                    "P": "1",
+                    "C": "1"
+                }
+            ]
+        },
+        {
+            "Elective I": [
+                {
+                    "code": "18CA313",
+                    "name": "Web Services and Cloud",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA331",
+                    "name": "Big Data Analytics and Visualization",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA332",
+                    "name": "Bioinformatic",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA333",
+                    "name": "Business Intelligence",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA334",
+                    "name": "Computational Intelligence",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA335",
+                    "name": "Computer Graphics and Visualization",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA336",
+                    "name": "Database Administration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA338",
+                    "name": "Digital Image Processing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA339",
+                    "name": "Distributed Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        },
+        {
+            "Elective II": [
+                {
+                    "code": "18CA431",
+                    "name": "Information Retrieval",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA433",
+                    "name": "Modern Web Application Development using Mean Stack",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA434",
+                    "name": "Network Management and System Administration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA436",
+                    "name": "Open-Source Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA437",
+                    "name": "Semantic Web Technologies",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA438",
+                    "name": "Software Quality Assurance",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA439",
+                    "name": "Structure and Interpretation of Computer",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA440",
+                    "name": "Wireless Communications and Networks",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA451",
+                    "name": "Cloud Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        },
+        {
+            "Elective III": [
+                {
+                    "code": "18CA452",
+                    "name": "Deep Learning",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA453",
+                    "name": "Graph Theory",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA454",
+                    "name": "Information Security",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA455",
+                    "name": "Intelligent Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA456",
+                    "name": "Internet of Things",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA457",
+                    "name": "Machine Learning",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA458",
+                    "name": "Natural Language Processing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA459",
+                    "name": "Secure Applications for Mobile Devices",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CA460",
+                    "name": "Software Testing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        },
+        {
+            "Elective IV": [
+                {
+                    "code": "18HU433",
+                    "name": "Principles of Economics and Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18HU434",
+                    "name": "Software Project Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18HU432",
+                    "name": "Management Information Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18HU431",
+                    "name": "Management and Organizational Behaviour",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        }
+    ],
     "semsters": {
         "1": {
             "courses": [

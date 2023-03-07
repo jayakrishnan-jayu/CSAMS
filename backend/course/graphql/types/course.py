@@ -5,7 +5,12 @@ from backend.api import APIException
 from typing import List
 
 class ProgramType(graphene.ObjectType):
+    id = graphene.ID()
     name = graphene.String()
+    duration = graphene.String()
+
+    def resolve_duration(self, info):
+        return self.year
 
 
 class CurriculumType(graphene.ObjectType):
