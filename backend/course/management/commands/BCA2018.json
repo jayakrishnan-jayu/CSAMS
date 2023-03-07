@@ -1,706 +1,716 @@
 {
     "course": "BCA",
-    "year": "2018",
-    "extra": {
-        "Language I": [
-            {
-                "code": "18HIN101",
-                "name": " Hindi I",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18KAN101",
-                "name": " Kannada I",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18MAL101",
-                "name": " Malayalam I",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18SAN101",
-                "name": " Sanskrit I",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18TAM101",
-                "name": " Tamil I",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            }
-        ],
-        "Language II": [
-            {
-                "code": "18HIN111",
-                "name": " Hindi II",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18KAN111",
-                "name": " Kannada II",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18MAL111",
-                "name": " Malayalam II",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18SAN111",
-                "name": " Sanskrit II",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            },
-            {
-                "code": "18TAM111",
-                "name": " TAMIL II",
-                "L": "1",
-                "T": "0",
-                "P": "2",
-                "C": "2"
-            }
-        ],
-        "Open Elective A": [
-            {
-                "code": "18OEL231",
-                "name": " Advertising",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL232",
-                "name": " Basic Statistics",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL233",
-                "name": " Citizen Journalismh",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL234",
-                "name": " Creative Writing for Beginners",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL235",
-                "name": " Desktop Support and Services",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL236",
-                "name": " Development Journalism",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL237",
-                "name": " Digital Photography",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL238",
-                "name": " Emotional Intelligence",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL239",
-                "name": " Essence of Spiritual Literature",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL240",
-                "name": " Film Theory",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL241",
-                "name": " Fundamentals of Network Administration",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL242",
-                "name": " Gender Studies",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL243",
-                "name": " Glimpses of Indian Economy and Polity",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL244",
-                "name": " Graphics and Web-designing Tools",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL245",
-                "name": " Green Marketing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL246",
-                "name": " Healthcare and Technology",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL247",
-                "name": " History of English Literature",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL248",
-                "name": " Indian Writing in English",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL249",
-                "name": " Industrial Relations and Labour Welfare",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL250",
-                "name": " Introduction to Ancient Indian Yogic and Vedic Wisdom",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL251",
-                "name": " Introduction to Computer Hardware",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL252",
-                "name": " Introduction to Event Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL253",
-                "name": " Introduction to Media",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL254",
-                "name": " Introduction to Right to Information Act",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL255",
-                "name": " Introduction to Translation",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL256",
-                "name": " Linguistic Abilities",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL257",
-                "name": " Literary Criticism and Theory",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL258",
-                "name": " Macro Economics",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL259",
-                "name": " Managing Failure",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL260",
-                "name": " Media Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL261",
-                "name": " Micro Economics",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL262",
-                "name": " Micro Finance, Small Group Management and Cooperatives",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL263",
-                "name": " Negotiation and Counselling",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL264",
-                "name": " New Literatures",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL265",
-                "name": " Non-Profit Organisation",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL266",
-                "name": " Personal Effectiveness",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL267",
-                "name": " Perspectives in Astrophysics and Cosmology",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL268",
-                "name": " Principles of Marketing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL269",
-                "name": " Principles of Public Relations",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL270",
-                "name": " Science, Society and Culture",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL271",
-                "name": " Statistical Analysis",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL272",
-                "name": " Teamwork and Collaboration",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL273",
-                "name": " The Message of Bhagwad Gita",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL274",
-                "name": " Understanding Travel and Tourism",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL275",
-                "name": " Videography",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL276",
-                "name": " Vistas of English Literature",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL277",
-                "name": " Web-Designing Techniques",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL278",
-                "name": " Organic Farming",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL279",
-                "name": " Basic Legal Awareness on Protection of Women and Rights",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL280",
-                "name": " Ritual Performances of Kerala",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL281",
-                "name": " Documenting Social Issues",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL282",
-                "name": " Fabrication of Advanced Solar Cell",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL283",
-                "name": " Basic Concepts of X-ray Diffraction",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL284",
-                "name": " Introduction to FORTRAN and GNUPLOT",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL285",
-                "name": " Introduction to Porous Materials",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL286",
-                "name": " Forensic Science",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL287",
-                "name": " Introduction to solar Physics",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL288",
-                "name": " Recycling Recovery and Treatment Methods for Wastes",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18OEL289",
-                "name": " Acting and Dramatic Presentation",
-                "L": "2",
-                "T": "0",
-                "P": "2",
-                "C": "3"
-            },
-            {
-                "code": "18OEL290",
-                "name": " Computerised Accounting",
-                "L": "2",
-                "T": "0",
-                "P": "2",
-                "C": "3"
-            },
-            {
-                "code": "18OEL291",
-                "name": " Kerala Mural Art and Painting",
-                "L": "2",
-                "T": "0",
-                "P": "2",
-                "C": "3"
-            },
-            {
-                "code": "18OEL292",
-                "name": " Painting",
-                "L": "2",
-                "T": "0",
-                "P": "2",
-                "C": "3"
-            },
-            {
-                "code": "18OEL293",
-                "name": " Reporting Rural Issues",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA390",
-                "name": " Live in Labs",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ],
-        "Elective A": [
-            {
-                "code": "18CSA311",
-                "name": " Artificial Intelligence",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA332",
-                "name": " Architecture and Deployment of Secure and Scalable WAN",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA333",
-                "name": " Client Server Computing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA334",
-                "name": " Embedded Systems",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA335",
-                "name": " Enterprise Resource Planning Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA336",
-                "name": " Knowledge Management",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ],
-        "Elective B": [
-            {
-                "code": "18CSA337",
-                "name": " LAN Switching and Advanced Routing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA338",
-                "name": " Micro Processor Systems",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA339",
-                "name": " Multimedia and Graphics",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA340",
-                "name": " Social and Professional Issues in Computing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA341",
-                "name": " Soft Computing",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            },
-            {
-                "code": "18CSA342",
-                "name": " Systems and Network Administration",
-                "L": "3",
-                "T": "0",
-                "P": "0",
-                "C": "3"
-            }
-        ]
-    },
+    "year": 2018,
+    "extra": [
+        {
+            "Language I": [
+                {
+                    "code": "18HIN101",
+                    "name": " Hindi I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18KAN101",
+                    "name": " Kannada I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18MAL101",
+                    "name": " Malayalam I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18SAN101",
+                    "name": " Sanskrit I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18TAM101",
+                    "name": " Tamil I",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                }
+            ]
+        },
+        {
+            "Language II": [
+                {
+                    "code": "18HIN111",
+                    "name": " Hindi II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18KAN111",
+                    "name": " Kannada II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18MAL111",
+                    "name": " Malayalam II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18SAN111",
+                    "name": " Sanskrit II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                },
+                {
+                    "code": "18TAM111",
+                    "name": " TAMIL II",
+                    "L": "1",
+                    "T": "0",
+                    "P": "2",
+                    "C": "2"
+                }
+            ]
+        },
+        {
+            "Open Elective A": [
+                {
+                    "code": "18OEL231",
+                    "name": " Advertising",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL232",
+                    "name": " Basic Statistics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL233",
+                    "name": " Citizen Journalismh",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL234",
+                    "name": " Creative Writing for Beginners",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL235",
+                    "name": " Desktop Support and Services",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL236",
+                    "name": " Development Journalism",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL237",
+                    "name": " Digital Photography",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL238",
+                    "name": " Emotional Intelligence",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL239",
+                    "name": " Essence of Spiritual Literature",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL240",
+                    "name": " Film Theory",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL241",
+                    "name": " Fundamentals of Network Administration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL242",
+                    "name": " Gender Studies",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL243",
+                    "name": " Glimpses of Indian Economy and Polity",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL244",
+                    "name": " Graphics and Web-designing Tools",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL245",
+                    "name": " Green Marketing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL246",
+                    "name": " Healthcare and Technology",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL247",
+                    "name": " History of English Literature",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL248",
+                    "name": " Indian Writing in English",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL249",
+                    "name": " Industrial Relations and Labour Welfare",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL250",
+                    "name": " Introduction to Ancient Indian Yogic and Vedic Wisdom",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL251",
+                    "name": " Introduction to Computer Hardware",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL252",
+                    "name": " Introduction to Event Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL253",
+                    "name": " Introduction to Media",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL254",
+                    "name": " Introduction to Right to Information Act",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL255",
+                    "name": " Introduction to Translation",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL256",
+                    "name": " Linguistic Abilities",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL257",
+                    "name": " Literary Criticism and Theory",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL258",
+                    "name": " Macro Economics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL259",
+                    "name": " Managing Failure",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL260",
+                    "name": " Media Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL261",
+                    "name": " Micro Economics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL262",
+                    "name": " Micro Finance, Small Group Management and Cooperatives",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL263",
+                    "name": " Negotiation and Counselling",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL264",
+                    "name": " New Literatures",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL265",
+                    "name": " Non-Profit Organisation",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL266",
+                    "name": " Personal Effectiveness",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL267",
+                    "name": " Perspectives in Astrophysics and Cosmology",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL268",
+                    "name": " Principles of Marketing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL269",
+                    "name": " Principles of Public Relations",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL270",
+                    "name": " Science, Society and Culture",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL271",
+                    "name": " Statistical Analysis",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL272",
+                    "name": " Teamwork and Collaboration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL273",
+                    "name": " The Message of Bhagwad Gita",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL274",
+                    "name": " Understanding Travel and Tourism",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL275",
+                    "name": " Videography",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL276",
+                    "name": " Vistas of English Literature",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL277",
+                    "name": " Web-Designing Techniques",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL278",
+                    "name": " Organic Farming",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL279",
+                    "name": " Basic Legal Awareness on Protection of Women and Rights",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL280",
+                    "name": " Ritual Performances of Kerala",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL281",
+                    "name": " Documenting Social Issues",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL282",
+                    "name": " Fabrication of Advanced Solar Cell",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL283",
+                    "name": " Basic Concepts of X-ray Diffraction",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL284",
+                    "name": " Introduction to FORTRAN and GNUPLOT",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL285",
+                    "name": " Introduction to Porous Materials",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL286",
+                    "name": " Forensic Science",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL287",
+                    "name": " Introduction to solar Physics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL288",
+                    "name": " Recycling Recovery and Treatment Methods for Wastes",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL289",
+                    "name": " Acting and Dramatic Presentation",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL290",
+                    "name": " Computerised Accounting",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL291",
+                    "name": " Kerala Mural Art and Painting",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL292",
+                    "name": " Painting",
+                    "L": "2",
+                    "T": "0",
+                    "P": "2",
+                    "C": "3"
+                },
+                {
+                    "code": "18OEL293",
+                    "name": " Reporting Rural Issues",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA390",
+                    "name": " Live in Labs",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        },
+        {
+            "Elective A": [
+                {
+                    "code": "18CSA311",
+                    "name": " Artificial Intelligence",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA332",
+                    "name": " Architecture and Deployment of Secure and Scalable WAN",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA333",
+                    "name": " Client Server Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA334",
+                    "name": " Embedded Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA335",
+                    "name": " Enterprise Resource Planning Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA336",
+                    "name": " Knowledge Management",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        },
+        {
+            "Elective B": [
+                {
+                    "code": "18CSA337",
+                    "name": " LAN Switching and Advanced Routing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA338",
+                    "name": " Micro Processor Systems",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA339",
+                    "name": " Multimedia and Graphics",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA340",
+                    "name": " Social and Professional Issues in Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA341",
+                    "name": " Soft Computing",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                },
+                {
+                    "code": "18CSA342",
+                    "name": " Systems and Network Administration",
+                    "L": "3",
+                    "T": "0",
+                    "P": "0",
+                    "C": "3"
+                }
+            ]
+        }
+    ],
     "semsters": {
         "1": {
             "courses": [
