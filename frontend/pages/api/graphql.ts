@@ -18,6 +18,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         }
         res.status(200).send(await response.json())
       } catch (error : any) {
-        res.status(error.status || 500).end(error.message)
+        res.setHeader("content-type", "application/json")
+        res.status(500).end(JSON.stringify({"error": error.message}))
       }
 })
