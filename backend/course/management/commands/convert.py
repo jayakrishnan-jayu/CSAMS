@@ -3,10 +3,10 @@ import json
 files = ['BCA2018.txt', 'MCA2018.txt']
 for file in files:
     output = {
-        'course': file[:-8],
+        'program': file[:-8],
         'year': int(file[-8:-4]),
         'extra': [],
-        'semsters': {},
+        'semesters': [],
     }
     temp = {}
     with open(file, 'r') as df:
@@ -21,14 +21,19 @@ for file in files:
                 start = i+1
     for key in temp:
         if key.startswith('+'):
-            obj = {key[1:-6] : [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key]]}
+            obj = {
+                'name': key[1:-6],
+                'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': int(line[-6:].split(' ')[-2][0]), 'T': int(line[-6:].split(' ')[-2][1]), 'P': int(line[-6:].split(' ')[-2][2]), 'C': int(line[-6:].split(' ')[-1])} for line in temp[key]]
+            }
             output['extra'].append(obj)
         else:
-            output['semsters'][int(key[-2:])] = {
-                'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': line[-6:].split(' ')[-2][0], 'T': line[-6:].split(' ')[-2][1], 'P': line[-6:].split(' ')[-2][2], 'C': line[-6:].split(' ')[-1]} for line in temp[key] if not line.startswith('+')],
+            obj = {
+                'sem': int(key[-2:]),
+                'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': int(line[-6:].split(' ')[-2][0]), 'T': int(line[-6:].split(' ')[-2][1]), 'P': int(line[-6:].split(' ')[-2][2]), 'C': int(line[-6:].split(' ')[-1])} for line in temp[key] if not line.startswith('+')],
                 'extra': [line[1:-6]for line in temp[key] if line.startswith('+')],
             }
+            output['semesters'].append(obj)
 
-    with open(f'{output["course"]}{output["year"]}.json', 'w') as jf:
+    with open(f'{output["program"]}{output["year"]}.json', 'w') as jf:
         json.dump(output, jf, indent=4)
             

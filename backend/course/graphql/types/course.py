@@ -17,11 +17,15 @@ class CurriculumType(graphene.ObjectType):
     id = graphene.ID()
     program = graphene.String()
     year = graphene.Int()
+    duration = graphene.Int()
 
+    def resolve_duration(self, info):
+        return self.program.year
 
 class CurriculumExtraType(graphene.ObjectType):
     id = graphene.ID()
     name = graphene.String()
+
 
 class BatchType(graphene.ObjectType):
     id = graphene.ID()

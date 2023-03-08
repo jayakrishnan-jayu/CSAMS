@@ -1,3 +1,5 @@
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.db import models
 from typing import List
 
@@ -74,6 +76,17 @@ class Curriculum(models.Model):
 
     def __str__(self) -> str:
         return f'{self.program} {self.year}'
+
+@receiver(pre_save, sender=Curriculum)
+def verify_year(sender, instance, **kwargs):
+    if instance.id is None:
+        qs = Curriculum.objects.filter(program=instance.program).order_by('year').last()
+        if qs is None:
+            return
+        expected_year = qs.year + qs.program.year
+        if expected_year ==  instance.year:
+            return
+        raise Exception(f"Expected Year: {expected_year}")
 
 class CurriculumExtras(models.Model):
     curriculum = models.ForeignKey(
