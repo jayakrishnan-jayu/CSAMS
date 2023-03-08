@@ -1,13 +1,9 @@
-import getConfig from 'next/config';
 import React, { useContext } from 'react';
 import AppMenuitem from './AppMenuItem';
-import { LayoutContext } from './context/layoutcontext';
 import { MenuProvider } from './context/menucontext';
 import { FacultyContext } from './context/facultycontext';
 
 const AppMenu = () => {
-    const { layoutConfig } = useContext(LayoutContext);
-    const contextPath = getConfig().publicRuntimeConfig.contextPath;
     const homeSection = {
         label: 'Home',
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
@@ -23,6 +19,16 @@ const AppMenu = () => {
         label: 'Management',
         items: [
             { label: 'Faculties', icon: 'pi pi-fw pi-id-card', to: '/management/faculties' },
+            { 
+                label: 'Curriculum', 
+                icon: 'pi pi-fw pi-money-bill', 
+                items: [
+                    {
+                        label: 'Upload',
+                        to: '/management/curriculum/upload'
+                    },
+                ]
+            },
             {
                 label: 'Settings',
                 icon: 'pi pi-fw pi-cog',
