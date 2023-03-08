@@ -1,0 +1,5 @@
+mutation uploadCurriculum ($CURRICULUM: CurriculumUploadInput!){
+  uploadCurriculum(data: $CURRICULUM){
+    curriculum 
+  }
+}

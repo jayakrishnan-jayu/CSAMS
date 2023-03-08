@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  JSONString: any;
 };
 
 export type BatchInfoType = {
@@ -36,6 +37,15 @@ export type BatchYearSemType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type CourseInput = {
+  C: Scalars['Int'];
+  L: Scalars['Int'];
+  P: Scalars['Int'];
+  T: Scalars['Int'];
+  code: Scalars['String'];
+  name: Scalars['String'];
+};
+
 export type CourseLabType = {
   __typename?: 'CourseLabType';
   course?: Maybe<CourseType>;
@@ -56,9 +66,22 @@ export type CourseType = {
 
 export type CurriculumType = {
   __typename?: 'CurriculumType';
+  duration?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['ID']>;
   program?: Maybe<Scalars['String']>;
   year?: Maybe<Scalars['Int']>;
+};
+
+export type CurriculumUploadInput = {
+  extra: Array<InputMaybe<ExtraInput>>;
+  program: Scalars['String'];
+  semesters: Array<InputMaybe<SemesterInput>>;
+  year: Scalars['Int'];
+};
+
+export type ExtraInput = {
+  courses: Array<InputMaybe<CourseInput>>;
+  name: Scalars['String'];
 };
 
 export type FacultyType = {
@@ -71,6 +94,7 @@ export type FacultyType = {
 export type Mutation = {
   __typename?: 'Mutation';
   updateWorkload?: Maybe<UpdateWorkload>;
+  uploadCurriculum?: Maybe<UploadCurriculum>;
 };
 
 
@@ -81,8 +105,15 @@ export type MutationUpdateWorkloadArgs = {
   track: Scalars['String'];
 };
 
+
+export type MutationUploadCurriculumArgs = {
+  data: CurriculumUploadInput;
+};
+
 export type ProgramType = {
   __typename?: 'ProgramType';
+  duration?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
 };
 
@@ -100,6 +131,7 @@ export type Query = {
   me?: Maybe<UserType>;
   programs?: Maybe<Array<Maybe<ProgramType>>>;
   users?: Maybe<Array<Maybe<UserType>>>;
+  verifyNewCurriculum?: Maybe<Array<Maybe<BatchType>>>;
   workloads?: Maybe<Array<Maybe<WorkloadType>>>;
 };
 
@@ -140,14 +172,32 @@ export type QueryCurriculumsArgs = {
   year?: InputMaybe<Scalars['Int']>;
 };
 
+
+export type QueryVerifyNewCurriculumArgs = {
+  program: Scalars['String'];
+  year: Scalars['Int'];
+};
+
 export type SemesterCourseType = {
   __typename?: 'SemesterCourseType';
   courses?: Maybe<Array<Maybe<CourseType>>>;
 };
 
+export type SemesterInput = {
+  courses: Array<InputMaybe<CourseInput>>;
+  extra: Array<InputMaybe<Scalars['String']>>;
+  /** number of semseter eg 1, 2, 3 */
+  sem: Scalars['Int'];
+};
+
 export type UpdateWorkload = {
   __typename?: 'UpdateWorkload';
   workload?: Maybe<WorkloadType>;
+};
+
+export type UploadCurriculum = {
+  __typename?: 'UploadCurriculum';
+  curriculum?: Maybe<Scalars['JSONString']>;
 };
 
 export type UserType = {
@@ -169,6 +219,13 @@ export type WorkloadType = {
   track?: Maybe<Scalars['String']>;
 };
 
+export type UploadCurriculumMutationVariables = Exact<{
+  CURRICULUM: CurriculumUploadInput;
+}>;
+
+
+export type UploadCurriculumMutation = { __typename?: 'Mutation', uploadCurriculum?: { __typename?: 'UploadCurriculum', curriculum?: any | null } | null };
+
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
   DESIGNATION: Scalars['String'];
@@ -178,6 +235,27 @@ export type UpdateWorkloadMutationVariables = Exact<{
 
 
 export type UpdateWorkloadMutation = { __typename?: 'Mutation', updateWorkload?: { __typename?: 'UpdateWorkload', workload?: { __typename?: 'WorkloadType', track?: string | null, designation?: string | null, minHoursPerWeek?: number | null, maxHoursPerWeek?: number | null } | null } | null };
+
+export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProgramsQuery = { __typename?: 'Query', programs?: Array<{ __typename?: 'ProgramType', id?: string | null, name?: string | null, duration?: string | null } | null> | null };
+
+export type VerifyNewCurriculumQueryVariables = Exact<{
+  PROGRAM: Scalars['String'];
+  YEAR: Scalars['Int'];
+}>;
+
+
+export type VerifyNewCurriculumQuery = { __typename?: 'Query', verifyNewCurriculum?: Array<{ __typename?: 'BatchType', year?: number | null, sem?: number | null } | null> | null };
+
+export type CurriculumsQueryVariables = Exact<{
+  PROGRAM?: InputMaybe<Scalars['String']>;
+  YEAR?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type CurriculumsQuery = { __typename?: 'Query', curriculums?: Array<{ __typename?: 'CurriculumType', program?: string | null, year?: number | null, duration?: number | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -416,6 +494,14 @@ export default {
         "name": "CurriculumType",
         "fields": [
           {
+            "name": "duration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -527,6 +613,26 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "uploadCurriculum",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UploadCurriculum",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "data",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
           }
         ],
         "interfaces": []
@@ -535,6 +641,22 @@ export default {
         "kind": "OBJECT",
         "name": "ProgramType",
         "fields": [
+          {
+            "name": "duration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
           {
             "name": "name",
             "type": {
@@ -791,6 +913,39 @@ export default {
             "args": []
           },
           {
+            "name": "verifyNewCurriculum",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "BatchType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "program",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "year",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "workloads",
             "type": {
               "kind": "LIST",
@@ -834,6 +989,21 @@ export default {
               "kind": "OBJECT",
               "name": "WorkloadType",
               "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UploadCurriculum",
+        "fields": [
+          {
+            "name": "curriculum",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -951,6 +1121,17 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const UploadCurriculumDocument = gql`
+    mutation uploadCurriculum($CURRICULUM: CurriculumUploadInput!) {
+  uploadCurriculum(data: $CURRICULUM) {
+    curriculum
+  }
+}
+    `;
+
+export function useUploadCurriculumMutation() {
+  return Urql.useMutation<UploadCurriculumMutation, UploadCurriculumMutationVariables>(UploadCurriculumDocument);
+};
 export const UpdateWorkloadDocument = gql`
     mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!) {
   updateWorkload(
@@ -971,6 +1152,44 @@ export const UpdateWorkloadDocument = gql`
 
 export function useUpdateWorkloadMutation() {
   return Urql.useMutation<UpdateWorkloadMutation, UpdateWorkloadMutationVariables>(UpdateWorkloadDocument);
+};
+export const ProgramsDocument = gql`
+    query programs {
+  programs {
+    id
+    name
+    duration
+  }
+}
+    `;
+
+export function useProgramsQuery(options?: Omit<Urql.UseQueryArgs<ProgramsQueryVariables>, 'query'>) {
+  return Urql.useQuery<ProgramsQuery, ProgramsQueryVariables>({ query: ProgramsDocument, ...options });
+};
+export const VerifyNewCurriculumDocument = gql`
+    query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!) {
+  verifyNewCurriculum(program: $PROGRAM, year: $YEAR) {
+    year
+    sem
+  }
+}
+    `;
+
+export function useVerifyNewCurriculumQuery(options: Omit<Urql.UseQueryArgs<VerifyNewCurriculumQueryVariables>, 'query'>) {
+  return Urql.useQuery<VerifyNewCurriculumQuery, VerifyNewCurriculumQueryVariables>({ query: VerifyNewCurriculumDocument, ...options });
+};
+export const CurriculumsDocument = gql`
+    query curriculums($PROGRAM: String, $YEAR: Int) {
+  curriculums(program: "BCA", year: 2018) {
+    program
+    year
+    duration
+  }
+}
+    `;
+
+export function useCurriculumsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumsQueryVariables>, 'query'>) {
+  return Urql.useQuery<CurriculumsQuery, CurriculumsQueryVariables>({ query: CurriculumsDocument, ...options });
 };
 export const MeDocument = gql`
     query me {

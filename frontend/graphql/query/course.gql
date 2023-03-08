@@ -1,0 +1,22 @@
+query programs {
+  programs{
+    id
+    name
+    duration
+  }
+}
+
+query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!){
+  verifyNewCurriculum(program:$PROGRAM, year: $YEAR) {  
+    year
+    sem
+  }
+}
+
+query curriculums($PROGRAM: String, $YEAR: Int){
+  curriculums(program:"BCA", year:2018){
+    program
+    year
+    duration
+  }
+}
