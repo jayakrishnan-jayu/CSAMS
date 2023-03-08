@@ -1,6 +1,6 @@
 import graphene
 from user.graphql import UserQueries, UserMutation
-from course.graphql import CourseQuery
+from course.graphql import CourseQuery, CourseMutation
 
 class Query(
     UserQueries,
@@ -11,6 +11,7 @@ class Query(
 
 class Mutation(
     UserMutation,
+    CourseMutation,
     graphene.ObjectType
 ):
     pass

@@ -13,6 +13,12 @@ class BatchQueries(graphene.ObjectType):
         program=graphene.String(description="Department Program eg BCA"),
         year=graphene.Int(description="Year of Curriculum"),
     )
+ 
+    verify_new_curriculum = graphene.List(
+        BatchType,
+        program=graphene.String(description="Department Program eg BCA", required=True),
+        year=graphene.Int(description="Year of Curriculum", required=True),
+    )
     batches = graphene.List(
         BatchType,
         curriculum_id=graphene.ID(description="Curriculum ID"),
@@ -76,3 +82,27 @@ class BatchQueries(graphene.ObjectType):
             return p
         except Program.DoesNotExist:
                 raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
+
+    @login_required
+    def resolve_verify_new_curriculum(self, info, program:str, year:int):
+        try:
+            p = Program.objects.get(name=program)
+        except Program.DoesNotExist:
+            raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
+        
+        c = Curriculum.objects.filter(program=p).order_by('year')
+        if not c.exists():
+            result = []
+            for yr in range(year, year+p.year):
+                for sem in range(p.year*2):
+                    result.append(BatchType(curriculum=CurriculumType(program=p, year=year, duration=p.year), year=yr, sem=sem+1))
+            return result
+        lc = c.last()
+        expected_year = lc.year + lc.program.year
+        if expected_year != year:
+            raise APIException(f'Invalid Curriculum Year, expected year: {lc.year + lc.program.year}', code='INVALID_YEAR')
+        result = []
+        for yr in range(expected_year, expected_year+lc.program.year):
+            for sem in range(lc.program.year*2):
+                result.append(BatchType(curriculum=CurriculumType(program=p, year=expected_year, duration=lc.year), year=yr, sem=sem+1))
+        return result
