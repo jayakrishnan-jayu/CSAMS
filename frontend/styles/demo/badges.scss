@@ -1,5 +1,4 @@
-.designation-badge,
-.track-badge,
+.generic-badge,
 .order-badge {
     border-radius: var(--border-radius);
     padding: .25em .5rem;
@@ -9,20 +8,33 @@
     letter-spacing: .3px;
 }
 
-.track-badge {
-    &.track-teaching {
+.generic-badge {
+    &.track-teaching, &.preference-first{
         background: #C8E6C9;
         color: #256029;
     }
 
-    &.track-standard {
+    &.track-standard, &.preference-second{
         background: #FFCDD2;
         color: #C63737;
     }
 
-    &.track-research {
+    &.track-research, &.preference-third{
         background: #FEEDAF;
         color: #8A5340;
+    }
+    &.designation-assistantprofessor, &.program-bca{
+        background: #B3E5FC;
+        color: #23547B;
+    }
+
+    &.designation-associateprofessor, &.program-mca{
+        background: #ECCFFF;
+        color: #694382;
+    }
+    &.designation-professor, &.program-bcads{
+        background: #FFD8B2;
+        color: #805B36;
     }
 }
 
@@ -42,23 +54,7 @@
         color: #8A5340;
     }
 }
-
-.designation-badge {
-    &.designation-assistantprofessor {
-        background: #B3E5FC;
-        color: #23547B;
-    }
-
-    &.designation-associateprofessor {
-        background: #ECCFFF;
-        color: #694382;
-    }
-
-    &.designation-professor {
-        background: #FFD8B2;
-        color: #805B36;
-    }
-}
+    
 .customer-badge {
     &.status-qualified {
         background: #C8E6C9;

@@ -13,6 +13,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
   JSONString: any;
 };
 
@@ -58,6 +59,7 @@ export type CourseType = {
   code?: Maybe<Scalars['String']>;
   credit?: Maybe<Scalars['Int']>;
   hours?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   l?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   p?: Maybe<Scalars['Int']>;
@@ -91,6 +93,13 @@ export type FacultyType = {
   user?: Maybe<UserType>;
 };
 
+export type IdentfierInput = {
+  /** Odd/Even Sem */
+  isEvenSem: Scalars['Boolean'];
+  /** Year at which the preference was recorded */
+  year: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   updateWorkload?: Maybe<UpdateWorkload>;
@@ -108,6 +117,18 @@ export type MutationUpdateWorkloadArgs = {
 
 export type MutationUploadCurriculumArgs = {
   data: CurriculumUploadInput;
+};
+
+export type PreferenceType = {
+  __typename?: 'PreferenceType';
+  course?: Maybe<CourseType>;
+  experience?: Maybe<Scalars['Int']>;
+  faculty?: Maybe<FacultyType>;
+  id?: Maybe<Scalars['ID']>;
+  identifierIsEvenSem?: Maybe<Scalars['Boolean']>;
+  identifierYear?: Maybe<Scalars['Int']>;
+  timestamp?: Maybe<Scalars['DateTime']>;
+  weigtage?: Maybe<Scalars['Int']>;
 };
 
 export type ProgramType = {
@@ -129,6 +150,7 @@ export type Query = {
   faculty?: Maybe<FacultyType>;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<UserType>;
+  preferences?: Maybe<Array<Maybe<PreferenceType>>>;
   programs?: Maybe<Array<Maybe<ProgramType>>>;
   users?: Maybe<Array<Maybe<UserType>>>;
   verifyNewCurriculum?: Maybe<Array<Maybe<BatchType>>>;
@@ -170,6 +192,12 @@ export type QueryCoursesArgs = {
 export type QueryCurriculumsArgs = {
   program?: InputMaybe<Scalars['String']>;
   year?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPreferencesArgs = {
+  courseId?: InputMaybe<Scalars['ID']>;
+  identifier?: InputMaybe<IdentfierInput>;
 };
 
 
@@ -256,6 +284,14 @@ export type CurriculumsQueryVariables = Exact<{
 
 
 export type CurriculumsQuery = { __typename?: 'Query', curriculums?: Array<{ __typename?: 'CurriculumType', program?: string | null, year?: number | null, duration?: number | null } | null> | null };
+
+export type PreferencesQueryVariables = Exact<{
+  IDENTIFIER?: InputMaybe<IdentfierInput>;
+  COURSEID?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null } | null } | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -455,6 +491,14 @@ export default {
             "args": []
           },
           {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "l",
             "type": {
               "kind": "SCALAR",
@@ -633,6 +677,79 @@ export default {
                 }
               }
             ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PreferenceType",
+        "fields": [
+          {
+            "name": "course",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CourseType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "experience",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "faculty",
+            "type": {
+              "kind": "OBJECT",
+              "name": "FacultyType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierIsEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "timestamp",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "weigtage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -887,6 +1004,33 @@ export default {
               "ofType": null
             },
             "args": []
+          },
+          {
+            "name": "preferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PreferenceType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "courseId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "identifier",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
           },
           {
             "name": "programs",
@@ -1190,6 +1334,47 @@ export const CurriculumsDocument = gql`
 
 export function useCurriculumsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumsQueryVariables>, 'query'>) {
   return Urql.useQuery<CurriculumsQuery, CurriculumsQueryVariables>({ query: CurriculumsDocument, ...options });
+};
+export const PreferencesDocument = gql`
+    query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
+  preferences(identifier: $IDENTIFIER, courseId: $COURSEID) {
+    id
+    identifierYear
+    identifierIsEvenSem
+    faculty {
+      user {
+        firstName
+        lastName
+        username
+      }
+    }
+    course {
+      id
+      code
+      name
+      credit
+      l
+      t
+      p
+      credit
+      batch {
+        year
+        sem
+        curriculum {
+          program
+          year
+        }
+      }
+    }
+    weigtage
+    experience
+    timestamp
+  }
+}
+    `;
+
+export function usePreferencesQuery(options?: Omit<Urql.UseQueryArgs<PreferencesQueryVariables>, 'query'>) {
+  return Urql.useQuery<PreferencesQuery, PreferencesQueryVariables>({ query: PreferencesDocument, ...options });
 };
 export const MeDocument = gql`
     query me {

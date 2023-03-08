@@ -82,23 +82,23 @@ const FacultyTable = () => {
     };
 
     const trackBodyTemplate = (rowData) => {
-        return <span className={`track-badge track-${rowData.track.toLowerCase()}`}>{rowData.track}</span>;
+        return <span className={`generic-badge track-${rowData.track.toLowerCase()}`}>{rowData.track}</span>;
     };
     const trackFilterTemplate = (options) => {
         return <Dropdown value={options.value} options={tracks} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={trackItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
     };
     const trackItemTemplate = (option) => {
-        return <span className={`track-badge track-${option.toLowerCase()}`}>{option}</span>;
+        return <span className={`generic-badge track-${option.toLowerCase()}`}>{option}</span>;
     };
     
     const designationBodyTemplate = (rowData) => {
-        return <span className={`designation-badge designation-${rowData.designation.toLowerCase().replace(/ +/g, "")}`}>{rowData.designation}</span>;
+        return <span className={`generic-badge designation-${rowData.designation.toLowerCase().replace(/ +/g, "")}`}>{rowData.designation}</span>;
     };
     const designationFilterTemplate = (options) => {
         return <Dropdown value={options.value} options={designations} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={designationItemTemplate} placeholder="Select a Status" className="p-column-filter" showClear />;
     };
     const designationItemTemplate = (option) => {
-        return <span className={`designation-badge designation-${option.toLowerCase().replace(/ +/g, "")}`}>{option}</span>;
+        return <span className={`generic-badge designation-${option.toLowerCase().replace(/ +/g, "")}`}>{option}</span>;
     };
 
     const isStaffBodyTemplate = (rowData) => {
