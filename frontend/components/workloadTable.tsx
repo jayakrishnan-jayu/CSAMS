@@ -75,7 +75,7 @@ const WorkloadTable = () => {
         return (
             <>
                 <span className="p-column-title">Track</span>
-                <span className={`track-badge track-${rowData?.track.toLowerCase()}`}>{rowData?.track}</span>
+                <span className={`generic-badge track-${rowData?.track.toLowerCase()}`}>{rowData?.track}</span>
             </>
         );
     };
@@ -84,7 +84,7 @@ const WorkloadTable = () => {
         return (
             <>
                 <span className="p-column-title">Designation</span>
-                <span className={`designation-badge designation-${rowData.designation.toLowerCase().replace(/ +/g, "")}`}>{rowData.designation}</span>
+                <span className={`generic-badge designation-${rowData.designation.toLowerCase().replace(/ +/g, "")}`}>{rowData.designation}</span>
             </>
         );
     };
@@ -150,11 +150,11 @@ const WorkloadTable = () => {
                         <div className="formgrid grid">
                             <div className="field col">
                             <label>Track</label>
-                            <div className={`track-badge track-${product?.track.toLowerCase()}`}>{product?.track}</div>
+                            <div className={`generic-badge track-${product?.track.toLowerCase()}`}>{product?.track}</div>
                             </div>
                                 <div className="field col">
                                 <label>Designation</label>
-                                  <div className={`designation-badge designation-${product.designation.toLowerCase().replace(/ +/g, "")}`}>{product.designation}</div>
+                                  <div className={`generic-badge designation-${product.designation.toLowerCase().replace(/ +/g, "")}`}>{product.designation}</div>
                                 </div>
                         </div>
 
