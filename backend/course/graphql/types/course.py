@@ -80,6 +80,7 @@ class BatchInfoType(graphene.ObjectType):
 
 
 class CourseType(graphene.ObjectType):
+    id = graphene.ID()
     batch = graphene.Field(BatchType)
     code = graphene.String()
     name = graphene.String()
