@@ -1,7 +1,25 @@
 from django.db.models.signals import pre_save
+
 from django.dispatch import receiver
 from django.db import models
 from typing import List
+
+
+class CurriculumUpload(models.Model):
+    program = models.ForeignKey(
+        'Program',
+        on_delete=models.PROTECT,
+    )
+    year = models.PositiveSmallIntegerField()
+    data = models.JSONField() # to store the curriculum in json format
+    is_populated = models.BooleanField(default=False)
+    uploaded_on = models.DateTimeField(auto_now_add=True)
+    # is_populated field specifies whether courses are created and assigned to batches
+    # if is_popluated is true, then updation is not possible
+
+    def __str__(self) -> str:
+        return f'{self.program}  {self.year} curriculum data'
+
 
 class CourseLab(models.Model):
     course = models.OneToOneField(

@@ -1,5 +1,19 @@
 from django.contrib import admin
-from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, BatchCurriculumExtra, ExtraCourse
+from .models import Batch, Course, CourseLab, Program, Curriculum, CurriculumExtras, BatchCurriculumExtra, ExtraCourse, CurriculumUpload
+from django.db.models import JSONField 
+from django.forms import widgets
+import json
+
+class PrettyJSONWidget(widgets.Textarea):
+    def format_value(self, value):
+        try:
+            value = json.dumps(json.loads(value), indent=2, sort_keys=True)
+            row_lengths = [len(r) for r in value.split('\n')]
+            self.attrs['rows'] = min(max(len(row_lengths) + 2, 10), 30)
+            self.attrs['cols'] = min(max(max(row_lengths) + 2, 40), 120)
+            return value
+        except Exception as e:
+            return super(PrettyJSONWidget, self).format_value(value)
 
 @admin.register(Program)
 class ProgramAdmin(admin.ModelAdmin):
@@ -17,6 +31,15 @@ class BatchAdmin(admin.ModelAdmin):
 class CurriculumAdmin(admin.ModelAdmin):
     list_display = ['program', 'year']
     list_filter = ['year']
+
+
+@admin.register(CurriculumUpload)
+class CurriculumUploadAdmin(admin.ModelAdmin):
+    list_display = ['program', 'year', 'uploaded_on']
+    list_filter = ['year']
+    formfield_overrides = {
+        JSONField: {'widget': PrettyJSONWidget}
+    }
 
 
 @admin.register(CurriculumExtras)
