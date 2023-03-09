@@ -27,6 +27,10 @@ const AppMenu = () => {
                         label: 'Upload',
                         to: '/management/curriculum/upload'
                     },
+                    {
+                        label: 'Manage',
+                        to: '/management/curriculum/manage'
+                    },
                 ]
             },
             {

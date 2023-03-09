@@ -7,9 +7,17 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { usePreferencesQuery } from '@/graphql/generated/graphql';
 
-const CurrentPreferenceTable = () => {
+interface PreferenceTableProps {
+    courseID?: number,
+}
+
+const PreferenceTable = ({courseID}: PreferenceTableProps) => {
     const prefNums = ['first', 'second', 'third']
-    const [result] = usePreferencesQuery();
+    let variables = {}
+    if (courseID) {
+        variables = {COURSEID: courseID.toString()}
+    }
+    const [result] = usePreferencesQuery({variables});
     const {fetching, data, error} = result;
     if (error) return <div>Error occured while fetching</div>
     let faculties: any[] | undefined = [];
@@ -75,18 +83,19 @@ const CurrentPreferenceTable = () => {
         setGlobalFilterValue1('');
     };
 
-    const parseDateTime = (dateStr: string): string => {
-        console.log(dateStr);
-        const date = new Date(dateStr);
-        console.log("date", date)
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear().toString().substr(-2);
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const seconds = date.getSeconds().toString().padStart(2, '0');
-        return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-      }
+    function parseDateTime(dateString: string): string {
+        const date = new Date(dateString);
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+        const month = monthNames[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        const hour = date.getHours() % 12 || 12;
+        const minute = date.getMinutes();
+        const ampm = date.getHours() < 12 ? "a.m." : "p.m.";
+        
+        return `${month} ${day}, ${year}, ${hour}:${minute.toString().padStart(2, '0')} ${ampm}`;
+    }
 
     const dateTimeBodyTemplate = (rowData) => {
         return parseDateTime(rowData.timestamp);
@@ -151,4 +160,4 @@ const CurrentPreferenceTable = () => {
     );
 };
 
-export default CurrentPreferenceTable;
+export default PreferenceTable;

@@ -1,61 +1,59 @@
-import React from 'react';
-import { CurriculumUploadInput, useUploadCurriculumMutation } from '@/graphql/generated/graphql';
+import React, { useState } from 'react';
+import { CurriculumUploadInput, useUploadCurriculumMutation, CurriculumUploadType } from '@/graphql/generated/graphql';
 import { Button } from 'primereact/button';
-
+import { Tag } from 'primereact/tag';
+import { useRouter } from 'next/router';
 
 interface DoneCurriculumProps {
     curriculum: CurriculumUploadInput,
+    curriculumUploadData?: CurriculumUploadType,
+    onDoneCurriculumUpload: (data: CurriculumUploadType) => void,
 }
 
-const DoneCurriculum = ({curriculum} : DoneCurriculumProps) => {
+const DoneCurriculum = ({curriculum, curriculumUploadData, onDoneCurriculumUpload} : DoneCurriculumProps) => {
+    const router = useRouter();
     const [newCurriculum, uploadCurriculum] = useUploadCurriculumMutation();
+    if (newCurriculum.data?.uploadCurriculum){
+        onDoneCurriculumUpload(newCurriculum.data.uploadCurriculum as CurriculumUploadType)
+    }
     
-    
-    // const output: { [year: number]: number[] } = {};
-    // if (vc) {
-    //     for (const batch of vc) {
-    //         if (batch?.sem && batch.year) {
-    //             if (output[batch.year]) {
-    //                 output[batch.year].push(batch.sem);
-    //             } else {
-    //                 output[batch.year] = [batch.sem];
-    //             }
-    //         }
-    //     }
-    // }
-    
-
+    const renderUploadButton = () => {
+        if (!curriculumUploadData) {
+            return (
+                <div className="flex align-items-center flex-wrap mb-8 mt-8">
+                    <div className="flex mt-6 ml-auto mr-auto">
+                    {
+                        !newCurriculum.error ? 
+                        <Button 
+                            label={newCurriculum.fetching ? 'Uploading' : `Upload ${curriculum.program} ${curriculum.year} curriculum`}
+                            icon={newCurriculum.fetching ? "pi pi-spin pi-spinner" : "pi pi-upload"}
+                            onClick={() => uploadCurriculum({CURRICULUM: curriculum})}
+                        /> : <Tag severity="danger" value={newCurriculum.error.message}/> 
+                    }
+                        
+                    </div>
+            </div>
+            );
+        }
+        return (
+            <div className="flex align-items-center flex-wrap mb-8 mt-8">
+                <div className="flex mt-6 ml-auto mr-auto">
+                    Curriculum Uploaded
+                    <Button 
+                        label="Go to manage section"
+                        icon="pi pi-next"
+                        onClick={() => {router.push("/management/curriculum/manage")}}
+                    />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="grid">
-            
             <div className="col-12">
-                <div className='card'>
-                    {newCurriculum.fetching ?? <div>Uploading</div>}
-                    {newCurriculum.error?.message ?? <div>{JSON.stringify(newCurriculum.error?.message)}</div>}
-                    {newCurriculum.data?.uploadCurriculum?.curriculum ?? <div>{newCurriculum.data?.uploadCurriculum?.curriculum}</div>}
-                    {/* <h6>Uploading the selected curriculum {program}-{year} would apply for the following batches:</h6> */}
-                
-                    {/* {Object.keys(output).map((y) => 
-                        {
-                            return <ul>
-                                {output[y].map(s => <li>{program}-{y} Semester {s}</li>)}
-                            </ul>
-                        }
-                    )}                     */}
-                </div>
-        
-                <div className="flex align-items-center flex-wrap">
-                    <div className="flex mt-6 ml-auto mr-auto">
-                        <Button 
-                            label='Continue'
-                            icon="pi pi-check"
-                            onClick={() => uploadCurriculum({CURRICULUM: curriculum})}
-                        />
-                    </div>
-                </div>
-            
-                
+            {renderUploadButton()}
+            {newCurriculum.fetching && <div>Fetching </div>}
             </div>
         </div>
     );
