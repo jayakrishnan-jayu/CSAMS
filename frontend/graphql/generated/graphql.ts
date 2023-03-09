@@ -81,6 +81,16 @@ export type CurriculumUploadInput = {
   year: Scalars['Int'];
 };
 
+export type CurriculumUploadType = {
+  __typename?: 'CurriculumUploadType';
+  data?: Maybe<Scalars['JSONString']>;
+  id?: Maybe<Scalars['ID']>;
+  isPopulated?: Maybe<Scalars['Boolean']>;
+  program?: Maybe<Scalars['String']>;
+  uploadedOn?: Maybe<Scalars['DateTime']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
 export type ExtraInput = {
   courses: Array<InputMaybe<CourseInput>>;
   name: Scalars['String'];
@@ -145,6 +155,7 @@ export type Query = {
   course?: Maybe<CourseType>;
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
   courses?: Maybe<SemesterCourseType>;
+  curriculumUploads?: Maybe<Array<Maybe<CurriculumUploadType>>>;
   curriculums?: Maybe<Array<Maybe<CurriculumType>>>;
   faculties?: Maybe<Array<Maybe<FacultyType>>>;
   faculty?: Maybe<FacultyType>;
@@ -225,7 +236,7 @@ export type UpdateWorkload = {
 
 export type UploadCurriculum = {
   __typename?: 'UploadCurriculum';
-  curriculum?: Maybe<Scalars['JSONString']>;
+  response?: Maybe<CurriculumUploadType>;
 };
 
 export type UserType = {
@@ -252,7 +263,7 @@ export type UploadCurriculumMutationVariables = Exact<{
 }>;
 
 
-export type UploadCurriculumMutation = { __typename?: 'Mutation', uploadCurriculum?: { __typename?: 'UploadCurriculum', curriculum?: any | null } | null };
+export type UploadCurriculumMutation = { __typename?: 'Mutation', uploadCurriculum?: { __typename?: 'UploadCurriculum', response?: { __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null } | null };
 
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
@@ -284,6 +295,11 @@ export type CurriculumsQueryVariables = Exact<{
 
 
 export type CurriculumsQuery = { __typename?: 'Query', curriculums?: Array<{ __typename?: 'CurriculumType', program?: string | null, year?: number | null, duration?: number | null } | null> | null };
+
+export type CurriculumUploadsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurriculumUploadsQuery = { __typename?: 'Query', curriculumUploads?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null };
 
 export type PreferencesQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
@@ -555,6 +571,61 @@ export default {
           },
           {
             "name": "program",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CurriculumUploadType",
+        "fields": [
+          {
+            "name": "data",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isPopulated",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "program",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "uploadedOn",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -941,6 +1012,18 @@ export default {
             ]
           },
           {
+            "name": "curriculumUploads",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CurriculumUploadType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "curriculums",
             "type": {
               "kind": "LIST",
@@ -1144,10 +1227,11 @@ export default {
         "name": "UploadCurriculum",
         "fields": [
           {
-            "name": "curriculum",
+            "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "CurriculumUploadType",
+              "ofType": null
             },
             "args": []
           }
@@ -1268,7 +1352,14 @@ export default {
 export const UploadCurriculumDocument = gql`
     mutation uploadCurriculum($CURRICULUM: CurriculumUploadInput!) {
   uploadCurriculum(data: $CURRICULUM) {
-    curriculum
+    response {
+      id
+      program
+      year
+      data
+      uploadedOn
+      isPopulated
+    }
   }
 }
     `;
@@ -1334,6 +1425,22 @@ export const CurriculumsDocument = gql`
 
 export function useCurriculumsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumsQueryVariables>, 'query'>) {
   return Urql.useQuery<CurriculumsQuery, CurriculumsQueryVariables>({ query: CurriculumsDocument, ...options });
+};
+export const CurriculumUploadsDocument = gql`
+    query curriculumUploads {
+  curriculumUploads {
+    id
+    program
+    year
+    data
+    uploadedOn
+    isPopulated
+  }
+}
+    `;
+
+export function useCurriculumUploadsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumUploadsQueryVariables>, 'query'>) {
+  return Urql.useQuery<CurriculumUploadsQuery, CurriculumUploadsQueryVariables>({ query: CurriculumUploadsDocument, ...options });
 };
 export const PreferencesDocument = gql`
     query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {

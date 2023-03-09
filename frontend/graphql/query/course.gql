@@ -21,6 +21,18 @@ query curriculums($PROGRAM: String, $YEAR: Int){
   }
 }
 
+query curriculumUploads {
+  curriculumUploads{
+    id
+    program
+    year
+    data
+    uploadedOn
+    isPopulated
+  }
+}
+
+
 query preferences ($IDENTIFIER: IdentfierInput, $COURSEID: ID){
   preferences(identifier: $IDENTIFIER, courseId:$COURSEID){
     id

@@ -4,13 +4,14 @@ import UploadCurriculum from '@/components/curriculumUpload/upload';
 import VerifyCurriculum from '@/components/curriculumUpload/verify';
 import PreviewCurriculum from '@/components/curriculumUpload/preview';
 import { Toast } from 'primereact/toast';
-import { VerifyNewCurriculumQuery, CurriculumUploadInput } from '@/graphql/generated/graphql';
+import { VerifyNewCurriculumQuery, CurriculumUploadInput, CurriculumUploadType } from '@/graphql/generated/graphql';
 import DoneCurriculum from '@/components/curriculumUpload/done';
 
 const Upload = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [curriculum, setCurriculum] = useState<CurriculumUploadInput | null>(null);
-    const [verifiedCourses, setVerifiedCourses] = useState<VerifyNewCurriculumQuery|null>(null)
+    const [verifiedCourses, setVerifiedCourses] = useState<VerifyNewCurriculumQuery|null>(null);
+    const [curriculumUpload, setCurriculumUploadType] = useState<CurriculumUploadType|null>(null);
     const toast = useRef(null);
 
     useEffect(() => {
@@ -37,6 +38,10 @@ const onPreviewComplete = () => {
     setActiveIndex(3);
 }
 
+const onDoneComplete = (data: CurriculumUploadType) => {
+    setCurriculumUploadType(data)
+}
+
 
 const render = (activeIndex: number) => {
     switch(activeIndex){
@@ -52,7 +57,10 @@ const render = (activeIndex: number) => {
             setActiveIndex(0)
             break;
         case 3:
-            if (curriculum && verifiedCourses) return <DoneCurriculum curriculum={curriculum}/>;
+            if (curriculum && verifiedCourses) {
+                if (curriculumUpload) return <DoneCurriculum curriculum={curriculum} onDoneCurriculumUpload={onDoneComplete} curriculumUploadData={curriculumUpload}/>;
+                return <DoneCurriculum curriculum={curriculum} onDoneCurriculumUpload={onDoneComplete}/>;
+            }
             setActiveIndex(0)
             break;
     }

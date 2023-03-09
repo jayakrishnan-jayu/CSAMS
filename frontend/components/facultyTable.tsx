@@ -109,7 +109,6 @@ const FacultyTable = () => {
     };
 
     const verifiedFilterTemplate = (options) => {
-        console.log("verified template", options)
         return <TriStateCheckbox value={options.value} onChange={(e) => options.filterCallback(e.value)} />;
     };
 

@@ -1,5 +1,12 @@
 mutation uploadCurriculum ($CURRICULUM: CurriculumUploadInput!){
   uploadCurriculum(data: $CURRICULUM){
-    curriculum 
+     response{
+      id
+      program
+      year
+      data
+      uploadedOn
+      isPopulated
+    } 
   }
 }
