@@ -1,8 +1,8 @@
 import graphene
-from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType
-from course.models import Batch, Program, Curriculum
+from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType, CurriculumUploadType
+from course.models import Batch, Program, Curriculum, CurriculumUpload
 from backend.api import APIException
-from backend.api.decorator import login_required
+from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 
 class BatchQueries(graphene.ObjectType):
     programs = graphene.List(
@@ -12,6 +12,10 @@ class BatchQueries(graphene.ObjectType):
         CurriculumType,
         program=graphene.String(description="Department Program eg BCA"),
         year=graphene.Int(description="Year of Curriculum"),
+    )
+
+    curriculum_uploads = graphene.List(
+        CurriculumUploadType
     )
  
     verify_new_curriculum = graphene.List(
@@ -84,6 +88,8 @@ class BatchQueries(graphene.ObjectType):
                 raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
 
     @login_required
+    @resolve_user
+    @staff_privilege_required
     def resolve_verify_new_curriculum(self, info, program:str, year:int):
         try:
             p = Program.objects.get(name=program)
@@ -106,3 +112,10 @@ class BatchQueries(graphene.ObjectType):
             for sem in range(lc.program.year*2):
                 result.append(BatchType(curriculum=CurriculumType(program=p, year=expected_year, duration=lc.year), year=yr, sem=sem+1))
         return result
+
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def resolve_curriculum_uploads(self, info):
+        return CurriculumUpload.objects.all()

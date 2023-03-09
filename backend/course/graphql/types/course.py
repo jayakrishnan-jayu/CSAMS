@@ -1,5 +1,4 @@
 import graphene
-from user.graphql.types.user import FacultyType
 from course.models import Batch, Program, Course, BatchCurriculumExtra
 from backend.api import APIException
 from typing import List
@@ -25,6 +24,14 @@ class CurriculumType(graphene.ObjectType):
 class CurriculumExtraType(graphene.ObjectType):
     id = graphene.ID()
     name = graphene.String()
+
+class CurriculumUploadType(graphene.ObjectType):
+    id = graphene.ID()
+    program = graphene.String()
+    year = graphene.Int()
+    data = graphene.JSONString()
+    uploaded_on = graphene.DateTime()
+    is_populated = graphene.Boolean()
 
 
 class BatchType(graphene.ObjectType):
@@ -115,5 +122,15 @@ class SemesterCourseType(graphene.ObjectType):
     #     return qs
 
 __all__ = [
-    'ProgramType'
+    'ProgramType',
+    'CurriculumType',
+    'CurriculumExtraType',
+    'CurriculumUploadType',
+    'BatchType',
+    'BatchYearSemType',
+    'ExtraCourseType',
+    'BatchInfoType',
+    'CourseType',
+    'CourseLabType',
+    'SemesterCourseType',
 ]
