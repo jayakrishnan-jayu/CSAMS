@@ -11,6 +11,7 @@ from backend.api import APIException
 from backend.api.decorator import login_required
 from django.db.models import F
 from django.db.models import Sum
+from django.core.exceptions import ObjectDoesNotExist
 
 class AllocationQueries(graphene.ObjectType):
     allocation = graphene.List(
@@ -20,11 +21,18 @@ class AllocationQueries(graphene.ObjectType):
      
     @login_required
     def resolve_allocation(self,info,filter,faculty_id:int=None):
-        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not filter.is_even_sem , sem_year=filter.year)
-        courses_in_batches = Course.objects.filter(batch__in=batches)
-        if faculty_id :
-            allocations = CourseAllocation.objects.filter(course__in=courses_in_batches,faculty=faculty_id)
-            return allocations
-        else : 
-            allocations = CourseAllocation.objects.filter(course__in=courses_in_batches)
-            return allocations
+        try:
+            batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not filter.is_even_sem , sem_year=filter.year)
+            courses_in_batches = Course.objects.filter(batch__in=batches)
+            if faculty_id :
+                allocations = CourseAllocation.objects.filter(course__in=courses_in_batches,faculty=faculty_id)
+                return allocations
+            else : 
+                allocations = CourseAllocation.objects.filter(course__in=courses_in_batches)
+                return allocations
+        except ObjectDoesNotExist:
+            raise Exception("No allocation found for the filter criteria")
+        except ValueError:
+            raise Exception("Invalid faculty_id argument. Expected an integer.")
+        except Exception as e:
+            raise Exception("An unexpected error occured : " + str(e))
