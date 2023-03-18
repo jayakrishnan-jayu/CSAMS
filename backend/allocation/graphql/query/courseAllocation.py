@@ -15,13 +15,16 @@ from django.db.models import Sum
 class AllocationQueries(graphene.ObjectType):
     allocation = graphene.List(
         CourseAndFacultyType,
-        # faculty_id = graphene.ID(description="ID of faculty"),
+        faculty_id = graphene.ID(description="ID of faculty",required=False),
         filter = graphene.Argument(AllocationFilterInput,required=True))   
      
     @login_required
-    def resolve_allocation(self,info,filter):
+    def resolve_allocation(self,info,filter,faculty_id:int=None):
         batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not filter.is_even_sem , sem_year=filter.year)
         courses_in_batches = Course.objects.filter(batch__in=batches)
-        allocations = CourseAllocation.objects.filter(course__in=courses_in_batches)
-        # allocations = CourseAllocation.objects.all()
-        return allocations
+        if faculty_id :
+            allocations = CourseAllocation.objects.filter(course__in=courses_in_batches,faculty=faculty_id)
+            return allocations
+        else : 
+            allocations = CourseAllocation.objects.filter(course__in=courses_in_batches)
+            return allocations
