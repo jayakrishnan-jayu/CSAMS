@@ -8,7 +8,7 @@ from allocation.models import CourseAllocation
 from user.models import Faculty
 from user.graphql.types.user import FacultyType
 from backend.api import APIException
-from backend.api.decorator import login_required
+from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 from django.db.models import F
 from django.db.models import Sum
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,7 +19,8 @@ class AllocationQueries(graphene.ObjectType):
         faculty_id = graphene.ID(description="ID of faculty",required=False),
         filter = graphene.Argument(AllocationFilterInput,required=True))   
      
-    @login_required
+    @resolve_user
+    @staff_privilege_required
     def resolve_allocation(self,info,filter,faculty_id:int=None):
         try:
             batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not filter.is_even_sem , sem_year=filter.year)
