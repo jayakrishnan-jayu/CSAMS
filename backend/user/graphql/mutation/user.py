@@ -52,6 +52,7 @@ class UpdateUser(graphene.Mutation):
         user = info.context.resolved_user
         user.first_name = firstName
         user.last_name = lastName
+        user.save()
         return UpdateUser(user)
     
 
