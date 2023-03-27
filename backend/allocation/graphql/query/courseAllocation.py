@@ -18,7 +18,8 @@ class AllocationQueries(graphene.ObjectType):
         CourseAndFacultyType,
         faculty_id = graphene.ID(description="ID of faculty",required=False),
         filter = graphene.Argument(AllocationFilterInput,required=True))   
-     
+    
+    @login_required
     @resolve_user
     @staff_privilege_required
     def resolve_allocation(self,info,filter,faculty_id:int=None):
