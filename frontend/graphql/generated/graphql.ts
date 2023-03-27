@@ -17,6 +17,11 @@ export type Scalars = {
   JSONString: any;
 };
 
+export type AllocationFilterInput = {
+  isEvenSem?: InputMaybe<Scalars['Boolean']>;
+  year?: InputMaybe<Scalars['Int']>;
+};
+
 export type BatchInfoType = {
   __typename?: 'BatchInfoType';
   info?: Maybe<Array<Maybe<BatchYearSemType>>>;
@@ -36,6 +41,12 @@ export type BatchYearSemType = {
   __typename?: 'BatchYearSemType';
   semesters?: Maybe<Array<Maybe<Scalars['Int']>>>;
   year?: Maybe<Scalars['Int']>;
+};
+
+export type CourseAndFacultyType = {
+  __typename?: 'CourseAndFacultyType';
+  course?: Maybe<CourseType>;
+  faculty?: Maybe<FacultyType>;
 };
 
 export type CourseInput = {
@@ -112,8 +123,15 @@ export type IdentfierInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  updateUser?: Maybe<UpdateUser>;
   updateWorkload?: Maybe<UpdateWorkload>;
   uploadCurriculum?: Maybe<UploadCurriculum>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -150,6 +168,7 @@ export type ProgramType = {
 
 export type Query = {
   __typename?: 'Query';
+  allocation?: Maybe<Array<Maybe<CourseAndFacultyType>>>;
   batchInfo?: Maybe<BatchInfoType>;
   batches?: Maybe<Array<Maybe<BatchType>>>;
   course?: Maybe<CourseType>;
@@ -166,6 +185,12 @@ export type Query = {
   users?: Maybe<Array<Maybe<UserType>>>;
   verifyNewCurriculum?: Maybe<Array<Maybe<BatchType>>>;
   workloads?: Maybe<Array<Maybe<WorkloadType>>>;
+};
+
+
+export type QueryAllocationArgs = {
+  facultyId?: InputMaybe<Scalars['ID']>;
+  filter: AllocationFilterInput;
 };
 
 
@@ -229,6 +254,11 @@ export type SemesterInput = {
   sem: Scalars['Int'];
 };
 
+export type UpdateUser = {
+  __typename?: 'UpdateUser';
+  user?: Maybe<UserType>;
+};
+
 export type UpdateWorkload = {
   __typename?: 'UpdateWorkload';
   workload?: Maybe<WorkloadType>;
@@ -264,6 +294,14 @@ export type UploadCurriculumMutationVariables = Exact<{
 
 
 export type UploadCurriculumMutation = { __typename?: 'Mutation', uploadCurriculum?: { __typename?: 'UploadCurriculum', response?: { __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null } | null };
+
+export type UpdateUserMutationVariables = Exact<{
+  FIRSTNAME: Scalars['String'];
+  LASTNAME: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUser', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null } | null } | null };
 
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
@@ -438,6 +476,31 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "CourseAndFacultyType",
+        "fields": [
+          {
+            "name": "course",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CourseType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "faculty",
+            "type": {
+              "kind": "OBJECT",
+              "name": "FacultyType",
+              "ofType": null
             },
             "args": []
           }
@@ -680,6 +743,30 @@ export default {
         "name": "Mutation",
         "fields": [
           {
+            "name": "updateUser",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateUser",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "firstName",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "lastName",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "updateWorkload",
             "type": {
               "kind": "OBJECT",
@@ -860,6 +947,36 @@ export default {
         "kind": "OBJECT",
         "name": "Query",
         "fields": [
+          {
+            "name": "allocation",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseAndFacultyType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "facultyId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "filter",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "batchInfo",
             "type": {
@@ -1208,6 +1325,22 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpdateUser",
+        "fields": [
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpdateWorkload",
         "fields": [
           {
@@ -1366,6 +1499,20 @@ export const UploadCurriculumDocument = gql`
 
 export function useUploadCurriculumMutation() {
   return Urql.useMutation<UploadCurriculumMutation, UploadCurriculumMutationVariables>(UploadCurriculumDocument);
+};
+export const UpdateUserDocument = gql`
+    mutation updateUser($FIRSTNAME: String!, $LASTNAME: String!) {
+  updateUser(firstName: $FIRSTNAME, lastName: $LASTNAME) {
+    user {
+      firstName
+      lastName
+    }
+  }
+}
+    `;
+
+export function useUpdateUserMutation() {
+  return Urql.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument);
 };
 export const UpdateWorkloadDocument = gql`
     mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!) {
