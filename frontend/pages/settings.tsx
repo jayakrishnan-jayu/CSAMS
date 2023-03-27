@@ -3,10 +3,11 @@ import { Button } from "primereact/button";
 import { useContext, useRef, useState } from "react";
 import { FacultyContext } from "@/components/layout/context/facultycontext";
 import { Toast } from "primereact/toast";
+import { useUpdateUserMutation } from "@/graphql/generated/graphql";
 
 const Settings = () => {
   const { facultyData } = useContext(FacultyContext);
-  console.log("FacultData, ", facultyData);
+
   const [firstName, setFirstName] = useState(
     facultyData?.faculty?.user?.firstName
   );
@@ -17,6 +18,8 @@ const Settings = () => {
 
   const track = facultyData?.faculty?.track || "undefined";
   const email = facultyData?.faculty?.user?.email || "undefined";
+
+  const [newUserDetails, updateNewUserDetails] = useUpdateUserMutation();
 
   const toast = useRef(null);
 
@@ -34,6 +37,10 @@ const Settings = () => {
         life: 3000,
       });
     } else {
+      updateNewUserDetails({
+        FIRSTNAME: firstName,
+        LASTNAME: lastName,
+      });
       toast.current.show({
         severity: "success",
         summary: "Success",
