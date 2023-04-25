@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from graphene_django import DjangoObjectType
 
 from backend.api.APIException import APIException
-from ..types.user import WorkloadType
+from ..types.user import WorkloadType,UserType
 from user.models import Track, Designation, Workload
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 
@@ -38,8 +38,29 @@ class UpdateWorkload(graphene.Mutation):
         workload.save()
         return UpdateWorkload(workload=workload)
 
+
+class UpdateUser(graphene.Mutation):
+    user = graphene.Field(UserType)
+
+    class Arguments:
+        firstName = graphene.String()
+        lastName = graphene.String()
+
+    @login_required
+    @resolve_user
+    def mutate(self , info,firstName, lastName):
+        user = info.context.resolved_user
+        user.first_name = firstName
+        user.last_name = lastName
+        user.save()
+        return UpdateUser(user)
+    
+
 class UserMutation(graphene.ObjectType):
     update_workload = UpdateWorkload.Field()
+    update_user = UpdateUser.Field()
+
+
 
 __all__ = [
     'UserMutation'

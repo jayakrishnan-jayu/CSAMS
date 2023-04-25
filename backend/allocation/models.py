@@ -7,7 +7,7 @@ class CourseAllocation(models.Model):
         on_delete=models.PROTECT,
     )
     faculty = models.ForeignKey(
-        'user.User',
+        'user.Faculty',
         on_delete=models.PROTECT,
     )
 
@@ -23,7 +23,7 @@ class LabAllocation(models.Model):
         on_delete=models.PROTECT,
     )
     faculty = models.ForeignKey(
-        'user.User',
+        'user.Faculty',
         on_delete=models.PROTECT,
     )
     is_in_charge = models.BooleanField()
