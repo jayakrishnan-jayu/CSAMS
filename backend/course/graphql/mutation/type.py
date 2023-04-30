@@ -15,6 +15,7 @@ class SemesterInput(graphene.InputObjectType):
 
 class ExtraInput(graphene.InputObjectType):
     name = graphene.String(required=True)
+    is_elective = graphene.Boolean(required=True)
     courses = graphene.List(CourseInput, required=True)
 
 class CurriculumUploadInput(graphene.InputObjectType):

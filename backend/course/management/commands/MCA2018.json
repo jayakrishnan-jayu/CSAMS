@@ -4,6 +4,7 @@
     "extra": [
         {
             "name": "Lab",
+            "isElective": false,
             "courses": [
                 {
                     "code": "18CA381",
@@ -81,6 +82,7 @@
         },
         {
             "name": "Elective I",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18CA313",
@@ -158,6 +160,7 @@
         },
         {
             "name": "Elective II",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18CA431",
@@ -235,6 +238,7 @@
         },
         {
             "name": "Elective III",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18CA452",
@@ -312,6 +316,7 @@
         },
         {
             "name": "Elective IV",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18HU433",

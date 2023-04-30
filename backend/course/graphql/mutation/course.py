@@ -1,13 +1,94 @@
 
 from django.forms import ValidationError
 import graphene
+from django.db import transaction
 
 from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput
 from course.graphql.types.course import CurriculumUploadType
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
-from course.models import CurriculumUpload, Program, Curriculum
+from backend.api import APIException
+from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse
+from typing import List
+class VerifyCurriculumUpload(graphene.Mutation):
+    class Arguments:
+        curriculumUploadID = graphene.ID(required=True)
+
+    response = graphene.Field(graphene.Boolean())
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, curriculumUploadID: graphene.ID):
+        try:
+            c : CurriculumUpload = CurriculumUpload.objects.get(id=curriculumUploadID)
+        except CurriculumUpload.DoesNotExist:
+            raise APIException(message="Invalid Argument, Curriculum Upload Does not exist")
+        
+        if c.is_populated or Curriculum.objects.filter(program=c.program, year=c.year).exists():
+            raise APIException(message="Curriculum already uploaded", code="CURRICULUM_EXISTS")
+        
+
+        semesters_data = c.data['semesters']
+        curriculum_extras = c.data['extra']
+
+        try:
+            with transaction.atomic():
+                curriculum = Curriculum.objects.create(program=c.program, year=c.year)
+                c_extras:List[CurriculumExtras] = []
+                for e in curriculum_extras:
+                    is_elective = e['is_elective']
+                    ce = CurriculumExtras.objects.create(curriculum=curriculum, name=e['name'])
+                    c_extras.append(ce)
+                    for ec in e['courses']:
+                        ExtraCourse.objects.create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=ce, is_elective=is_elective)
+                
+
+                for year_index in range(c.program.year):
+                    for sem_index in range(1, (c.program.year*2)+1):
+                        for sem in semesters_data:
+                            if sem['sem'] == sem_index:
+                                break
+                        if sem['sem'] != sem_index:
+                            raise APIException("Invalid Curriculum Data")
+
+                        batch = Batch.objects.create(curriculum=curriculum, year=year_index+c.year, sem=int(sem['sem']))
+                        
+                        courses = [Course.objects.create(code=c['code'], name=c['name'], batch=batch, l=c['L'], t=c['T'], p=c['P'], credit=c['C'], hours=0) for c in sem['courses'] ] 
+                        sem_extras = sem['extra']
+                        for extra in sem_extras:
+                            for c_extra in c_extras:
+                                c_extra:CurriculumExtras = c_extra
+                                if extra == c_extra.name:
+                                    batch.add_extra(c_extra)
+                                    continue
+                c.is_populated = True
+                c.save()                              
+                        #     CurriculumExtras.objects.create(curriculum=curriculum, name=)
 
 
+        except Exception as e:
+            raise APIException(message=e)
+        return VerifyCurriculumUpload(response=True)
+
+
+class DeleteCurriculumUpload(graphene.Mutation):
+    class Arguments:
+        curriculumUploadID = graphene.ID(required=True)
+    response = graphene.Field(graphene.Boolean())
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, curriculumUploadID: graphene.ID):
+        try:
+            c : CurriculumUpload = CurriculumUpload.objects.get(id=curriculumUploadID)
+        except CurriculumUpload.DoesNotExist:
+            raise APIException(message="Invalid Argument, Curriculum Upload Does not exist")
+        if c.is_populated:
+            raise APIException(message="Curriculum is already populated, cannot delete verified curriculum")
+        c.delete()
+        return DeleteCurriculumUpload(response=True)
+    
 class UploadCurriculum(graphene.Mutation):
     class Arguments:
         data = graphene.Argument(CurriculumUploadInput, required=True)
@@ -95,6 +176,8 @@ class UploadCurriculum(graphene.Mutation):
 
 class CourseMutation(graphene.ObjectType):
     upload_curriculum = UploadCurriculum.Field()
+    delete_curriculum = DeleteCurriculumUpload.Field()
+    verify_curriculum = VerifyCurriculumUpload.Field()
 
 __all__ = [
     'CourseMutation'
