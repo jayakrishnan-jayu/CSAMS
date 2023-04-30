@@ -3,12 +3,48 @@ from django.forms import ValidationError
 import graphene
 from django.db import transaction
 
-from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput
+from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput, CourseLabMapInput
 from course.graphql.types.course import CurriculumUploadType
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 from backend.api import APIException
-from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse
+from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab
 from typing import List
+
+
+class CourseLabMapping(graphene.Mutation):
+    class Arguments:
+        mapping = graphene.List(CourseLabMapInput, required=True)
+        curriculumUploadID = graphene.ID(required=True)
+    response =  graphene.Field(graphene.Boolean())
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, mapping:List[CourseLabMapInput], curriculumUploadID: graphene.ID):
+        try:
+            c : CurriculumUpload = CurriculumUpload.objects.get(id=curriculumUploadID)
+        except CurriculumUpload.DoesNotExist:
+            raise APIException(message="Invalid Argument, Curriculum Upload Does not exist")
+        try:
+            curriculum = Curriculum.objects.get(program=c.program, year=c.year)
+        except Curriculum.DoesNotExist:
+            raise APIException(message="Internal Server Error, curriculum does not exist")
+        with transaction.atomic():
+            for m in mapping:
+                try:
+                    course:Course = Course.objects.get(id=m.courseID)
+                    lab:Course = Course.objects.get(id=m.labID)
+                    if course.is_lab:
+                        raise APIException(message=f"Course {course.name} is of type lab, cannot be mapped to type course")
+                    if not lab.is_lab:
+                        raise APIException(message=f"Course {course.name} is of type course, cannot be mapped to type Lab")
+                    if course.batch.curriculum.pk != curriculum.pk or lab.batch.curriculum.pk != curriculum.pk:
+                        raise APIException("Course not found in curriculum")
+                    CourseLab.objects.create(course=course, lab=lab)
+                except Course.DoesNotExist:
+                    raise APIException(message="Invalid Course or Lab ID", code="INVALID_ID")
+        return CourseLabMapping(response=True)
+
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
         curriculumUploadID = graphene.ID(required=True)
@@ -178,6 +214,7 @@ class CourseMutation(graphene.ObjectType):
     upload_curriculum = UploadCurriculum.Field()
     delete_curriculum = DeleteCurriculumUpload.Field()
     verify_curriculum = VerifyCurriculumUpload.Field()
+    course_lab_mapping = CourseLabMapping.Field()
 
 __all__ = [
     'CourseMutation'
