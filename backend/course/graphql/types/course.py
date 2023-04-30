@@ -1,5 +1,5 @@
 import graphene
-from course.models import Batch, Program, Course, BatchCurriculumExtra
+from course.models import Batch, Program, Course, BatchCurriculumExtra, Curriculum, ExtraCourse
 from backend.api import APIException
 from typing import List
 
@@ -33,27 +33,6 @@ class CurriculumUploadType(graphene.ObjectType):
     uploaded_on = graphene.DateTime()
     is_populated = graphene.Boolean()
 
-
-class BatchType(graphene.ObjectType):
-    id = graphene.ID()
-    curriculum = graphene.Field(CurriculumType)
-    extra = graphene.List(graphene.String)
-    year = graphene.Int()
-    sem = graphene.Int()
-
-
-    def resolve_extra(self, info):
-        extras: List[BatchCurriculumExtra] = self.extras
-        result = []
-        for bce in extras:
-            result += [bce.extra]*bce.count
-        return result
-
-
-class BatchYearSemType(graphene.ObjectType):
-    year = graphene.Int()
-    semesters = graphene.List(graphene.Int)
-
 class ExtraCourseType(graphene.ObjectType):
     code = graphene.String()
     name = graphene.String()
@@ -66,6 +45,56 @@ class ExtraCourseType(graphene.ObjectType):
 
     def resolve_course_type(self, info):
         return self.course_type.name
+
+class BatchType(graphene.ObjectType):
+    id = graphene.ID()
+    curriculum = graphene.Field(CurriculumType)
+    semester_extra_courses = graphene.List(graphene.String)
+    selected_extra_courses = graphene.List(ExtraCourseType)
+    extra_course_left_to_assign = graphene.Int()
+    year = graphene.Int()
+    sem = graphene.Int()
+
+
+    def resolve_semester_extra_courses(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        extras: List[BatchCurriculumExtra] = self.extras
+        result = []
+        for bce in extras:
+            result += [bce.extra]*bce.count
+        return result
+    
+    def resolve_selected_extra_courses(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return self.selected_extra_courses.all()
+    
+    def resolve_extra_course_left_to_assign(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        selected_courses = self.selected_extra_courses.all() # ExtraCourse (stores the elective/optionals course details from curriculum data)
+        batch_curriculum_extras = self.extras # BatchCurriculumExtra (stores the CurriculumExtra and it's count), specifies what all extra electives are available to batch
+        selected_courses_count = len(selected_courses)
+        batch_extra_courses_count = 0
+        for bce in batch_curriculum_extras:
+            batch_extra_courses_count += bce.count
+        return batch_extra_courses_count - selected_courses_count
+
+
+
+class BatchYearSemType(graphene.ObjectType):
+    year = graphene.Int()
+    semesters = graphene.List(graphene.Int)
+
+class BatchCurriculumExtraType(graphene.ObjectType):
+    curriculum_extras = graphene.String()
+
+    def resolve_curriculum_extras(self, info):
+        if not isinstance(self, BatchCurriculumExtra):
+            raise APIException('BatchCurriculumExtra not found', 'BATCH_CURRICULUM_EXTRA_NOT_FOUND')
+        return [*[e.name for e in self.extra]*self.count]
+    
      
 class BatchInfoType(graphene.ObjectType):
     program = graphene.String()
@@ -96,6 +125,7 @@ class CourseType(graphene.ObjectType):
     l = graphene.Int()
     t = graphene.Int()
     p = graphene.Int()
+    is_extra = graphene.Boolean()
 
 
 class CourseLabType(graphene.ObjectType):
@@ -103,9 +133,54 @@ class CourseLabType(graphene.ObjectType):
     lab = graphene.Field(CourseType)
 
 
+# class BatchManagementStatusType(graphene.ObjectType):
+#     selected_courses = graphene.List(graphene.List)
+#     is_complete = graphene.Boolean(description="Specifies whether the batch has been assigned the extra courses, if any")
+#     is_current_batch = graphene.Boolean(description="Specifies whether the batch is currently in progress depeneding on the year and odd/even sem specified")
+#     extra_course_left_to_assign = graphene.Int(description="Specifies the number of courses left to be assigned ie Electives")
+
+# class BatchManagementInfoType(graphene.ObjectType):
+#     sem = graphene.Int()
+#     status = graphene.Field(BatchManagementStatusType)
+    
+
+#     def resolve_status(self, info):
+#         if not isinstance(self, Batch):
+#             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+#         selected_courses = self.selected_extra_courses.all() # ExtraCourse (stores the elective/optionals course details from curriculum data)
+#         batch_curriculum_extras = self.extras # BatchCurriculumExtra (stores the CurriculumExtra and it's count), specifies what all extra electives are available to batch
+#         selected_courses_count = len(selected_courses)
+#         batch_extra_courses_count = 0
+#         for bce in batch_curriculum_extras:
+#             batch_extra_courses_count += bce.count
+
+#         courses_left = batch_extra_courses_count - selected_courses_count
+
+#         self.is_complete = courses_left == 0
+#         self.is_current_batch = False
+#         self.extra_course_left_to_assign = courses_left
+#         return self
+    
+# class BatchManagementType(graphene.ObjectType):
+#     program_name = graphene.String()
+#     year = graphene.Int()
+#     batches = graphene.List(BatchManagementInfoType)
+
+#     def resolve_program_name(self, info):
+#         if not isinstance(self, Curriculum):
+#             raise APIException('Curriculum not found', 'CURRICULUM_NOT_FOUND')
+#         return self.program.name
+
+    
+#     def resolve_batches(self, info):
+#         if not isinstance(self, Curriculum):
+#             raise APIException('Curriculum not found', 'CURRICULUM_NOT_FOUND')
+#         return Batch.objects.filter(curriculum=self)
+
 class SemesterCourseType(graphene.ObjectType):
     courses = graphene.List(CourseType)
-    # extra = graphene.List(ExtraCourseType)
+    # selected_extra_courses = graphene.List(ExtraCourseType)
+    # semester_extra_courses = graphene.List(BatchCurriculumExtraType)
 
     def resolve_courses(self, info):
         if not isinstance(self, Batch):
@@ -115,11 +190,15 @@ class SemesterCourseType(graphene.ObjectType):
             raise APIException('Courses not found', 'COURSE_NOT_FOUND')
         return qs
 
-    # def resolve_extra(self, info):
+    # def resolve_selected_extra_courses(self, info):
     #     if not isinstance(self, Batch):
     #         raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-    #     qs = Course.objects.filter(batch=self, is_extra=True)
-    #     return qs
+    #     return self.selected_extra_courses.all()
+    
+    # def resolve_semester_extra_courses(self, info):
+    #     if not isinstance(self, Batch):
+    #         raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+    #     return self.extras()
 
 __all__ = [
     'ProgramType',
