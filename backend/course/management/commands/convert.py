@@ -23,6 +23,7 @@ for file in files:
         if key.startswith('+'):
             obj = {
                 'name': key[1:-6],
+                'isElective': key.lower().__contains__('elective'),
                 'courses': [{'code': line[:8].strip(), 'name': line[8:-6] ,'L': int(line[-6:].split(' ')[-2][0]), 'T': int(line[-6:].split(' ')[-2][1]), 'P': int(line[-6:].split(' ')[-2][2]), 'C': int(line[-6:].split(' ')[-1])} for line in temp[key]]
             }
             output['extra'].append(obj)

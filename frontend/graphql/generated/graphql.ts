@@ -102,8 +102,14 @@ export type CurriculumUploadType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type DeleteCurriculumUpload = {
+  __typename?: 'DeleteCurriculumUpload';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type ExtraInput = {
   courses: Array<InputMaybe<CourseInput>>;
+  isElective: Scalars['Boolean'];
   name: Scalars['String'];
 };
 
@@ -123,9 +129,16 @@ export type IdentfierInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  deleteCurriculum?: Maybe<DeleteCurriculumUpload>;
   updateUser?: Maybe<UpdateUser>;
   updateWorkload?: Maybe<UpdateWorkload>;
   uploadCurriculum?: Maybe<UploadCurriculum>;
+  verifyCurriculum?: Maybe<VerifyCurriculumUpload>;
+};
+
+
+export type MutationDeleteCurriculumArgs = {
+  curriculumUploadID: Scalars['ID'];
 };
 
 
@@ -145,6 +158,11 @@ export type MutationUpdateWorkloadArgs = {
 
 export type MutationUploadCurriculumArgs = {
   data: CurriculumUploadInput;
+};
+
+
+export type MutationVerifyCurriculumArgs = {
+  curriculumUploadID: Scalars['ID'];
 };
 
 export type PreferenceType = {
@@ -278,6 +296,11 @@ export type UserType = {
   isStaff?: Maybe<Scalars['Boolean']>;
   lastName?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
+};
+
+export type VerifyCurriculumUpload = {
+  __typename?: 'VerifyCurriculumUpload';
+  response?: Maybe<Scalars['Boolean']>;
 };
 
 export type WorkloadType = {
@@ -708,6 +731,21 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "DeleteCurriculumUpload",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "FacultyType",
         "fields": [
           {
@@ -742,6 +780,26 @@ export default {
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "deleteCurriculum",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteCurriculumUpload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "curriculumUploadID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "updateUser",
             "type": {
@@ -826,6 +884,26 @@ export default {
             "args": [
               {
                 "name": "data",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "verifyCurriculum",
+            "type": {
+              "kind": "OBJECT",
+              "name": "VerifyCurriculumUpload",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "curriculumUploadID",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -1425,6 +1503,21 @@ export default {
           },
           {
             "name": "username",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "VerifyCurriculumUpload",
+        "fields": [
+          {
+            "name": "response",
             "type": {
               "kind": "SCALAR",
               "name": "Any"

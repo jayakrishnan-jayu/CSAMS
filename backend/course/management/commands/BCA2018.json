@@ -4,6 +4,7 @@
     "extra": [
         {
             "name": "Language I",
+            "isElective": false,
             "courses": [
                 {
                     "code": "18HIN101",
@@ -49,6 +50,7 @@
         },
         {
             "name": "Language II",
+            "isElective": false,
             "courses": [
                 {
                     "code": "18HIN111",
@@ -94,6 +96,7 @@
         },
         {
             "name": "Open Elective A",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18OEL231",
@@ -611,6 +614,7 @@
         },
         {
             "name": "Elective A",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18CSA311",
@@ -664,6 +668,7 @@
         },
         {
             "name": "Elective B",
+            "isElective": true,
             "courses": [
                 {
                     "code": "18CSA337",
