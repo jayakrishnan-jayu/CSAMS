@@ -33,7 +33,7 @@ class BatchQueries(graphene.ObjectType):
         BatchInfoType,
         program=graphene.String(description="Department Program eg BCA"),
     )
-    
+
     @login_required
     def resolve_programs(self, info):
         programs = Program.objects.all()
