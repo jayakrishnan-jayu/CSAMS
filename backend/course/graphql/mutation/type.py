@@ -24,3 +24,6 @@ class CurriculumUploadInput(graphene.InputObjectType):
     extra = graphene.List(ExtraInput, required=True)
     semesters = graphene.List(SemesterInput, required=True)
 
+class CourseLabMapInput(graphene.InputObjectType):
+    courseID = graphene.ID(required=True)
+    labID = graphene.ID(required=True)
