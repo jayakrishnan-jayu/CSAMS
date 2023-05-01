@@ -136,7 +136,6 @@ class Batch(models.Model):
 
     def add_extra(self, ce: CurriculumExtras):
         bce, new = BatchCurriculumExtra.objects.get_or_create(batch=self, extra=ce)
-        print(bce.batch, bce.extra, bce.count)
         if not new:
             bce.count += 1
             bce.save()

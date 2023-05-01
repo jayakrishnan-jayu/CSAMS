@@ -10,41 +10,6 @@ from backend.api import APIException
 from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab
 from typing import List
 
-
-class CourseLabMapping(graphene.Mutation):
-    class Arguments:
-        mapping = graphene.List(CourseLabMapInput, required=True)
-        curriculumUploadID = graphene.ID(required=True)
-    response =  graphene.Field(graphene.Boolean())
-
-    @login_required
-    @resolve_user
-    @staff_privilege_required
-    def mutate(self, info, mapping:List[CourseLabMapInput], curriculumUploadID: graphene.ID):
-        try:
-            c : CurriculumUpload = CurriculumUpload.objects.get(id=curriculumUploadID)
-        except CurriculumUpload.DoesNotExist:
-            raise APIException(message="Invalid Argument, Curriculum Upload Does not exist")
-        try:
-            curriculum = Curriculum.objects.get(program=c.program, year=c.year)
-        except Curriculum.DoesNotExist:
-            raise APIException(message="Internal Server Error, curriculum does not exist")
-        with transaction.atomic():
-            for m in mapping:
-                try:
-                    course:Course = Course.objects.get(id=m.courseID)
-                    lab:Course = Course.objects.get(id=m.labID)
-                    if course.is_lab:
-                        raise APIException(message=f"Course {course.name} is of type lab, cannot be mapped to type course")
-                    if not lab.is_lab:
-                        raise APIException(message=f"Course {course.name} is of type course, cannot be mapped to type Lab")
-                    if course.batch.curriculum.pk != curriculum.pk or lab.batch.curriculum.pk != curriculum.pk:
-                        raise APIException("Course not found in curriculum")
-                    CourseLab.objects.create(course=course, lab=lab)
-                except Course.DoesNotExist:
-                    raise APIException(message="Invalid Course or Lab ID", code="INVALID_ID")
-        return CourseLabMapping(response=True)
-
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
         curriculumUploadID = graphene.ID(required=True)
@@ -72,7 +37,7 @@ class VerifyCurriculumUpload(graphene.Mutation):
                 curriculum = Curriculum.objects.create(program=c.program, year=c.year)
                 c_extras:List[CurriculumExtras] = []
                 for e in curriculum_extras:
-                    is_elective = e['is_elective']
+                    is_elective = e['isElective']
                     ce = CurriculumExtras.objects.create(curriculum=curriculum, name=e['name'])
                     c_extras.append(ce)
                     for ec in e['courses']:
@@ -88,8 +53,12 @@ class VerifyCurriculumUpload(graphene.Mutation):
                             raise APIException("Invalid Curriculum Data")
 
                         batch = Batch.objects.create(curriculum=curriculum, year=year_index+c.year, sem=int(sem['sem']))
-                        
-                        courses = [Course.objects.create(code=c['code'], name=c['name'], batch=batch, l=c['L'], t=c['T'], p=c['P'], credit=c['C'], hours=0) for c in sem['courses'] ] 
+                        courses = {}
+                        for cr in sem['courses']:
+                            courses[cr['code']] = Course.objects.create(code=cr['code'], name=cr['name'], batch=batch, l=cr['L'], t=cr['T'], p=cr['P'], credit=cr['C'], hours=0)
+                        for cl in sem['courseLabs']:
+                            CourseLab.objects.create(course=courses[cl['courseCode']], lab=courses[cl['labCode']])
+
                         sem_extras = sem['extra']
                         for extra in sem_extras:
                             for c_extra in c_extras:
@@ -177,6 +146,7 @@ class UploadCurriculum(graphene.Mutation):
                 assert isinstance(s, SemesterInput), "Invalid Semester"
                 assert s['sem'] > 0, "Invalid semester number"
                 sem_nums.append(s.sem)
+                courseCodes = {}
                 if s['extra'] is not None:
                     for extra in s['extra']:
                         extra = extra.strip()
@@ -185,7 +155,16 @@ class UploadCurriculum(graphene.Mutation):
                 assert s['courses'] and len(s['courses']) > 0, f"Courses not found in semester S{s.sem}"
                 for course in s['courses']:
                     assert isinstance(course, CourseInput), f"Invalid Course type found in S{s.sem}"
+                    courseCodes[course['code']] = True
                     UploadCurriculum._check_course(course)
+                if s['courseLabs'] is not None:
+                    for cl in s['courseLabs']:
+                        assert 'courseCode' in cl and 'labCode' in cl, 'invalid course/lab code'
+                        assert cl['labCode'][-2] == '8', "invalid lab component"
+                        assert cl['courseCode'][-2] != '8', "invalid course component"
+                        assert cl['labCode'] in courseCodes, "Course/Lab component not found in semester courses"
+                        assert cl['courseCode'] in courseCodes, "Course/Lab component not found in semester courses"
+            
             if len(extras)>0:
                 unique_extras = list(set(extras))
                 assert len(unique_extras) == len(data['extra']), "Extra courses mismatch"
@@ -207,14 +186,12 @@ class UploadCurriculum(graphene.Mutation):
                 # assert Curriculum.objects.filter(program__name=data.program).order_by('year').last()
         except AssertionError as e:
             raise ValidationError(str(e))
-        print(upload)
         return UploadCurriculum(response=upload)
 
 class CourseMutation(graphene.ObjectType):
     upload_curriculum = UploadCurriculum.Field()
-    delete_curriculum = DeleteCurriculumUpload.Field()
-    verify_curriculum = VerifyCurriculumUpload.Field()
-    course_lab_mapping = CourseLabMapping.Field()
+    delete_curriculum_upload = DeleteCurriculumUpload.Field()
+    verify_curriculum_upload = VerifyCurriculumUpload.Field()
 
 __all__ = [
     'CourseMutation'
