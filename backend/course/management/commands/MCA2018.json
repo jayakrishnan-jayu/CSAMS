@@ -414,7 +414,8 @@
                     "C": 0
                 }
             ],
-            "extra": []
+            "extra": [],
+            "courseLabs": []
         },
         {
             "sem": 2,
@@ -470,7 +471,8 @@
             ],
             "extra": [
                 "Lab"
-            ]
+            ],
+            "courseLabs": []
         },
         {
             "sem": 3,
@@ -534,7 +536,8 @@
             ],
             "extra": [
                 "Lab"
-            ]
+            ],
+            "courseLabs": []
         },
         {
             "sem": 4,
@@ -584,7 +587,8 @@
                 "Lab",
                 "Elective I",
                 "Elective II"
-            ]
+            ],
+            "courseLabs": []
         },
         {
             "sem": 5,
@@ -619,7 +623,8 @@
                 "Lab",
                 "Elective III",
                 "Elective IV"
-            ]
+            ],
+            "courseLabs": []
         },
         {
             "sem": 6,
@@ -633,7 +638,8 @@
                     "C": 12
                 }
             ],
-            "extra": []
+            "extra": [],
+            "courseLabs": []
         }
     ]
 }

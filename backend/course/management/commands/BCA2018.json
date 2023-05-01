@@ -784,6 +784,12 @@
             ],
             "extra": [
                 "Language I"
+            ],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA101",
+                    "labCode": "18CSA182"
+                }
             ]
         },
         {
@@ -856,6 +862,16 @@
             ],
             "extra": [
                 "Language II"
+            ],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA113",
+                    "labCode": "18CSA184"
+                },
+                {
+                    "courseCode": "18CSA114",
+                    "labCode": "18CSA183"
+                }
             ]
         },
         {
@@ -934,7 +950,17 @@
                     "C": 1
                 }
             ],
-            "extra": []
+            "extra": [],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA209",
+                    "labCode": "18CSA283"
+                },
+                {
+                    "courseCode": "18CSA206",
+                    "labCode": "18CSA284"
+                }
+            ]
         },
         {
             "sem": 4,
@@ -1006,6 +1032,16 @@
             ],
             "extra": [
                 "Open Elective A"
+            ],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA215",
+                    "labCode": "18CSA285"
+                },
+                {
+                    "courseCode": "18CSA216",
+                    "labCode": "18CSA286"
+                }
             ]
         },
         {
@@ -1071,6 +1107,12 @@
             "extra": [
                 "Open Elective A",
                 "Elective A"
+            ],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA306",
+                    "labCode": "18CSA388"
+                }
             ]
         },
         {
@@ -1119,6 +1161,12 @@
             ],
             "extra": [
                 "Elective B"
+            ],
+            "courseLabs": [
+                {
+                    "courseCode": "18CSA317",
+                    "labCode": "18CSA383"
+                }
             ]
         }
     ]
