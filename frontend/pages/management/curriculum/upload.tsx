@@ -6,6 +6,7 @@ import PreviewCurriculum from '@/components/curriculumUpload/preview';
 import { Toast } from 'primereact/toast';
 import { VerifyNewCurriculumQuery, CurriculumUploadInput, CurriculumUploadType } from '@/graphql/generated/graphql';
 import DoneCurriculum from '@/components/curriculumUpload/done';
+import { Button } from 'primereact/button';
 
 const Upload = () => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -42,6 +43,20 @@ const onDoneComplete = (data: CurriculumUploadType) => {
     setCurriculumUploadType(data)
 }
 
+const footerElement = (): JSX.Element => {
+    return (
+        <div className="flex align-items-center flex-wrap">
+            <div className="flex mt-6 ml-auto mr-auto">
+                <Button 
+                    label='Continue'
+                    icon="pi pi-check"
+                    onClick={onVerify}
+                />
+                </div>
+        </div>
+    );
+}
+
 
 const render = (activeIndex: number) => {
     switch(activeIndex){
@@ -49,7 +64,7 @@ const render = (activeIndex: number) => {
             return <UploadCurriculum onUpload={onUpload} toast={toast}/>;
         case 1:
             console.log("veryifying curriculum")
-            if (curriculum) return <VerifyCurriculum curriculum={curriculum} onVerify={onVerify}/>;
+            if (curriculum) return <VerifyCurriculum curriculum={curriculum} footerElement={footerElement}/>;
             setActiveIndex(0)
             break;
         case 2:

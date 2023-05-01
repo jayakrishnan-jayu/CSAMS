@@ -1,0 +1,11 @@
+mutation deleteCurriculumUpload ($CURRICULUMUPLOADID: ID!){
+  deleteCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID){
+     response
+  }
+}
+
+mutation verifyCurriculumUpload ($CURRICULUMUPLOADID: ID!){
+  verifyCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID){
+     response
+  }
+}

@@ -1,27 +1,47 @@
-import { useUpdateWorkloadMutation, useCurriculumUploadsQuery, useWorkloadsQuery, CurriculumUploadType, CurriculumUploadInput } from '@/graphql/generated/graphql';
+import { useCurriculumUploadsQuery, CurriculumUploadType, CurriculumUploadInput, useDeleteCurriculumUploadMutation, useVerifyCurriculumUploadMutation } from '@/graphql/generated/graphql';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable, DataTableFilterMeta } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
-import { InputNumber } from 'primereact/inputnumber';
 import { Sidebar } from 'primereact/sidebar';
 import { Toast } from 'primereact/toast';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { classNames } from 'primereact/utils';
 import React, { useRef, useState } from 'react';
 import VerifyCurriculum from './curriculumUpload/verify';
+import { useRouter } from "next/navigation";
 
 const CurriculumUploadTable = () => {
     const programs = ['BCA', 'BCA DS', 'MCA']
     const toast = useRef(null);
     const dt = useRef(null);
+    const router = useRouter();
+
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
+
+    const [deleteDisplayConfirmation, setDeleteDisplayConfirmation] = useState(false);
+    const [verifyDisplayConfirmation, setVerifyDisplayConfirmation] = useState(false);
+    
     const [curriculumUpload, setCurriculumUpload] = useState<CurriculumUploadType|null>(null);
 
+    const [, deleteCurriculumUploadMutation] = useDeleteCurriculumUploadMutation();
+    const [, verifyCurriculumUploadMutation] = useVerifyCurriculumUploadMutation();
+    // const [_, deleteCurriculumUploadMutation] = useVer();
     const [result] = useCurriculumUploadsQuery()
     const {fetching, data, error} = result;
+
+    const deleteCurriculumUploadData = async () => {
+        if (curriculumUpload?.id)
+            await deleteCurriculumUploadMutation({CURRICULUMUPLOADID:curriculumUpload.id})
+            router.refresh()
+    }
+    const verifyCurriculumUploadData = async () => {
+        if (curriculumUpload?.id)
+            await verifyCurriculumUploadMutation({CURRICULUMUPLOADID:curriculumUpload.id})
+            router.refresh()
+    }
 
     
     if (error) return <div>{error.toString()}</div>
@@ -92,6 +112,48 @@ const CurriculumUploadTable = () => {
         isPopulated: { value: null, matchMode: FilterMatchMode.EQUALS },
     }
 
+    const deleteConfirmationDialogFooter = (
+        <>
+            <Button type="button" label="No" icon="pi pi-times" onClick={() => {setDeleteDisplayConfirmation(false); }} className="p-button-text" autoFocus/>
+            <Button type="button" label="Yes" icon="pi pi-check" onClick={() => {setDeleteDisplayConfirmation(false); deleteCurriculumUploadData(); }} className="p-button-text" />
+        </>
+    );
+
+    const verifyConfirmationDialogFooter = (
+        <>
+            <Button type="button" label="No" icon="pi pi-times" onClick={() => {setVerifyDisplayConfirmation(false); }} className="p-button-text" autoFocus/>
+            <Button type="button" label="Yes" icon="pi pi-check" onClick={() => {setVerifyDisplayConfirmation(false); verifyCurriculumUploadData(); }} className="p-button-text" />
+        </>
+    );
+
+    const footerElement = (): JSX.Element => {
+        return (
+        <div className="flex align-items-center flex-wrap">
+            <div className="flex mt-6 ml-auto mr-auto">
+                <Button 
+                    label='Verify'
+                    icon="pi pi-check"
+                    onClick={() => setVerifyDisplayConfirmation(true)}
+                />
+                <Dialog header="Verify Confirmation" visible={verifyDisplayConfirmation} onHide={() => setVerifyDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={verifyConfirmationDialogFooter}>
+                    <div className="flex align-items-center justify-content-center">
+                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                        <span>Are you sure you want to verify {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?. This action cannot be reverted.</span>
+                    </div>
+                </Dialog>
+                <Button label="Delete" icon="pi pi-trash" className="p-button-danger ml-8" onClick={() => setDeleteDisplayConfirmation(true)} />
+                <Dialog header="Delete Confirmation" visible={deleteDisplayConfirmation} onHide={() => setDeleteDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={deleteConfirmationDialogFooter}>
+                    <div className="flex align-items-center justify-content-center">
+                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                        <span>Are you sure you want to delete {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?</span>
+                    </div>
+                </Dialog>
+            </div>
+        </div>
+        )
+    }
+    
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -106,7 +168,7 @@ const CurriculumUploadTable = () => {
                         rowsPerPageOptions={[5, 10, 25]}
                         className="datatable-responsive"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                        emptyMessage="No workload info found."
+                        emptyMessage="No uploads found."
                         responsiveLayout="scroll"
                     >
                         <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>
@@ -120,8 +182,8 @@ const CurriculumUploadTable = () => {
                         {
                         visibleFullScreen && 
                         <VerifyCurriculum 
-                        curriculum={JSON.parse(curriculumUpload?.data) as CurriculumUploadInput} 
-                        onVerify={() => {console.log("done")}}
+                            curriculum={JSON.parse(curriculumUpload?.data) as CurriculumUploadInput} 
+                            footerElement={footerElement}
                         />
                             }
                     </Sidebar>
