@@ -1,15 +1,13 @@
-import { FacultyContext } from "@/components/layout/context/facultycontext";
+import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import PreferenceTable from "@/components/preferenceTable";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { useContext } from "react";
 
 export default function MyPage() { 
-  const { facultyData } = useContext(FacultyContext);
-  console.log("facultydata", facultyData)
+  const { metaData } = useContext(MetaDataContext);
   return (
     <>
-    <div>Hello {facultyData?.faculty?.user?.username}</div>
-    <PreferenceTable/>
+      <PreferenceTable/>
     </>
   )
 }

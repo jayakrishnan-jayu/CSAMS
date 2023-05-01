@@ -2,13 +2,14 @@ import { NextPage } from "next";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useMeQuery } from "@/graphql/generated/graphql";
 import { useContext } from "react";
-import { FacultyContext } from "@/components/layout/context/facultycontext";
+import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 
 const Profile: NextPage = () => {
   const { user, error, isLoading } = useUser();
-  const { facultyData } = useContext(FacultyContext);
-  const firstName = facultyData?.faculty?.user?.firstName;
-  const lastName = facultyData?.faculty?.user?.lastName;
+  const { metaData } = useContext(MetaDataContext);
+  const firstName = metaData?.metadata?.user?.firstName;
+  const lastName = metaData?.metadata?.user?.lastName;
+
 
   const [result] = useMeQuery();
   const { fetching, stale, data, operation } = result;

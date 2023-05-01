@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import AppMenuitem from './AppMenuItem';
 import { MenuProvider } from './context/menucontext';
-import { FacultyContext } from './context/facultycontext';
+import { MetaDataContext } from './context/metadatacontext';
 
 const AppMenu = () => {
     const homeSection = {
@@ -33,6 +33,16 @@ const AppMenu = () => {
                     },
                 ]
             },
+            { 
+                label: 'Batch', 
+                icon: 'pi pi-fw pi-book', 
+                items: [
+                    {
+                        label: 'Manage',
+                        to: '/management/batch/manage'
+                    },
+                ]
+            },
             {
                 label: 'Settings',
                 icon: 'pi pi-fw pi-cog',
@@ -42,18 +52,23 @@ const AppMenu = () => {
                         icon: 'pi pi-fw pi-clock',
                         to: '/management/settings/workload'
                     },
+                    {
+                        label: 'Semester Identifier',
+                        icon: 'pi pi-fw pi-info',
+                        to: '/management/settings/semester-identifier'
+                    },
                 ]
             },
         ]
-    }
+    };
 
     
 
-    const { facultyData } = useContext(FacultyContext);
+    const { metaData } = useContext(MetaDataContext);
     let model = [homeSection];
-    if (facultyData?.faculty?.user?.isStaff) {
+    if (metaData?.metadata?.user?.isStaff) {
         model = [homeSection, adminSection, accountSection]
-    } else if (facultyData?.faculty) {
+    } else if (metaData?.metadata?.faculty) {
         model = [homeSection, accountSection]
     }
     return (

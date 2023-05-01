@@ -1,23 +1,23 @@
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { useContext, useRef, useState } from "react";
-import { FacultyContext } from "@/components/layout/context/facultycontext";
+import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import { Toast } from "primereact/toast";
 import { useUpdateUserMutation } from "@/graphql/generated/graphql";
 
 const Settings = () => {
-  const { facultyData } = useContext(FacultyContext);
+  const {metaData } = useContext(MetaDataContext);
 
   const [firstName, setFirstName] = useState(
-    facultyData?.faculty?.user?.firstName
+    metaData?.metadata?.user?.firstName
   );
   const [lastName, setLastName] = useState(
-    facultyData?.faculty?.user?.lastName
+    metaData?.metadata?.user?.lastName
   );
-  const designation = facultyData?.faculty?.designation || "undefined";
+  const designation = metaData?.metadata?.faculty?.designation || "undefined";
 
-  const track = facultyData?.faculty?.track || "undefined";
-  const email = facultyData?.faculty?.user?.email || "undefined";
+  const track = metaData?.metadata?.faculty?.track || "undefined";
+  const email = metaData?.metadata?.user?.email || "undefined";
 
   const [newUserDetails, updateNewUserDetails] = useUpdateUserMutation();
 

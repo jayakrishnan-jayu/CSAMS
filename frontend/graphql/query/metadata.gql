@@ -1,0 +1,25 @@
+query metadata {
+    metadata {
+        user {
+            id
+            email
+            firstName
+            lastName
+            username
+            isStaff
+            isActive
+        }
+        faculty {
+            track
+            designation
+        }
+        config {
+            preferenceCount
+            currentPreferenceSem {
+                year
+                isEvenSem
+            }
+        }
+    }
+}
+

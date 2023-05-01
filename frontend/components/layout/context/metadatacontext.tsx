@@ -1,22 +1,22 @@
-import {FacultyQuery, useFacultyQuery} from '@/graphql/generated/graphql'
+import {MetadataQuery, useMetadataQuery} from '@/graphql/generated/graphql'
 import { useRouter } from 'next/router';
 
 import React, { createContext } from 'react';
 
-type FacultyContextType = {
-    facultyData: FacultyQuery | undefined;
+type MetaDataContextType = {
+    metaData: MetadataQuery | undefined;
 };
 
-export const FacultyContext = createContext<FacultyContextType>({
-    facultyData: undefined,
+export const MetaDataContext = createContext<MetaDataContextType>({
+    metaData: undefined,
   });
 
   interface ProviderProps {
     children: React.ReactNode;
   }
   
-  const FacultyProvider: React.FC<ProviderProps> = ({ children }) => {
-    const [result] = useFacultyQuery();
+  const MetaDataProvider: React.FC<ProviderProps> = ({ children }) => {
+    const [result] = useMetadataQuery();
     const {fetching, data, error} = result;
     if (fetching) return <div>Loading profile data</div>;
     if (error) {
@@ -25,10 +25,10 @@ export const FacultyContext = createContext<FacultyContextType>({
     }
 
     return (
-        <FacultyContext.Provider value={{ facultyData : data}}>
+        <MetaDataContext.Provider value={{ metaData : data}}>
           {children}
-        </FacultyContext.Provider>
+        </MetaDataContext.Provider>
       );
 
 };
-export default FacultyProvider;
+export default MetaDataProvider;

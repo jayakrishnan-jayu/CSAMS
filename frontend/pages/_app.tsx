@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import UrqlProvider from "../lib/provider"
 import { LayoutProvider } from '@/components/layout/context/layoutcontext'
-import FacultyProvider from '@/components/layout/context/facultycontext'
+import FacultyProvider from '@/components/layout/context/metadatacontext'
 import Layout from '@/components/layout/layout';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';

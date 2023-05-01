@@ -45,6 +45,12 @@ export type BatchYearSemType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type ConfigType = {
+  __typename?: 'ConfigType';
+  currentPreferenceSem?: Maybe<IdentiferType>;
+  preferenceCount?: Maybe<Scalars['Int']>;
+};
+
 export type CourseAndFacultyType = {
   __typename?: 'CourseAndFacultyType';
   course?: Maybe<CourseType>;
@@ -147,6 +153,19 @@ export type IdentfierInput = {
   year: Scalars['Int'];
 };
 
+export type IdentiferType = {
+  __typename?: 'IdentiferType';
+  isEvenSem?: Maybe<Scalars['Boolean']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
+export type MetaDataType = {
+  __typename?: 'MetaDataType';
+  config?: Maybe<ConfigType>;
+  faculty?: Maybe<FacultyType>;
+  user?: Maybe<UserType>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
@@ -218,6 +237,7 @@ export type Query = {
   faculty?: Maybe<FacultyType>;
   hello?: Maybe<Scalars['String']>;
   me?: Maybe<UserType>;
+  metadata?: Maybe<MetaDataType>;
   preferences?: Maybe<Array<Maybe<PreferenceType>>>;
   programs?: Maybe<Array<Maybe<ProgramType>>>;
   users?: Maybe<Array<Maybe<UserType>>>;
@@ -405,6 +425,11 @@ export type PreferencesQueryVariables = Exact<{
 
 export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null } | null } | null } | null> | null };
 
+export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null } | null } | null } | null };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -551,6 +576,30 @@ export default {
           },
           {
             "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ConfigType",
+        "fields": [
+          {
+            "name": "currentPreferenceSem",
+            "type": {
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "preferenceCount",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -895,6 +944,63 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "IdentiferType",
+        "fields": [
+          {
+            "name": "isEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "MetaDataType",
+        "fields": [
+          {
+            "name": "config",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ConfigType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "faculty",
+            "type": {
+              "kind": "OBJECT",
+              "name": "FacultyType",
+              "ofType": null
             },
             "args": []
           },
@@ -1418,6 +1524,15 @@ export default {
             "args": []
           },
           {
+            "name": "metadata",
+            "type": {
+              "kind": "OBJECT",
+              "name": "MetaDataType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
             "name": "preferences",
             "type": {
               "kind": "LIST",
@@ -1878,6 +1993,36 @@ export const PreferencesDocument = gql`
 
 export function usePreferencesQuery(options?: Omit<Urql.UseQueryArgs<PreferencesQueryVariables>, 'query'>) {
   return Urql.useQuery<PreferencesQuery, PreferencesQueryVariables>({ query: PreferencesDocument, ...options });
+};
+export const MetadataDocument = gql`
+    query metadata {
+  metadata {
+    user {
+      id
+      email
+      firstName
+      lastName
+      username
+      isStaff
+      isActive
+    }
+    faculty {
+      track
+      designation
+    }
+    config {
+      preferenceCount
+      currentPreferenceSem {
+        year
+        isEvenSem
+      }
+    }
+  }
+}
+    `;
+
+export function useMetadataQuery(options?: Omit<Urql.UseQueryArgs<MetadataQueryVariables>, 'query'>) {
+  return Urql.useQuery<MetadataQuery, MetadataQueryVariables>({ query: MetadataDocument, ...options });
 };
 export const MeDocument = gql`
     query me {
