@@ -1,7 +1,7 @@
 import graphene
 from backend.api import APIException
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
-from preference.models import Config
+from preference.models import Config, Identifier
 
 class UpdatePreferenceCount(graphene.Mutation):
     class Arguments:
@@ -21,8 +21,8 @@ class UpdatePreferenceCount(graphene.Mutation):
 
 class UpdateSemIdentifier(graphene.Mutation):
     class Arguments:
-        year = graphene.Int()
-        is_even_sem = graphene.Boolean()
+        year = graphene.Int(required=True)
+        is_even_sem = graphene.Boolean(required=True)
     response = graphene.Boolean()
     
     @login_required
@@ -32,11 +32,13 @@ class UpdateSemIdentifier(graphene.Mutation):
         if year is None and is_even_sem is None:
             raise APIException(message="year or is_even_sem required to update sem identifier", code="INVALID_ARGUMENTS")
         config = Config.objects.first()
-        if year is not None:
-            config.current_preference_sem.year = year
-        if is_even_sem is not None:
-            config.current_preference_sem.is_even_sem = is_even_sem
-        config.current_preference_sem.save()
+        if config.current_preference_sem.is_even_sem == is_even_sem and config.current_preference_sem.year == year:
+            raise APIException("No change detected", code="INVALID_ARGUMENT")
+        
+        
+        identifier, new = Identifier.objects.get_or_create(year= year, is_even_sem = is_even_sem)
+        config.current_preference_sem = identifier
+        config.save()
         return UpdateSemIdentifier(response=True)
 
 class ConfigMutation(graphene.ObjectType):

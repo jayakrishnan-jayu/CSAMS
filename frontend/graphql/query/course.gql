@@ -6,22 +6,7 @@ query programs {
   }
 }
 
-query currentCourses {
-  courses{
-    id
-    code
-    name
-    credit
-    isExtra
-    program
-    curriculumYear
-    batchYear
-    sem
-    
-  }
-}
-
-query coursesByIdentifier($IDENTIFIER: IdentfierInput) {
+query courses($IDENTIFIER: IdentfierInput) {
   courses(identifier: $IDENTIFIER){
     id
     code

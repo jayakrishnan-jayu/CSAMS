@@ -205,8 +205,8 @@ export type MutationUpdatePreferenceCountArgs = {
 
 
 export type MutationUpdateSemIdentifierArgs = {
-  isEvenSem?: InputMaybe<Scalars['Boolean']>;
-  year?: InputMaybe<Scalars['Int']>;
+  isEvenSem: Scalars['Boolean'];
+  year: Scalars['Int'];
 };
 
 
@@ -392,8 +392,8 @@ export type UpdatePreferenceCountMutationVariables = Exact<{
 export type UpdatePreferenceCountMutation = { __typename?: 'Mutation', updatePreferenceCount?: { __typename?: 'UpdatePreferenceCount', response?: boolean | null } | null };
 
 export type UpdateSemIdentifierMutationVariables = Exact<{
-  ISEVENSEM?: InputMaybe<Scalars['Boolean']>;
-  YEAR?: InputMaybe<Scalars['Int']>;
+  ISEVENSEM: Scalars['Boolean'];
+  YEAR: Scalars['Int'];
 }>;
 
 
@@ -452,17 +452,12 @@ export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProgramsQuery = { __typename?: 'Query', programs?: Array<{ __typename?: 'ProgramType', id?: string | null, name?: string | null, duration?: string | null } | null> | null };
 
-export type CurrentCoursesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CurrentCoursesQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
-
-export type CoursesByIdentifierQueryVariables = Exact<{
+export type CoursesQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
 }>;
 
 
-export type CoursesByIdentifierQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
+export type CoursesQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
 
 export type VerifyNewCurriculumQueryVariables = Exact<{
   PROGRAM: Scalars['String'];
@@ -489,6 +484,14 @@ export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null } | null } | null } | null };
+
+export type PreferencesQueryVariables = Exact<{
+  IDENTIFIER?: InputMaybe<IdentfierInput>;
+  COURSEID?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null } | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1209,15 +1212,21 @@ export default {
               {
                 "name": "isEvenSem",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "year",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -2009,7 +2018,7 @@ export function useUpdatePreferenceCountMutation() {
   return Urql.useMutation<UpdatePreferenceCountMutation, UpdatePreferenceCountMutationVariables>(UpdatePreferenceCountDocument);
 };
 export const UpdateSemIdentifierDocument = gql`
-    mutation updateSemIdentifier($ISEVENSEM: Boolean, $YEAR: Int) {
+    mutation updateSemIdentifier($ISEVENSEM: Boolean!, $YEAR: Int!) {
   updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
     response
   }
@@ -2122,27 +2131,8 @@ export const ProgramsDocument = gql`
 export function useProgramsQuery(options?: Omit<Urql.UseQueryArgs<ProgramsQueryVariables>, 'query'>) {
   return Urql.useQuery<ProgramsQuery, ProgramsQueryVariables>({ query: ProgramsDocument, ...options });
 };
-export const CurrentCoursesDocument = gql`
-    query currentCourses {
-  courses {
-    id
-    code
-    name
-    credit
-    isExtra
-    program
-    curriculumYear
-    batchYear
-    sem
-  }
-}
-    `;
-
-export function useCurrentCoursesQuery(options?: Omit<Urql.UseQueryArgs<CurrentCoursesQueryVariables>, 'query'>) {
-  return Urql.useQuery<CurrentCoursesQuery, CurrentCoursesQueryVariables>({ query: CurrentCoursesDocument, ...options });
-};
-export const CoursesByIdentifierDocument = gql`
-    query coursesByIdentifier($IDENTIFIER: IdentfierInput) {
+export const CoursesDocument = gql`
+    query courses($IDENTIFIER: IdentfierInput) {
   courses(identifier: $IDENTIFIER) {
     id
     code
@@ -2157,8 +2147,8 @@ export const CoursesByIdentifierDocument = gql`
 }
     `;
 
-export function useCoursesByIdentifierQuery(options?: Omit<Urql.UseQueryArgs<CoursesByIdentifierQueryVariables>, 'query'>) {
-  return Urql.useQuery<CoursesByIdentifierQuery, CoursesByIdentifierQueryVariables>({ query: CoursesByIdentifierDocument, ...options });
+export function useCoursesQuery(options?: Omit<Urql.UseQueryArgs<CoursesQueryVariables>, 'query'>) {
+  return Urql.useQuery<CoursesQuery, CoursesQueryVariables>({ query: CoursesDocument, ...options });
 };
 export const VerifyNewCurriculumDocument = gql`
     query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!) {
@@ -2230,6 +2220,39 @@ export const MetadataDocument = gql`
 
 export function useMetadataQuery(options?: Omit<Urql.UseQueryArgs<MetadataQueryVariables>, 'query'>) {
   return Urql.useQuery<MetadataQuery, MetadataQueryVariables>({ query: MetadataDocument, ...options });
+};
+export const PreferencesDocument = gql`
+    query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
+  preferences(identifier: $IDENTIFIER, courseId: $COURSEID) {
+    id
+    identifierYear
+    identifierIsEvenSem
+    faculty {
+      user {
+        firstName
+        lastName
+        username
+      }
+    }
+    course {
+      id
+      code
+      name
+      credit
+      l
+      t
+      p
+      credit
+    }
+    weigtage
+    experience
+    timestamp
+  }
+}
+    `;
+
+export function usePreferencesQuery(options?: Omit<Urql.UseQueryArgs<PreferencesQueryVariables>, 'query'>) {
+  return Urql.useQuery<PreferencesQuery, PreferencesQueryVariables>({ query: PreferencesDocument, ...options });
 };
 export const MeDocument = gql`
     query me {

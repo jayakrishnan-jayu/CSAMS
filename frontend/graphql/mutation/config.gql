@@ -3,7 +3,7 @@ mutation updatePreferenceCount ($COUNT: Int!){
         response
     }
 }
-mutation updateSemIdentifier ($ISEVENSEM: Boolean, $YEAR: Int) {
+mutation updateSemIdentifier ($ISEVENSEM: Boolean!, $YEAR: Int!) {
     updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
         response
     }

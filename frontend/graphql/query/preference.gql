@@ -1,0 +1,27 @@
+query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
+  preferences(identifier: $IDENTIFIER, courseId: $COURSEID) {
+    id
+    identifierYear
+    identifierIsEvenSem
+    faculty {
+      user {
+        firstName
+        lastName
+        username
+      }
+    }
+    course {
+      id
+      code
+      name
+      credit
+      l
+      t
+      p
+      credit
+    }
+    weigtage
+    experience
+    timestamp
+  }
+}
