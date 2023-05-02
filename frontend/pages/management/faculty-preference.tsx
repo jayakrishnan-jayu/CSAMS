@@ -15,7 +15,7 @@ const FacultyPreference = () => {
   const [yearValue, setYearValue] = useState("");
   const [semValue, setSemValue] = useState("");
 
-  const [result] = useCoursesQuery();
+  const [result] = useCoursesQuery({variables:{PROGRAM:"BCA", SEM:6, YEAR:2018}});
   const { fetching, data, error } = result;
 
   if (error) return <div>{error.toString()}</div>;

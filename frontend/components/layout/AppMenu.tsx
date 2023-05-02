@@ -26,7 +26,7 @@ const AppMenu = () => {
       {
         label: "Faculty Preference",
         icon: "pi pi-fw pi-id-card",
-        to: "/management/FacultyPreference",
+        to: "/management/faculty-preference",
       },
       {
         label: "Curriculum",
