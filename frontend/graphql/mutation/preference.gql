@@ -1,0 +1,5 @@
+mutation addPreference ($COURSEID: ID!, $EXPERIENCE: Int!, $WEIGHTAGE:Int!){
+    addPreference(courseId:$COURSEID, experience:$EXPERIENCE, weightage:$WEIGHTAGE){
+        response
+    }
+}

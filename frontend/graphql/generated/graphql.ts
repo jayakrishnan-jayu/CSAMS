@@ -17,6 +17,11 @@ export type Scalars = {
   JSONString: any;
 };
 
+export type AddPreference = {
+  __typename?: 'AddPreference';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type AllocationFilterInput = {
   isEvenSem?: InputMaybe<Scalars['Boolean']>;
   year?: InputMaybe<Scalars['Int']>;
@@ -168,6 +173,7 @@ export type MetaDataType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addPreference?: Maybe<AddPreference>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
   updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
@@ -175,6 +181,13 @@ export type Mutation = {
   updateWorkload?: Maybe<UpdateWorkload>;
   uploadCurriculum?: Maybe<UploadCurriculum>;
   verifyCurriculumUpload?: Maybe<VerifyCurriculumUpload>;
+};
+
+
+export type MutationAddPreferenceArgs = {
+  courseId: Scalars['ID'];
+  experience: Scalars['Int'];
+  weightage: Scalars['Int'];
 };
 
 
@@ -419,6 +432,15 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUser', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null } | null } | null };
 
+export type AddPreferenceMutationVariables = Exact<{
+  COURSEID: Scalars['ID'];
+  EXPERIENCE: Scalars['Int'];
+  WEIGHTAGE: Scalars['Int'];
+}>;
+
+
+export type AddPreferenceMutation = { __typename?: 'Mutation', addPreference?: { __typename?: 'AddPreference', response?: boolean | null } | null };
+
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
   DESIGNATION: Scalars['String'];
@@ -499,6 +521,21 @@ export default {
     },
     "subscriptionType": null,
     "types": [
+      {
+        "kind": "OBJECT",
+        "name": "AddPreference",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
       {
         "kind": "OBJECT",
         "name": "BatchInfoType",
@@ -1058,6 +1095,46 @@ export default {
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "addPreference",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AddPreference",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "courseId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "experience",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "weightage",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
           {
             "name": "deleteCurriculumUpload",
             "type": {
@@ -2011,6 +2088,21 @@ export const UpdateUserDocument = gql`
 
 export function useUpdateUserMutation() {
   return Urql.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument);
+};
+export const AddPreferenceDocument = gql`
+    mutation addPreference($COURSEID: ID!, $EXPERIENCE: Int!, $WEIGHTAGE: Int!) {
+  addPreference(
+    courseId: $COURSEID
+    experience: $EXPERIENCE
+    weightage: $WEIGHTAGE
+  ) {
+    response
+  }
+}
+    `;
+
+export function useAddPreferenceMutation() {
+  return Urql.useMutation<AddPreferenceMutation, AddPreferenceMutationVariables>(AddPreferenceDocument);
 };
 export const UpdateWorkloadDocument = gql`
     mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!) {

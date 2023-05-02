@@ -1,7 +1,9 @@
 from .config import ConfigMutation
+from .preference import PrefMutation
 
 class PreferenceMutation(
-    ConfigMutation
+    ConfigMutation,
+    PrefMutation,
 ):
     pass
     
