@@ -6,6 +6,35 @@ query programs {
   }
 }
 
+query currentCourses {
+  courses{
+    id
+    code
+    name
+    credit
+    isExtra
+    program
+    curriculumYear
+    batchYear
+    sem
+    
+  }
+}
+
+query coursesByIdentifier($IDENTIFIER: IdentfierInput) {
+  courses(identifier: $IDENTIFIER){
+    id
+    code
+    name
+    credit
+    isExtra
+    program
+    curriculumYear
+    batchYear
+    sem
+  }
+}
+
 query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!){
   verifyNewCurriculum(program:$PROGRAM, year: $YEAR) {  
     year
@@ -29,42 +58,5 @@ query curriculumUploads {
     data
     uploadedOn
     isPopulated
-  }
-}
-
-
-query preferences ($IDENTIFIER: IdentfierInput, $COURSEID: ID){
-  preferences(identifier: $IDENTIFIER, courseId:$COURSEID){
-    id
-    identifierYear
-    identifierIsEvenSem
-    faculty{
-      user{
-        firstName
-        lastName
-        username
-      }
-    }
-    course{
-      id
-      code
-      name
-      credit
-      l
-      t
-      p
-      credit
-      batch{
-        year
-        sem
-        curriculum{
-          program
-          year
-        }
-      }
-    }
-    weigtage
-    experience
-    timestamp
   }
 }

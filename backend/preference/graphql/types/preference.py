@@ -17,3 +17,8 @@ class PreferenceType(graphene.ObjectType):
     
     def resolve_identifier_is_even_sem(self, info):
         return self.preference_sem_identifier.is_even_sem
+
+
+class IdentfierInput(graphene.InputObjectType):
+    year = graphene.Int(required=True, description="Year at which the preference was recorded")
+    is_even_sem = graphene.Boolean(required=True, description="Odd/Even Sem")

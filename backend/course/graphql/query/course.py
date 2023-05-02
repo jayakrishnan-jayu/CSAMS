@@ -1,8 +1,11 @@
 import graphene
 from course.graphql.types.course import CourseType, CourseLabType, ExtraCourseType, SemesterCourseType
 from course.models import Course, Program, Batch, CourseLab, Curriculum
+from preference.graphql.types.preference import IdentfierInput
+from preference.models import Config
 from backend.api import APIException
 from backend.api.decorator import login_required
+from django.db.models import F
 
 class CourseQueries(graphene.ObjectType):
     course = graphene.Field(
@@ -10,11 +13,10 @@ class CourseQueries(graphene.ObjectType):
         code=graphene.String(description="Course code", required=True)
     )
 
-    courses = graphene.Field(
-        SemesterCourseType,
-        program=graphene.String(description="program Name", required=True),
-        year=graphene.Int(description="Year of Batch", required=True),
-        sem=graphene.Int(description="Semster of Batch", required=True),
+    courses = graphene.List(
+        CourseType,
+        identifier = graphene.Argument(IdentfierInput, required=False),
+        # TODO: add argument to fetch courses apart from identiifer
     )
 
     courseLabs = graphene.List(
@@ -34,16 +36,13 @@ class CourseQueries(graphene.ObjectType):
     
 
     @login_required
-    def resolve_courses(self, info, program:str, year:int, sem:int):
-        try:
-            p = Program.objects.get(name=program)
-            curriculums = Curriculum.objects.filter(program=p)
-            batch = Batch.objects.filter(curriculum__in=curriculums, year=year, sem=sem)
-            if batch.count == 0:
-                raise APIException("Batch not found", code="BATCH_NOT_FOUND")
-            return batch.first()
-        except Program.DoesNotExist:
-            raise APIException("Program not found", code="PROGRAM_NOT_FOUND")
+    def resolve_courses(self, info, identifier:IdentfierInput=None):
+        if identifier is None:
+            identifier = Config.objects.first().current_preference_sem
+        
+        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not identifier.is_even_sem , sem_year=identifier.year)
+        courses_in_batches = Course.objects.filter(batch__in=batches)
+        return courses_in_batches
     
 
     @login_required

@@ -84,15 +84,18 @@ export type CourseLabType = {
 
 export type CourseType = {
   __typename?: 'CourseType';
-  batch?: Maybe<BatchType>;
+  batchYear?: Maybe<Scalars['Int']>;
   code?: Maybe<Scalars['String']>;
   credit?: Maybe<Scalars['Int']>;
+  curriculumYear?: Maybe<Scalars['Int']>;
   hours?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['ID']>;
   isExtra?: Maybe<Scalars['Boolean']>;
   l?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   p?: Maybe<Scalars['Int']>;
+  program?: Maybe<Scalars['String']>;
+  sem?: Maybe<Scalars['Int']>;
   t?: Maybe<Scalars['Int']>;
 };
 
@@ -256,7 +259,7 @@ export type Query = {
   batches?: Maybe<Array<Maybe<BatchType>>>;
   course?: Maybe<CourseType>;
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
-  courses?: Maybe<SemesterCourseType>;
+  courses?: Maybe<Array<Maybe<CourseType>>>;
   curriculumUploads?: Maybe<Array<Maybe<CurriculumUploadType>>>;
   curriculums?: Maybe<Array<Maybe<CurriculumType>>>;
   faculties?: Maybe<Array<Maybe<FacultyType>>>;
@@ -303,9 +306,7 @@ export type QueryCourseLabsArgs = {
 
 
 export type QueryCoursesArgs = {
-  program: Scalars['String'];
-  sem: Scalars['Int'];
-  year: Scalars['Int'];
+  identifier?: InputMaybe<IdentfierInput>;
 };
 
 
@@ -324,11 +325,6 @@ export type QueryPreferencesArgs = {
 export type QueryVerifyNewCurriculumArgs = {
   program: Scalars['String'];
   year: Scalars['Int'];
-};
-
-export type SemesterCourseType = {
-  __typename?: 'SemesterCourseType';
-  courses?: Maybe<Array<Maybe<CourseType>>>;
 };
 
 export type SemesterInput = {
@@ -456,6 +452,18 @@ export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProgramsQuery = { __typename?: 'Query', programs?: Array<{ __typename?: 'ProgramType', id?: string | null, name?: string | null, duration?: string | null } | null> | null };
 
+export type CurrentCoursesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentCoursesQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
+
+export type CoursesByIdentifierQueryVariables = Exact<{
+  IDENTIFIER?: InputMaybe<IdentfierInput>;
+}>;
+
+
+export type CoursesByIdentifierQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
+
 export type VerifyNewCurriculumQueryVariables = Exact<{
   PROGRAM: Scalars['String'];
   YEAR: Scalars['Int'];
@@ -476,14 +484,6 @@ export type CurriculumUploadsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurriculumUploadsQuery = { __typename?: 'Query', curriculumUploads?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null };
-
-export type PreferencesQueryVariables = Exact<{
-  IDENTIFIER?: InputMaybe<IdentfierInput>;
-  COURSEID?: InputMaybe<Scalars['ID']>;
-}>;
-
-
-export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null } | null } | null } | null> | null };
 
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -739,11 +739,10 @@ export default {
         "name": "CourseType",
         "fields": [
           {
-            "name": "batch",
+            "name": "batchYear",
             "type": {
-              "kind": "OBJECT",
-              "name": "BatchType",
-              "ofType": null
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           },
@@ -757,6 +756,14 @@ export default {
           },
           {
             "name": "credit",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "curriculumYear",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -805,6 +812,22 @@ export default {
           },
           {
             "name": "p",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "program",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "sem",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -1568,39 +1591,19 @@ export default {
           {
             "name": "courses",
             "type": {
-              "kind": "OBJECT",
-              "name": "SemesterCourseType",
-              "ofType": null
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseType",
+                "ofType": null
+              }
             },
             "args": [
               {
-                "name": "program",
+                "name": "identifier",
                 "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "sem",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "year",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               }
             ]
@@ -1782,25 +1785,6 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "WorkloadType",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "SemesterCourseType",
-        "fields": [
-          {
-            "name": "courses",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CourseType",
                 "ofType": null
               }
             },
@@ -2138,6 +2122,44 @@ export const ProgramsDocument = gql`
 export function useProgramsQuery(options?: Omit<Urql.UseQueryArgs<ProgramsQueryVariables>, 'query'>) {
   return Urql.useQuery<ProgramsQuery, ProgramsQueryVariables>({ query: ProgramsDocument, ...options });
 };
+export const CurrentCoursesDocument = gql`
+    query currentCourses {
+  courses {
+    id
+    code
+    name
+    credit
+    isExtra
+    program
+    curriculumYear
+    batchYear
+    sem
+  }
+}
+    `;
+
+export function useCurrentCoursesQuery(options?: Omit<Urql.UseQueryArgs<CurrentCoursesQueryVariables>, 'query'>) {
+  return Urql.useQuery<CurrentCoursesQuery, CurrentCoursesQueryVariables>({ query: CurrentCoursesDocument, ...options });
+};
+export const CoursesByIdentifierDocument = gql`
+    query coursesByIdentifier($IDENTIFIER: IdentfierInput) {
+  courses(identifier: $IDENTIFIER) {
+    id
+    code
+    name
+    credit
+    isExtra
+    program
+    curriculumYear
+    batchYear
+    sem
+  }
+}
+    `;
+
+export function useCoursesByIdentifierQuery(options?: Omit<Urql.UseQueryArgs<CoursesByIdentifierQueryVariables>, 'query'>) {
+  return Urql.useQuery<CoursesByIdentifierQuery, CoursesByIdentifierQueryVariables>({ query: CoursesByIdentifierDocument, ...options });
+};
 export const VerifyNewCurriculumDocument = gql`
     query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!) {
   verifyNewCurriculum(program: $PROGRAM, year: $YEAR) {
@@ -2178,47 +2200,6 @@ export const CurriculumUploadsDocument = gql`
 
 export function useCurriculumUploadsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumUploadsQueryVariables>, 'query'>) {
   return Urql.useQuery<CurriculumUploadsQuery, CurriculumUploadsQueryVariables>({ query: CurriculumUploadsDocument, ...options });
-};
-export const PreferencesDocument = gql`
-    query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
-  preferences(identifier: $IDENTIFIER, courseId: $COURSEID) {
-    id
-    identifierYear
-    identifierIsEvenSem
-    faculty {
-      user {
-        firstName
-        lastName
-        username
-      }
-    }
-    course {
-      id
-      code
-      name
-      credit
-      l
-      t
-      p
-      credit
-      batch {
-        year
-        sem
-        curriculum {
-          program
-          year
-        }
-      }
-    }
-    weigtage
-    experience
-    timestamp
-  }
-}
-    `;
-
-export function usePreferencesQuery(options?: Omit<Urql.UseQueryArgs<PreferencesQueryVariables>, 'query'>) {
-  return Urql.useQuery<PreferencesQuery, PreferencesQueryVariables>({ query: PreferencesDocument, ...options });
 };
 export const MetadataDocument = gql`
     query metadata {

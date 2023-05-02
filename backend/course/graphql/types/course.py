@@ -117,7 +117,6 @@ class BatchInfoType(graphene.ObjectType):
 
 class CourseType(graphene.ObjectType):
     id = graphene.ID()
-    batch = graphene.Field(BatchType)
     code = graphene.String()
     name = graphene.String()
     credit = graphene.Int()
@@ -126,6 +125,33 @@ class CourseType(graphene.ObjectType):
     t = graphene.Int()
     p = graphene.Int()
     is_extra = graphene.Boolean()
+    program = graphene.String()
+    curriculum_year = graphene.Int()
+    batch_year = graphene.Int()
+    sem = graphene.Int()
+
+    def resolve_program(self, info):
+        if not isinstance(self, Course):
+            raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
+        return self.batch.curriculum.program.name
+    
+    def resolve_curriculum_year(self, info):
+        if not isinstance(self, Course):
+            raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
+        return self.batch.curriculum.year
+    
+    def resolve_batch_year(self, info):
+        if not isinstance(self, Course):
+            raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
+        return self.batch.year
+    
+    def resolve_sem(self, info):
+        if not isinstance(self, Course):
+            raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
+        return self.batch.sem
+        
+
+
 
 
 class CourseLabType(graphene.ObjectType):

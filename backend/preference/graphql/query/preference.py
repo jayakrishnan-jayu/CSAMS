@@ -2,11 +2,8 @@ import graphene
 from preference.models import Identifier, Preference, Config
 from backend.api.decorator import login_required
 from backend.api import APIException
-from ..types.preference import PreferenceType
+from ..types.preference import PreferenceType, IdentfierInput
 
-class IdentfierInput(graphene.InputObjectType):
-    year = graphene.Int(required=True, description="Year at which the preference was recorded")
-    is_even_sem = graphene.Boolean(required=True, description="Odd/Even Sem")
 
 class PreferenceQueries(graphene.ObjectType):
     preferences = graphene.List(
