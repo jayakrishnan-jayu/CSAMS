@@ -1,21 +1,16 @@
 import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Button } from 'primereact/button';
-import { CourseInput, CourseLabInput, CurriculumUploadInput, InputMaybe, useVerifyNewCurriculumQuery } from '@/graphql/generated/graphql';
+import { CourseInput, CourseLabInput, CurriculumUploadInput, InputMaybe } from '@/graphql/generated/graphql';
 
 
 interface VerifyCurriculumProps {
     curriculum: CurriculumUploadInput,
     footerElement: () => JSX.Element,
-    // onVerify: ()=>void,
 }
 
 const VerifyCurriculum = ({curriculum, footerElement} : VerifyCurriculumProps) => {
     const {program, extra, semesters, year} = curriculum;
-    // const [result] = useVerifyNewCurriculumQuery({variables: {PROGRAM: program, YEAR: year}});
-    // const {} = result;
-
     const renderSemsterTitle = (sem : number) => {
         return (
             <div className="flex justify-content-between">
@@ -113,7 +108,6 @@ const VerifyCurriculum = ({curriculum, footerElement} : VerifyCurriculumProps) =
         return undefined;
     }
     
-    console.log("foo", semesters.map(s => labsOnlyFilter(s?.courseLabs, s?.courses, s?.sem)));
     
     return (
         <div className="grid">
@@ -122,19 +116,10 @@ const VerifyCurriculum = ({curriculum, footerElement} : VerifyCurriculumProps) =
                 <h5>{program}-{year} Curriculum</h5>
                     {semesters.map((s) => renderTable([...s.courses, ...s.extra.map(e => {return {'name': e}})], () => renderSemsterTitle(s.sem)))}
                     {extra.map((e) => renderTable(e.courses, () => renderElectiveTitle(e.name)))}
-                    {semesters.map(s => {let data = renderCourseLabsTable(s?.courseLabs, s?.courses, s?.sem) if (data !== undefined) return data;})}
+                    {semesters.map(s => {let data = renderCourseLabsTable(s?.courseLabs, s?.courses, s?.sem); if (data !== undefined) return data;})}
                     {semesters.map(s => {let data = labsOnlyFilter(s?.courseLabs, s?.courses, s?.sem); if (data !== undefined) return renderTable(data, () => renderLabTitle(s.sem))})}
                 </div>
                 {footerElement()}
-                {/* <div className="flex align-items-center flex-wrap">
-                    <div className="flex mt-6 ml-auto mr-auto">
-                        <Button 
-                            label='Continue'
-                            icon="pi pi-check"
-                            onClick={onVerify}
-                        />
-                    </div> 
-                </div>*/}
             </div>
         </div>
     );
