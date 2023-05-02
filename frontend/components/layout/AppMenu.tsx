@@ -4,33 +4,26 @@ import { MenuProvider } from './context/menucontext';
 import { MetaDataContext } from './context/metadatacontext';
 
 const AppMenu = () => {
-  const homeSection = {
-    label: "Home",
-    items: [{ label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" }],
-  };
-  const accountSection = {
-    label: "Account",
-    items: [
-      { label: "User Profile", icon: "pi pi-fw pi-user", to: "/profile" },
-      { label: "Account Settings", icon: "pi pi-fw pi-lock", to: "/settings" },
-    ],
-  };
-  const adminSection = {
-    label: "Management",
-    items: [
-      {
-        label: "Faculties",
-        icon: "pi pi-fw pi-id-card",
-        to: "/management/faculties",
-      },
-      {
-        label: "Faculty Preference",
-        icon: "pi pi-fw pi-id-card",
-        to: "/management/faculty-preference",
-      },
-      {
-        label: "Curriculum",
-        icon: "pi pi-fw pi-money-bill",
+    const homeSection = {
+        label: 'Home',
+        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
+    }
+    const accountSection = {
+        label: 'Account',
+        items: [
+            { label: 'User Profile', icon: 'pi pi-fw pi-user', to: '/profile' },
+            { label: 'Account Settings', icon: 'pi pi-fw pi-lock', to: '/settings' },
+        ]
+    }
+    const facultySection = {
+      label: 'Faculty',
+      items: [
+        { label: 'Prefernece', icon: 'pi pi-fw pi-star', to: '/faculty/preference' },
+        { label: 'Report', icon: 'pi pi-fw pi-file', to: '/faculty/report' },
+      ]
+    }
+    const adminSection = {
+        label: 'Management',
         items: [
             { label: 'Faculties', icon: 'pi pi-fw pi-id-card', to: '/management/faculties' },
             { 
@@ -81,9 +74,9 @@ const AppMenu = () => {
     const { metaData } = useContext(MetaDataContext);
     let model = [homeSection];
     if (metaData?.metadata?.user?.isStaff) {
-        model = [homeSection, adminSection, accountSection]
+        model = [homeSection, facultySection, adminSection, accountSection]
     } else if (metaData?.metadata?.faculty) {
-        model = [homeSection, accountSection]
+        model = [homeSection, facultySection, accountSection]
     }
     return (
         <MenuProvider>
