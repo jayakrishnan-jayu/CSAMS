@@ -59,6 +59,7 @@ class MetaDataType(graphene.ObjectType):
 
 __all__ = [
     'UserType',
-    'FacultyType'
-    'MetaDataType'
+    'FacultyType',
+    'MetaDataType',
+    'ConfigType',
 ]

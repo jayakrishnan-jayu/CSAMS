@@ -1,0 +1,10 @@
+mutation updatePreferenceCount ($COUNT: Int!){
+    updatePreferenceCount(count: $COUNT) {
+        response
+    }
+}
+mutation updateSemIdentifier ($ISEVENSEM: Boolean, $YEAR: Int) {
+    updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
+        response
+    }
+}

@@ -169,6 +169,8 @@ export type MetaDataType = {
 export type Mutation = {
   __typename?: 'Mutation';
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
+  updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
+  updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
   updateUser?: Maybe<UpdateUser>;
   updateWorkload?: Maybe<UpdateWorkload>;
   uploadCurriculum?: Maybe<UploadCurriculum>;
@@ -178,6 +180,17 @@ export type Mutation = {
 
 export type MutationDeleteCurriculumUploadArgs = {
   curriculumUploadID: Scalars['ID'];
+};
+
+
+export type MutationUpdatePreferenceCountArgs = {
+  count: Scalars['Int'];
+};
+
+
+export type MutationUpdateSemIdentifierArgs = {
+  isEvenSem?: InputMaybe<Scalars['Boolean']>;
+  year?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -313,6 +326,16 @@ export type SemesterInput = {
   sem: Scalars['Int'];
 };
 
+export type UpdatePreferenceCount = {
+  __typename?: 'UpdatePreferenceCount';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
+export type UpdateSemIdentifier = {
+  __typename?: 'UpdateSemIdentifier';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type UpdateUser = {
   __typename?: 'UpdateUser';
   user?: Maybe<UserType>;
@@ -351,6 +374,21 @@ export type WorkloadType = {
   minHoursPerWeek?: Maybe<Scalars['Int']>;
   track?: Maybe<Scalars['String']>;
 };
+
+export type UpdatePreferenceCountMutationVariables = Exact<{
+  COUNT: Scalars['Int'];
+}>;
+
+
+export type UpdatePreferenceCountMutation = { __typename?: 'Mutation', updatePreferenceCount?: { __typename?: 'UpdatePreferenceCount', response?: boolean | null } | null };
+
+export type UpdateSemIdentifierMutationVariables = Exact<{
+  ISEVENSEM?: InputMaybe<Scalars['Boolean']>;
+  YEAR?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateSemIdentifierMutation = { __typename?: 'Mutation', updateSemIdentifier?: { __typename?: 'UpdateSemIdentifier', response?: boolean | null } | null };
 
 export type UploadCurriculumMutationVariables = Exact<{
   CURRICULUM: CurriculumUploadInput;
@@ -1041,6 +1079,50 @@ export default {
             ]
           },
           {
+            "name": "updatePreferenceCount",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdatePreferenceCount",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "count",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateSemIdentifier",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateSemIdentifier",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "isEvenSem",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "year",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "updateUser",
             "type": {
               "kind": "OBJECT",
@@ -1652,6 +1734,36 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpdatePreferenceCount",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateSemIdentifier",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpdateUser",
         "fields": [
           {
@@ -1824,6 +1936,28 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const UpdatePreferenceCountDocument = gql`
+    mutation updatePreferenceCount($COUNT: Int!) {
+  updatePreferenceCount(count: $COUNT) {
+    response
+  }
+}
+    `;
+
+export function useUpdatePreferenceCountMutation() {
+  return Urql.useMutation<UpdatePreferenceCountMutation, UpdatePreferenceCountMutationVariables>(UpdatePreferenceCountDocument);
+};
+export const UpdateSemIdentifierDocument = gql`
+    mutation updateSemIdentifier($ISEVENSEM: Boolean, $YEAR: Int) {
+  updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
+    response
+  }
+}
+    `;
+
+export function useUpdateSemIdentifierMutation() {
+  return Urql.useMutation<UpdateSemIdentifierMutation, UpdateSemIdentifierMutationVariables>(UpdateSemIdentifierDocument);
+};
 export const UploadCurriculumDocument = gql`
     mutation uploadCurriculum($CURRICULUM: CurriculumUploadInput!) {
   uploadCurriculum(data: $CURRICULUM) {

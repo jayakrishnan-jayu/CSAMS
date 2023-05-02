@@ -53,9 +53,9 @@ const AppMenu = () => {
                         to: '/management/settings/workload'
                     },
                     {
-                        label: 'Semester Identifier',
+                        label: 'Config',
                         icon: 'pi pi-fw pi-info',
-                        to: '/management/settings/semester-identifier'
+                        to: '/management/settings/config'
                     },
                 ]
             },
