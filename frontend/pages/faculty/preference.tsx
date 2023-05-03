@@ -1,6 +1,7 @@
 import {
   useCoursesQuery,
   useAddPreferenceMutation,
+  CourseType,
 } from "@/graphql/generated/graphql";
 import { Dropdown } from "primereact/dropdown";
 import { useRef, useState } from "react";
@@ -67,15 +68,15 @@ const FacultyPreference = () => {
     setProductDialog(false);
   };
 
-  const editCourses = (product) => {
-    setProduct({ ...product });
+  const editCourses = (course: CourseType) => {
+    setProduct({ ...product, courseId: course.id,  });
     setProductDialog(true);
   };
 
   const onInputNumberChange = (e, name: string) => {
     const val = e.value || 0; // TODO: parse to integer
     let _product = { ...product };
-    if (name === "preference") _product.preference = val;
+    if (name === "preference") _product.weightage = val;
     else if (name === "experience") _product.experience = val;
     setProduct(_product);
   };
@@ -207,6 +208,7 @@ const FacultyPreference = () => {
       />
     </>
   );
+  console.log(product)
 
   return (
     <div className="">
@@ -303,8 +305,8 @@ const FacultyPreference = () => {
           <div className="formgrid grid">
             <div className="field col">
               <label>Course ID</label>
-              <div className={`generic-badge track-${product?.id}`}>
-                {product?.id}
+              <div className={`generic-badge track-${product?.courseId}`}>
+                {product?.courseId}
               </div>
             </div>
           </div>
@@ -314,9 +316,11 @@ const FacultyPreference = () => {
               <label>Preference</label>
               <InputNumber
                 id="preference"
-                value={product.preference}
+                value={product.weightage}
                 onValueChange={(e) => onInputNumberChange(e, "preference")}
-                integeronly
+                mode="decimal"
+                showButtons
+                format={false}
               />
             </div>
             <div className="field col">
@@ -325,8 +329,10 @@ const FacultyPreference = () => {
                 id="experience"
                 value={product.experience}
                 onValueChange={(e) => onInputNumberChange(e, "experience")}
-                integeronly
-              />
+                mode="decimal"
+                showButtons
+                format={false}
+                ></InputNumber>
             </div>
           </div>
         </Dialog>
