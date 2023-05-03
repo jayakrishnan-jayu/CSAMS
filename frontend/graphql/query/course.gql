@@ -1,5 +1,5 @@
 query programs {
-  programs{
+  programs {
     id
     name
     duration
@@ -7,7 +7,7 @@ query programs {
 }
 
 query courses($IDENTIFIER: IdentfierInput) {
-  courses(identifier: $IDENTIFIER){
+  courses(identifier: $IDENTIFIER) {
     id
     code
     name
@@ -20,15 +20,15 @@ query courses($IDENTIFIER: IdentfierInput) {
   }
 }
 
-query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!){
-  verifyNewCurriculum(program:$PROGRAM, year: $YEAR) {  
+query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!) {
+  verifyNewCurriculum(program: $PROGRAM, year: $YEAR) {
     year
     sem
   }
 }
 
-query curriculums($PROGRAM: String, $YEAR: Int){
-  curriculums(program:"BCA", year:2018){
+query curriculums($PROGRAM: String, $YEAR: Int) {
+  curriculums(program: "BCA", year: 2018) {
     program
     year
     duration
@@ -36,7 +36,7 @@ query curriculums($PROGRAM: String, $YEAR: Int){
 }
 
 query curriculumUploads {
-  curriculumUploads{
+  curriculumUploads {
     id
     program
     year
