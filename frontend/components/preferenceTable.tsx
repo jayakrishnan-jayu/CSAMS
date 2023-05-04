@@ -29,11 +29,11 @@ const PreferenceTable = ({courseID}: PreferenceTableProps) => {
                 course: p?.course?.code + " " + p?.course?.name,
                 weigtage: p?.weigtage && p.weigtage >= 1 && p.weigtage <=3 ? prefNums[p.weigtage-1] : p?.weigtage ,
                 experience: p?.experience,
-                program: p?.course?.batch?.curriculum?.program,
+                program: p?.course?.program,
                 username: p?.faculty?.user?.username,
                 timestamp: p?.timestamp,
-                batch: p?.course?.batch?.year + " S"+p?.course?.batch?.sem,
-                curriculum: p?.course?.batch?.curriculum?.year
+                batch: p?.course?.batchYear + " S"+p?.course?.sem,
+                curriculum: p?.course?.curriculumYear
             }
 
         })

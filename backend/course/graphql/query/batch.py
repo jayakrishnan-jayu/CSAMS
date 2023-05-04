@@ -1,5 +1,5 @@
 import graphene
-from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType, CurriculumUploadType
+from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType, CurriculumUploadType, BatchManagementType
 from course.models import Batch, Program, Curriculum, CurriculumUpload
 from backend.api import APIException
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
@@ -23,6 +23,10 @@ class BatchQueries(graphene.ObjectType):
         program=graphene.String(description="Department Program eg BCA", required=True),
         year=graphene.Int(description="Year of Curriculum", required=True),
     )
+    batch = graphene.Field(
+        BatchType,
+        batch_id=graphene.ID(required=True)
+    )
     batches = graphene.List(
         BatchType,
         curriculum_id=graphene.ID(description="Curriculum ID"),
@@ -32,6 +36,10 @@ class BatchQueries(graphene.ObjectType):
     batch_info = graphene.Field(
         BatchInfoType,
         program=graphene.String(description="Department Program eg BCA"),
+    )
+
+    batch_management = graphene.Field(
+        BatchManagementType
     )
 
     @login_required
@@ -57,7 +65,14 @@ class BatchQueries(graphene.ObjectType):
             raise APIException('Curriculums not found', 'CURRICULUM_NOT_FOUND')
         return curriculums
     
-
+    # @login_required
+    def resolve_batch(self, info, batch_id:int):
+        try:
+            batch = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return batch
+    
     @login_required
     def resolve_batches(self, info, curriculum_id:int=None, program:str=None, year:int=None):
         if curriculum_id is None and program is None and year is None:
@@ -119,3 +134,7 @@ class BatchQueries(graphene.ObjectType):
     @staff_privilege_required
     def resolve_curriculum_uploads(self, info):
         return CurriculumUpload.objects.all()
+    
+    def resolve_batch_management(self, info):
+        print("resolving management")
+        return {}

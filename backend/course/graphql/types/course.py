@@ -1,7 +1,9 @@
 import graphene
 from course.models import Batch, Program, Course, BatchCurriculumExtra, Curriculum, ExtraCourse
+from preference.models import Config, Identifier
 from backend.api import APIException
 from typing import List
+from django.db.models import F
 
 class ProgramType(graphene.ObjectType):
     id = graphene.ID()
@@ -186,8 +188,49 @@ class CourseLabType(graphene.ObjectType):
 #         self.is_current_batch = False
 #         self.extra_course_left_to_assign = courses_left
 #         return self
+
+class ActiveBatchType(graphene.ObjectType):
+    id = graphene.ID()
+    program = graphene.String()
+    curriculum_year = graphene.Int()
+    curriculum_id = graphene.ID()
+    sem = graphene.Int()
+    year = graphene.Int()
+    is_complete = graphene.Boolean()
+
+    def resolve_program(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return self.curriculum.program.name
+
+    def resolve_curriculum_year(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return self.curriculum.year
+
+    def resolve_curriculum_id(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return self.curriculum_id
     
-# class BatchManagementType(graphene.ObjectType):
+    def resolve_is_complete(self, info):
+        if not isinstance(self, Batch):
+            raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+        return len(self.extras) == self.selected_extra_courses.count()
+    
+
+    
+
+class BatchManagementType(graphene.ObjectType):
+    active_batches = graphene.List(ActiveBatchType)
+    
+
+    def resolve_active_batches(self, info):
+        config = Config.objects.first()
+        qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
+        print(config, qs)
+        return qs
+
 #     program_name = graphene.String()
 #     year = graphene.Int()
 #     batches = graphene.List(BatchManagementInfoType)
