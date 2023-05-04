@@ -143,7 +143,7 @@ const WorkloadTable = () => {
                         <Column field="designation" header="Designation" sortable body={designationBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="minHoursPerWeek" header="Min hr/week" body={minHourBodyTemplate}></Column>
                         <Column field="maxHoursPerWeek" header="Max hr/week" body={maxHourBodyTemplate}></Column>
-                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '5rem' }}></Column>
+                        <Column body={actionBodyTemplate} headerStyle={{ minWidth: '5rem' }}></Column>
                     </DataTable>
 
                     <Dialog visible={productDialog} style={{ width: '450px' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>

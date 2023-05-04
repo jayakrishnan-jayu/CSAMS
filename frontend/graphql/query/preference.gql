@@ -19,9 +19,14 @@ query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
       t
       p
       credit
+      program
+      curriculumYear
+      batchYear
+      sem
     }
     weigtage
     experience
     timestamp
   }
 }
+

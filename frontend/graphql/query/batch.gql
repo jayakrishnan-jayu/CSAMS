@@ -1,0 +1,29 @@
+query batch($BATCHID: ID!){
+  batch(batchId:$BATCHID){
+    curriculum{
+      program
+      year
+    }
+    year
+    sem
+    semesterExtraCourses
+    selectedExtraCourses{
+      name
+      courseType
+    }
+  }
+}
+
+query batchManagement {
+  batchManagement {
+    activeBatches{
+      id
+      program
+      curriculumYear
+      curriculumId
+      sem
+      year
+      isComplete
+    }
+  }
+}

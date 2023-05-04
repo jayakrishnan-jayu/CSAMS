@@ -17,6 +17,17 @@ export type Scalars = {
   JSONString: any;
 };
 
+export type ActiveBatchType = {
+  __typename?: 'ActiveBatchType';
+  curriculumId?: Maybe<Scalars['ID']>;
+  curriculumYear?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
+  isComplete?: Maybe<Scalars['Boolean']>;
+  program?: Maybe<Scalars['String']>;
+  sem?: Maybe<Scalars['Int']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
 export type AddPreference = {
   __typename?: 'AddPreference';
   response?: Maybe<Scalars['Boolean']>;
@@ -31,6 +42,11 @@ export type BatchInfoType = {
   __typename?: 'BatchInfoType';
   info?: Maybe<Array<Maybe<BatchYearSemType>>>;
   program?: Maybe<Scalars['String']>;
+};
+
+export type BatchManagementType = {
+  __typename?: 'BatchManagementType';
+  activeBatches?: Maybe<Array<Maybe<ActiveBatchType>>>;
 };
 
 export type BatchType = {
@@ -255,7 +271,9 @@ export type ProgramType = {
 export type Query = {
   __typename?: 'Query';
   allocation?: Maybe<Array<Maybe<CourseAndFacultyType>>>;
+  batch?: Maybe<BatchType>;
   batchInfo?: Maybe<BatchInfoType>;
+  batchManagement?: Maybe<BatchManagementType>;
   batches?: Maybe<Array<Maybe<BatchType>>>;
   course?: Maybe<CourseType>;
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
@@ -278,6 +296,11 @@ export type Query = {
 export type QueryAllocationArgs = {
   facultyId?: InputMaybe<Scalars['ID']>;
   filter: AllocationFilterInput;
+};
+
+
+export type QueryBatchArgs = {
+  batchId: Scalars['ID'];
 };
 
 
@@ -447,6 +470,18 @@ export type UpdateWorkloadMutationVariables = Exact<{
 
 export type UpdateWorkloadMutation = { __typename?: 'Mutation', updateWorkload?: { __typename?: 'UpdateWorkload', workload?: { __typename?: 'WorkloadType', track?: string | null, designation?: string | null, minHoursPerWeek?: number | null, maxHoursPerWeek?: number | null } | null } | null };
 
+export type BatchQueryVariables = Exact<{
+  BATCHID: Scalars['ID'];
+}>;
+
+
+export type BatchQuery = { __typename?: 'Query', batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, semesterExtraCourses?: Array<string | null> | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', name?: string | null, courseType?: string | null } | null> | null } | null };
+
+export type BatchManagementQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BatchManagementQuery = { __typename?: 'Query', batchManagement?: { __typename?: 'BatchManagementType', activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null };
+
 export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -491,7 +526,7 @@ export type PreferencesQueryVariables = Exact<{
 }>;
 
 
-export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null } | null } | null> | null };
+export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -524,6 +559,69 @@ export default {
     },
     "subscriptionType": null,
     "types": [
+      {
+        "kind": "OBJECT",
+        "name": "ActiveBatchType",
+        "fields": [
+          {
+            "name": "curriculumId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "curriculumYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isComplete",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "program",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "sem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
       {
         "kind": "OBJECT",
         "name": "AddPreference",
@@ -560,6 +658,25 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "BatchManagementType",
+        "fields": [
+          {
+            "name": "activeBatches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActiveBatchType",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -1487,6 +1604,26 @@ export default {
             ]
           },
           {
+            "name": "batch",
+            "type": {
+              "kind": "OBJECT",
+              "name": "BatchType",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "batchId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "batchInfo",
             "type": {
               "kind": "OBJECT",
@@ -1502,6 +1639,15 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "batchManagement",
+            "type": {
+              "kind": "OBJECT",
+              "name": "BatchManagementType",
+              "ofType": null
+            },
+            "args": []
           },
           {
             "name": "batches",
@@ -2118,6 +2264,46 @@ export const UpdateWorkloadDocument = gql`
 export function useUpdateWorkloadMutation() {
   return Urql.useMutation<UpdateWorkloadMutation, UpdateWorkloadMutationVariables>(UpdateWorkloadDocument);
 };
+export const BatchDocument = gql`
+    query batch($BATCHID: ID!) {
+  batch(batchId: $BATCHID) {
+    curriculum {
+      program
+      year
+    }
+    year
+    sem
+    semesterExtraCourses
+    selectedExtraCourses {
+      name
+      courseType
+    }
+  }
+}
+    `;
+
+export function useBatchQuery(options: Omit<Urql.UseQueryArgs<BatchQueryVariables>, 'query'>) {
+  return Urql.useQuery<BatchQuery, BatchQueryVariables>({ query: BatchDocument, ...options });
+};
+export const BatchManagementDocument = gql`
+    query batchManagement {
+  batchManagement {
+    activeBatches {
+      id
+      program
+      curriculumYear
+      curriculumId
+      sem
+      year
+      isComplete
+    }
+  }
+}
+    `;
+
+export function useBatchManagementQuery(options?: Omit<Urql.UseQueryArgs<BatchManagementQueryVariables>, 'query'>) {
+  return Urql.useQuery<BatchManagementQuery, BatchManagementQueryVariables>({ query: BatchManagementDocument, ...options });
+};
 export const ProgramsDocument = gql`
     query programs {
   programs {
@@ -2243,6 +2429,10 @@ export const PreferencesDocument = gql`
       t
       p
       credit
+      program
+      curriculumYear
+      batchYear
+      sem
     }
     weigtage
     experience
