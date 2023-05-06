@@ -1,5 +1,5 @@
 import graphene
-from course.models import Batch, Program, Course, BatchCurriculumExtra, Curriculum, ExtraCourse
+from course.models import Batch, Program, Course, BatchCurriculumExtra, CurriculumExtras, Curriculum, ExtraCourse
 from preference.models import Config, Identifier
 from backend.api import APIException
 from typing import List
@@ -36,6 +36,7 @@ class CurriculumUploadType(graphene.ObjectType):
     is_populated = graphene.Boolean()
 
 class ExtraCourseType(graphene.ObjectType):
+    id = graphene.ID()
     code = graphene.String()
     name = graphene.String()
     credit = graphene.Int()
@@ -44,9 +45,23 @@ class ExtraCourseType(graphene.ObjectType):
     t = graphene.Int()
     p = graphene.Int()
     course_type = graphene.String()
-
     def resolve_course_type(self, info):
         return self.course_type.name
+
+
+class CurriculumExtraCoursesType(graphene.ObjectType):
+    extra = graphene.String()
+    courses = graphene.List(ExtraCourseType)
+
+    def resolve_extra(self, info):
+        if not isinstance(self, CurriculumExtras):
+            raise APIException(message="Curriculum Extra type not found")
+        return self.name
+
+    def resolve_courses(self, info):
+        if not isinstance(self, CurriculumExtras):
+            raise APIException(message="Curriculum Extra type not found")
+        return ExtraCourse.objects.filter(course_type=self)
 
 class BatchType(graphene.ObjectType):
     id = graphene.ID()

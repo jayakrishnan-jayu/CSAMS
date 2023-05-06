@@ -10,6 +10,58 @@ from backend.api import APIException
 from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab
 from typing import List
 
+
+class AddBatchExtraCourse(graphene.Mutation):
+    class Arguments:
+        batch_id = graphene.ID(required=True)
+        extra_course_id = graphene.ID(required=True)
+    response = graphene.Boolean()
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, batch_id: graphene.ID, extra_course_id: graphene.ID):
+        try:
+            b = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException(message="Batch not found", code="INVALID_BATCH_ID")
+        try:
+            ec = ExtraCourse.objects.get(id=extra_course_id)
+        except ExtraCourse.DoesNotExist:
+            raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
+        b.add_selected_extra_course(ec)
+        return AddBatchExtraCourse(response=True)
+
+
+class UpdateBatchExtraCourse(graphene.Mutation):
+    class Arguments:
+        batch_id = graphene.ID(required=True)
+        old_extra_course_id = graphene.ID(required=True)
+        new_extra_course_id = graphene.ID(required=True)
+
+    response = graphene.Boolean()
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID, new_extra_course_id):
+        try:
+            b = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException(message="Batch not found", code="INVALID_BATCH_ID")
+        try:
+            ec_old = ExtraCourse.objects.get(id=old_extra_course_id)
+            ec_new = ExtraCourse.objects.get(id=new_extra_course_id)
+        except ExtraCourse.DoesNotExist:
+            raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
+        if ec_old.course_type.id != ec_new.course_type.id:
+            raise APIException(message="Old and new extra course course-type mismatch")
+        with transaction.atomic():
+            b.remove_selected_extra_course(ec_old)
+            b.add_selected_extra_course(ec_new)
+        
+        return UpdateBatchExtraCourse(response=True)
+
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
         curriculumUploadID = graphene.ID(required=True)
@@ -192,6 +244,9 @@ class CourseMutation(graphene.ObjectType):
     upload_curriculum = UploadCurriculum.Field()
     delete_curriculum_upload = DeleteCurriculumUpload.Field()
     verify_curriculum_upload = VerifyCurriculumUpload.Field()
+
+    add_batch_extra_course =  AddBatchExtraCourse.Field()
+    update_batch_extra_course =  UpdateBatchExtraCourse.Field()
 
 __all__ = [
     'CourseMutation'

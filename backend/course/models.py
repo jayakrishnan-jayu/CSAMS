@@ -162,6 +162,8 @@ class Batch(models.Model):
         self.save()
     
     def remove_selected_extra_course(self, ec: ExtraCourse):
+        if not self.selected_extra_courses.filter(id=ec.id).exists():
+            raise Exception("Extra Course not found in batch")
         self.selected_extra_courses.remove(ec)
         self.save()
 

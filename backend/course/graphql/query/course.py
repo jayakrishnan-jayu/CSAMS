@@ -1,10 +1,11 @@
 import graphene
-from course.graphql.types.course import CourseType, CourseLabType, ExtraCourseType, SemesterCourseType
-from course.models import Course, Program, Batch, CourseLab, Curriculum
+from course.graphql.types.course import CourseType, CourseLabType, CurriculumExtraCoursesType, ExtraCourseType, SemesterCourseType
+from course.models import Course, Program, Batch, CourseLab, CurriculumExtras,Curriculum, ExtraCourse
 from preference.graphql.types.preference import IdentfierInput
 from preference.models import Config
 from backend.api import APIException
 from backend.api.decorator import login_required
+from typing import List
 from django.db.models import F
 
 class CourseQueries(graphene.ObjectType):
@@ -24,6 +25,16 @@ class CourseQueries(graphene.ObjectType):
         program=graphene.String(description="Department Program eg BCA", required=True),
         year=graphene.Int(description="Year of Batch", required=True),
         sem=graphene.Int(description="Semster of Batch"),
+    )
+    curriculum_extra_courses = graphene.List(
+        CurriculumExtraCoursesType,
+        extras=graphene.List(graphene.String, required=True),
+        program=graphene.String(required=True),
+        curriculum_year=graphene.Int(required=True),
+    )
+    batch_selected_extra_courses = graphene.List(
+        ExtraCourseType,
+        batch_id=graphene.ID(required=True),
     )
 
     @login_required
@@ -67,7 +78,35 @@ class CourseQueries(graphene.ObjectType):
         except Program.DoesNotExist:
             raise APIException("Program not found", code="PROGRAM_NOT_FOUND")
     
+    @login_required
+    def resolve_curriculum_extra_courses(self, info, extras:List[str], program:str, curriculum_year:int):
+        if len(extras) == 0 or len(extras) > 10:
+            raise APIException(message="Invalid lengths of array extras passed")
+        extra_names = []
+        for e in extras:
+            if e not in extra_names:
+                extra_names.append(e)
+        print(extra_names)
+        if len(extras) != len(extra_names):
+            raise APIException(message="Duplicate extra found", code="DUPLICATE_EXTRA")
+        try:
+            c = Curriculum.objects.get(year=curriculum_year, program__name=program)
+        except Curriculum.DoesNotExist:
+            raise APIException(message="Curriculum does not exist", code="CURRICULUM_DOES_NOT_EXISt")
+        print(c)
+        qs = CurriculumExtras.objects.filter(curriculum=c, name__in=extra_names)
+        print(qs)
+        if qs.count() != len(extra_names):
+            raise APIException(message="Invalid extra found in input")
+        return qs
     
+    @login_required
+    def resolve_batch_selected_extra_courses(self, info, batch_id: int):
+        try:
+            b = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException(message="Invalid Batch Id", code="BATCH_NOT_FOUND")
+        return b.selected_extra_courses.all()
 __all__ = [
     'CourseQueries'
 ]
