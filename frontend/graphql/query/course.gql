@@ -45,3 +45,19 @@ query curriculumUploads {
     isPopulated
   }
 }
+
+query curriculumExtraCourses($EXTRAS: [String]!, $PROGRAM:String!, $CURRICULUMYEAR: Int!, $BATCHID: ID!){
+  curriculumExtraCourses(extras:$EXTRAS ,program:$PROGRAM, curriculumYear:$CURRICULUMYEAR){
+    extra
+    courses{
+      code
+      name
+    }
+  }
+  batchSelectedExtraCourses(batchId:$BATCHID){
+    id
+    code
+    name
+    courseType
+  }
+}

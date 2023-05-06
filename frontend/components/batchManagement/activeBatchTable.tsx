@@ -2,17 +2,23 @@ import { ActiveBatchType } from '@/graphql/generated/graphql';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
+import { Sidebar } from 'primereact/sidebar';
 import { classNames } from 'primereact/utils';
 import { useRef, useState } from 'react';
+import BatchUpdateSettings from './batchUpdateSettings';
+import { Dialog } from 'primereact/dialog';
 
 interface ActiveBatchTableProps {
-    activeBatch: ActiveBatchType[],
+    activeBatches: ActiveBatchType[],
     loading: boolean,
 }
 
 
-const ActiveBatchTable = ({activeBatch, loading}: ActiveBatchTableProps) => {
+const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
     const dt = useRef(null);
+    const [visibleFullScreen, setVisibleFullScreen] = useState(false);
+    const [activeBatchID, setActiveBatchID] = useState<string>("");
+
 
     const isCompleteBodyTemplate = (rowData: ActiveBatchType) => {
         return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.isComplete, 'text-pink-500 pi-times-circle': !rowData.isActive })}></i>;
@@ -22,14 +28,15 @@ const ActiveBatchTable = ({activeBatch, loading}: ActiveBatchTableProps) => {
         return rowData.program && <span className={`generic-badge program-${rowData.program.toLowerCase().replace(/ +/g, "")}`}>{rowData.program}</span>;
     };
 
-    const editBatch = (batchID: number) => {
-        console.log("editing ", batchID)
+    const editBatch = (batch: ActiveBatchType) => {
+        setActiveBatchID(batch?.id || "")
+        setVisibleFullScreen(true);
     }
 
-    const actionBodyTemplate = (rowData) => {
+    const actionBodyTemplate = (rowData: ActiveBatchType) => {
         return (
             <>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editBatch(rowData.id)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editBatch(rowData)} />
             </>
         );
     };
@@ -41,7 +48,7 @@ const ActiveBatchTable = ({activeBatch, loading}: ActiveBatchTableProps) => {
                     <h5>Active Batches</h5>
                     <DataTable
                         ref={dt}
-                        value={activeBatch}
+                        value={activeBatches}
                         rows={10}
                         loading={loading}
                         rowsPerPageOptions={[5, 10, 25]}
@@ -57,6 +64,12 @@ const ActiveBatchTable = ({activeBatch, loading}: ActiveBatchTableProps) => {
                         <Column field="isComplete" header="Verified" dataType="boolean"  style={{ minWidth: '6rem' }} body={isCompleteBodyTemplate} /> 
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '5rem' }}></Column>
                     </DataTable>
+                    <Dialog visible={visibleFullScreen} onHide={() => setVisibleFullScreen(false)} baseZIndex={1000}>
+                        {
+                        visibleFullScreen && 
+                        <BatchUpdateSettings batchID={activeBatchID} />
+                            }
+                    </Dialog>
                 </div>
             </div>
         </div>

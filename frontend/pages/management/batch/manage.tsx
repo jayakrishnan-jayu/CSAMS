@@ -1,4 +1,4 @@
-import BatchManageTable from "@/components/batchManageTable";
+import BatchManageTable from "@/components/batchManagement/batchManageTable";
 import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0"
 import { useContext } from "react";

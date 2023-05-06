@@ -28,6 +28,11 @@ export type ActiveBatchType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type AddBatchExtraCourse = {
+  __typename?: 'AddBatchExtraCourse';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type AddPreference = {
   __typename?: 'AddPreference';
   response?: Maybe<Scalars['Boolean']>;
@@ -115,6 +120,12 @@ export type CourseType = {
   t?: Maybe<Scalars['Int']>;
 };
 
+export type CurriculumExtraCoursesType = {
+  __typename?: 'CurriculumExtraCoursesType';
+  courses?: Maybe<Array<Maybe<ExtraCourseType>>>;
+  extra?: Maybe<Scalars['String']>;
+};
+
 export type CurriculumType = {
   __typename?: 'CurriculumType';
   duration?: Maybe<Scalars['Int']>;
@@ -151,6 +162,7 @@ export type ExtraCourseType = {
   courseType?: Maybe<Scalars['String']>;
   credit?: Maybe<Scalars['Int']>;
   hours?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   l?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   p?: Maybe<Scalars['Int']>;
@@ -192,14 +204,22 @@ export type MetaDataType = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addBatchExtraCourse?: Maybe<AddBatchExtraCourse>;
   addPreference?: Maybe<AddPreference>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
+  updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
   updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
   updateUser?: Maybe<UpdateUser>;
   updateWorkload?: Maybe<UpdateWorkload>;
   uploadCurriculum?: Maybe<UploadCurriculum>;
   verifyCurriculumUpload?: Maybe<VerifyCurriculumUpload>;
+};
+
+
+export type MutationAddBatchExtraCourseArgs = {
+  batchId: Scalars['ID'];
+  extraCourseId: Scalars['ID'];
 };
 
 
@@ -212,6 +232,13 @@ export type MutationAddPreferenceArgs = {
 
 export type MutationDeleteCurriculumUploadArgs = {
   curriculumUploadID: Scalars['ID'];
+};
+
+
+export type MutationUpdateBatchExtraCourseArgs = {
+  batchId: Scalars['ID'];
+  newExtraCourseId: Scalars['ID'];
+  oldExtraCourseId: Scalars['ID'];
 };
 
 
@@ -274,10 +301,12 @@ export type Query = {
   batch?: Maybe<BatchType>;
   batchInfo?: Maybe<BatchInfoType>;
   batchManagement?: Maybe<BatchManagementType>;
+  batchSelectedExtraCourses?: Maybe<Array<Maybe<ExtraCourseType>>>;
   batches?: Maybe<Array<Maybe<BatchType>>>;
   course?: Maybe<CourseType>;
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
   courses?: Maybe<Array<Maybe<CourseType>>>;
+  curriculumExtraCourses?: Maybe<Array<Maybe<CurriculumExtraCoursesType>>>;
   curriculumUploads?: Maybe<Array<Maybe<CurriculumUploadType>>>;
   curriculums?: Maybe<Array<Maybe<CurriculumType>>>;
   faculties?: Maybe<Array<Maybe<FacultyType>>>;
@@ -309,6 +338,11 @@ export type QueryBatchInfoArgs = {
 };
 
 
+export type QueryBatchSelectedExtraCoursesArgs = {
+  batchId: Scalars['ID'];
+};
+
+
 export type QueryBatchesArgs = {
   curriculumId?: InputMaybe<Scalars['ID']>;
   program?: InputMaybe<Scalars['String']>;
@@ -330,6 +364,13 @@ export type QueryCourseLabsArgs = {
 
 export type QueryCoursesArgs = {
   identifier?: InputMaybe<IdentfierInput>;
+};
+
+
+export type QueryCurriculumExtraCoursesArgs = {
+  curriculumYear: Scalars['Int'];
+  extras: Array<InputMaybe<Scalars['String']>>;
+  program: Scalars['String'];
 };
 
 
@@ -356,6 +397,11 @@ export type SemesterInput = {
   extra: Array<InputMaybe<Scalars['String']>>;
   /** number of semseter eg 1, 2, 3 */
   sem: Scalars['Int'];
+};
+
+export type UpdateBatchExtraCourse = {
+  __typename?: 'UpdateBatchExtraCourse';
+  response?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdatePreferenceCount = {
@@ -428,6 +474,23 @@ export type UploadCurriculumMutationVariables = Exact<{
 
 
 export type UploadCurriculumMutation = { __typename?: 'Mutation', uploadCurriculum?: { __typename?: 'UploadCurriculum', response?: { __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null } | null };
+
+export type AddBatchExtraCourseMutationVariables = Exact<{
+  BATCHID: Scalars['ID'];
+  EXTRA_COURSEID: Scalars['ID'];
+}>;
+
+
+export type AddBatchExtraCourseMutation = { __typename?: 'Mutation', addBatchExtraCourse?: { __typename?: 'AddBatchExtraCourse', response?: boolean | null } | null };
+
+export type UpdateBatchExtraCourseMutationVariables = Exact<{
+  BATCHID: Scalars['ID'];
+  OLD_EXTRA_COURSEID: Scalars['ID'];
+  NEW_EXTRA_COURSEID: Scalars['ID'];
+}>;
+
+
+export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: boolean | null } | null };
 
 export type DeleteCurriculumUploadMutationVariables = Exact<{
   CURRICULUMUPLOADID: Scalars['ID'];
@@ -514,6 +577,16 @@ export type CurriculumUploadsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CurriculumUploadsQuery = { __typename?: 'Query', curriculumUploads?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null };
+
+export type CurriculumExtraCoursesQueryVariables = Exact<{
+  EXTRAS: Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>;
+  PROGRAM: Scalars['String'];
+  CURRICULUMYEAR: Scalars['Int'];
+  BATCHID: Scalars['ID'];
+}>;
+
+
+export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtraCourses?: Array<{ __typename?: 'CurriculumExtraCoursesType', extra?: string | null, courses?: Array<{ __typename?: 'ExtraCourseType', code?: string | null, name?: string | null } | null> | null } | null> | null, batchSelectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null> | null };
 
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -613,6 +686,21 @@ export default {
           },
           {
             "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AddBatchExtraCourse",
+        "fields": [
+          {
+            "name": "response",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -967,6 +1055,33 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CurriculumExtraCoursesType",
+        "fields": [
+          {
+            "name": "courses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ExtraCourseType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "extra",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "CurriculumType",
         "fields": [
           {
@@ -1111,6 +1226,14 @@ export default {
             "args": []
           },
           {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "l",
             "type": {
               "kind": "SCALAR",
@@ -1239,6 +1362,36 @@ export default {
         "name": "Mutation",
         "fields": [
           {
+            "name": "addBatchExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AddBatchExtraCourse",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "batchId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "extraCourseId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "addPreference",
             "type": {
               "kind": "OBJECT",
@@ -1288,6 +1441,46 @@ export default {
             "args": [
               {
                 "name": "curriculumUploadID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateBatchExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateBatchExtraCourse",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "batchId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "newExtraCourseId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "oldExtraCourseId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -1650,6 +1843,29 @@ export default {
             "args": []
           },
           {
+            "name": "batchSelectedExtraCourses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ExtraCourseType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "batchId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "batches",
             "type": {
               "kind": "LIST",
@@ -1759,6 +1975,52 @@ export default {
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "curriculumExtraCourses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CurriculumExtraCoursesType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "curriculumYear",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "extras",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "LIST",
+                    "ofType": {
+                      "kind": "SCALAR",
+                      "name": "Any"
+                    }
+                  }
+                }
+              },
+              {
+                "name": "program",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -1942,6 +2204,21 @@ export default {
                 "name": "WorkloadType",
                 "ofType": null
               }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateBatchExtraCourse",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -2192,6 +2469,32 @@ export const UploadCurriculumDocument = gql`
 export function useUploadCurriculumMutation() {
   return Urql.useMutation<UploadCurriculumMutation, UploadCurriculumMutationVariables>(UploadCurriculumDocument);
 };
+export const AddBatchExtraCourseDocument = gql`
+    mutation addBatchExtraCourse($BATCHID: ID!, $EXTRA_COURSEID: ID!) {
+  addBatchExtraCourse(batchId: $BATCHID, extraCourseId: $EXTRA_COURSEID) {
+    response
+  }
+}
+    `;
+
+export function useAddBatchExtraCourseMutation() {
+  return Urql.useMutation<AddBatchExtraCourseMutation, AddBatchExtraCourseMutationVariables>(AddBatchExtraCourseDocument);
+};
+export const UpdateBatchExtraCourseDocument = gql`
+    mutation updateBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!, $NEW_EXTRA_COURSEID: ID!) {
+  updateBatchExtraCourse(
+    batchId: 90
+    oldExtraCourseId: $OLD_EXTRA_COURSEID
+    newExtraCourseId: $NEW_EXTRA_COURSEID
+  ) {
+    response
+  }
+}
+    `;
+
+export function useUpdateBatchExtraCourseMutation() {
+  return Urql.useMutation<UpdateBatchExtraCourseMutation, UpdateBatchExtraCourseMutationVariables>(UpdateBatchExtraCourseDocument);
+};
 export const DeleteCurriculumUploadDocument = gql`
     mutation deleteCurriculumUpload($CURRICULUMUPLOADID: ID!) {
   deleteCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID) {
@@ -2376,6 +2679,31 @@ export const CurriculumUploadsDocument = gql`
 
 export function useCurriculumUploadsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumUploadsQueryVariables>, 'query'>) {
   return Urql.useQuery<CurriculumUploadsQuery, CurriculumUploadsQueryVariables>({ query: CurriculumUploadsDocument, ...options });
+};
+export const CurriculumExtraCoursesDocument = gql`
+    query curriculumExtraCourses($EXTRAS: [String]!, $PROGRAM: String!, $CURRICULUMYEAR: Int!, $BATCHID: ID!) {
+  curriculumExtraCourses(
+    extras: $EXTRAS
+    program: $PROGRAM
+    curriculumYear: $CURRICULUMYEAR
+  ) {
+    extra
+    courses {
+      code
+      name
+    }
+  }
+  batchSelectedExtraCourses(batchId: $BATCHID) {
+    id
+    code
+    name
+    courseType
+  }
+}
+    `;
+
+export function useCurriculumExtraCoursesQuery(options: Omit<Urql.UseQueryArgs<CurriculumExtraCoursesQueryVariables>, 'query'>) {
+  return Urql.useQuery<CurriculumExtraCoursesQuery, CurriculumExtraCoursesQueryVariables>({ query: CurriculumExtraCoursesDocument, ...options });
 };
 export const MetadataDocument = gql`
     query metadata {

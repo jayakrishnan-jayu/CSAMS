@@ -10,8 +10,7 @@ const BatchManageTable = () => {
   if (error) return <div>{error.toString()}</div>
   return (
     <>
-        <ActiveBatchTable activeBatch={data?.batchManagement?.activeBatches} loading={fetching}/>
-        <BatchUpdateSettings batchID={82} />
+        <ActiveBatchTable activeBatches={data?.batchManagement?.activeBatches} loading={fetching}/>
     </>
   );
 }
