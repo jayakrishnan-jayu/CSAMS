@@ -3,19 +3,23 @@ import AppMenuitem from "./AppMenuItem";
 import { MenuProvider } from "./context/menucontext";
 import { MetaDataContext } from "./context/metadatacontext";
 
+import { AppMenuItem } from '../../types/types';
+
 const AppMenu = () => {
-  const homeSection = {
+  
+  const homeSection: AppMenuItem = {
     label: "Home",
     items: [{ label: "Dashboard", icon: "pi pi-fw pi-home", to: "/" }],
   };
-  const accountSection = {
+
+  const accountSection: AppMenuItem = {
     label: "Account",
     items: [
       { label: "User Profile", icon: "pi pi-fw pi-user", to: "/profile" },
       { label: "Account Settings", icon: "pi pi-fw pi-lock", to: "/settings" },
     ],
   };
-  const facultySection = {
+  const facultySection: AppMenuItem = {
     label: "Faculty",
     items: [
       {
@@ -26,7 +30,7 @@ const AppMenu = () => {
       { label: "Report", icon: "pi pi-fw pi-file", to: "/faculty/report" },
     ],
   };
-  const adminSection: any = {
+  const adminSection: AppMenuItem = {
     label: "Management",
     items: [
       {
@@ -94,7 +98,7 @@ const AppMenu = () => {
       <ul className="layout-menu">
         {model.map((item: any, i: number) => {
           return !item.seperator ? (
-            <AppMenuitem parentKey={i.toString()} item={item} root={true} index={i.toString()} key={item.label} />
+            <AppMenuitem item={item} root={true} index={i.toString()} key={item.label} />
           ) : (
             <li className="menu-separator"></li>
           );

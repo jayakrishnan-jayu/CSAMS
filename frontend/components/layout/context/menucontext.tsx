@@ -1,16 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
+import { ChildContainerProps, MenuContextProps } from '../../../types/types';
 
-interface MenuContextValue {
-    activeMenu: string;
-    setActiveMenu: (menu: string) => void;
-  }
+export const MenuContext = createContext({} as MenuContextProps);
 
-export const MenuContext = React.createContext<MenuContextValue>({
-    activeMenu: '',
-    setActiveMenu: () => {},
-});
-
-export const MenuProvider = (props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
+export const MenuProvider = ({ children }: ChildContainerProps) => {
     const [activeMenu, setActiveMenu] = useState('');
 
     const value = {
@@ -18,5 +11,5 @@ export const MenuProvider = (props: { children: string | number | boolean | Reac
         setActiveMenu
     };
 
-    return <MenuContext.Provider value={value}>{props.children}</MenuContext.Provider>;
+    return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
 };

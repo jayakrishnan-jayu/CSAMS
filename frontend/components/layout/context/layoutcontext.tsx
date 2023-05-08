@@ -1,59 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
+import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '../../../types/types';
+export const LayoutContext = createContext({} as LayoutContextProps);
 
-
-interface LayoutConfig {
-    ripple: boolean;
-    inputStyle: string;
-    menuMode: string;
-    colorScheme: string;
-    theme: string;
-    scale: number;
-  }
-  
-  interface LayoutState {
-    staticMenuDesktopInactive: boolean;
-    overlayMenuActive: boolean;
-    profileSidebarVisible: boolean;
-    configSidebarVisible: boolean;
-    staticMenuMobileActive: boolean;
-    menuHoverActive: boolean;
-  }
-  
-  interface LayoutContextValue {
-    layoutConfig: LayoutConfig;
-    setLayoutConfig: React.Dispatch<React.SetStateAction<LayoutConfig>>;
-    layoutState: LayoutState;
-    setLayoutState: React.Dispatch<React.SetStateAction<LayoutState>>;
-    onMenuToggle: () => void;
-    showProfileSidebar: () => void;
-  }
-
-
-export const LayoutContext =React.createContext<LayoutContextValue>({
-    layoutConfig: {
-      ripple: false,
-      inputStyle: 'outlined',
-      menuMode: 'static',
-      colorScheme: 'light',
-      theme: 'lara-light-indigo',
-      scale: 14,
-    },
-    setLayoutConfig: () => {},
-    layoutState: {
-      staticMenuDesktopInactive: false,
-      overlayMenuActive: false,
-      profileSidebarVisible: false,
-      configSidebarVisible: false,
-      staticMenuMobileActive: false,
-      menuHoverActive: false,
-    },
-    setLayoutState: () => {},
-    onMenuToggle: () => {},
-    showProfileSidebar: () => {},
-  });
-
-export const LayoutProvider = (props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
-    const [layoutConfig, setLayoutConfig] = useState({
+export const LayoutProvider = ({ children }: ChildContainerProps) => {
+    const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
         ripple: false,
         inputStyle: 'outlined',
         menuMode: 'static',
@@ -62,7 +12,7 @@ export const LayoutProvider = (props: { children: string | number | boolean | Re
         scale: 14
     });
 
-    const [layoutState, setLayoutState] = useState({
+    const [layoutState, setLayoutState] = useState<LayoutState>({
         staticMenuDesktopInactive: false,
         overlayMenuActive: false,
         profileSidebarVisible: false,
@@ -95,7 +45,7 @@ export const LayoutProvider = (props: { children: string | number | boolean | Re
         return window.innerWidth > 991;
     };
 
-    const value = {
+    const value: LayoutContextProps = {
         layoutConfig,
         setLayoutConfig,
         layoutState,
@@ -104,5 +54,5 @@ export const LayoutProvider = (props: { children: string | number | boolean | Re
         showProfileSidebar
     };
 
-    return <LayoutContext.Provider value={value}>{props.children}</LayoutContext.Provider>;
+    return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;
 };

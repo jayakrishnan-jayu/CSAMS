@@ -1,8 +1,9 @@
-import getConfig from 'next/config';
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEventListener, useUnmountEffect } from 'primereact/hooks';
-import { classNames, DomHandler } from 'primereact/utils';
+import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
+import { classNames } from 'primereact/utils';
 import React, { useContext, useEffect, useRef } from 'react';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
@@ -10,17 +11,25 @@ import AppTopbar from './AppTopbar';
 import AppConfig from './AppConfig';
 import { LayoutContext } from './context/layoutcontext';
 import PrimeReact from 'primereact/api';
+import { ChildContainerProps, LayoutState, AppTopbarRef } from '../../types/types';
+import getConfig from 'next/config';
 
-const Layout = (props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
+const Layout = ({ children }: ChildContainerProps) => {
     const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
-    const topbarRef = useRef(null);
-    const sidebarRef = useRef(null);
+    const topbarRef = useRef<AppTopbarRef>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
+    
     const router = useRouter();
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
         type: 'click',
         listener: (event) => {
-            const isOutsideClicked = !(sidebarRef.current.isSameNode(event.target) || sidebarRef.current.contains(event.target) || topbarRef.current.menubutton.isSameNode(event.target) || topbarRef.current.menubutton.contains(event.target));
+            const isOutsideClicked = !(
+                sidebarRef.current?.isSameNode(event.target as Node) ||
+                sidebarRef.current?.contains(event.target as Node) ||
+                topbarRef.current?.menubutton?.isSameNode(event.target as Node) ||
+                topbarRef.current?.menubutton?.contains(event.target as Node)
+            );
 
             if (isOutsideClicked) {
                 hideMenu();
@@ -32,10 +41,10 @@ const Layout = (props: { children: string | number | boolean | React.ReactElemen
         type: 'click',
         listener: (event) => {
             const isOutsideClicked = !(
-                topbarRef.current.topbarmenu.isSameNode(event.target) ||
-                topbarRef.current.topbarmenu.contains(event.target) ||
-                topbarRef.current.topbarmenubutton.isSameNode(event.target) ||
-                topbarRef.current.topbarmenubutton.contains(event.target)
+                topbarRef.current?.topbarmenu?.isSameNode(event.target as Node) ||
+                topbarRef.current?.topbarmenu?.contains(event.target as Node) ||
+                topbarRef.current?.topbarmenubutton?.isSameNode(event.target as Node) ||
+                topbarRef.current?.topbarmenubutton?.contains(event.target as Node)
             );
 
             if (isOutsideClicked) {
@@ -45,25 +54,35 @@ const Layout = (props: { children: string | number | boolean | React.ReactElemen
     });
 
     const hideMenu = () => {
-        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
+        setLayoutState((prevLayoutState: LayoutState) => ({ ...prevLayoutState, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
         unbindMenuOutsideClickListener();
         unblockBodyScroll();
     };
 
     const hideProfileMenu = () => {
-        setLayoutState((prevLayoutState) => ({ ...prevLayoutState, profileSidebarVisible: false }));
+        setLayoutState((prevLayoutState: LayoutState) => ({ ...prevLayoutState, profileSidebarVisible: false }));
         unbindProfileMenuOutsideClickListener();
     };
 
-    const blockBodyScroll = () => {
-        //@ts-ignore
-        DomHandler.addClass('blocked-scroll');
+    const blockBodyScroll = (): void => {
+        if (document.body.classList) {
+            document.body.classList.add('blocked-scroll');
+        } else {
+            document.body.className += ' blocked-scroll';
+        }
     };
 
-    const unblockBodyScroll = () => {
-        //@ts-ignore
-        DomHandler.removeClass('blocked-scroll');
+    const unblockBodyScroll = (): void => {
+        if (document.body.classList) {
+            document.body.classList.remove('blocked-scroll');
+        } else {
+            document.body.className = document.body.className.replace(new RegExp('(^|\\b)' + 'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
     };
+
+    useMountEffect(() => {
+        PrimeReact.ripple = true;
+    })
 
     useEffect(() => {
         if (layoutState.overlayMenuActive || layoutState.staticMenuMobileActive) {
@@ -86,16 +105,12 @@ const Layout = (props: { children: string | number | boolean | React.ReactElemen
         });
     }, []);
 
-    PrimeReact.ripple = true;
-
     useUnmountEffect(() => {
         unbindMenuOutsideClickListener();
         unbindProfileMenuOutsideClickListener();
     });
 
     const containerClass = classNames('layout-wrapper', {
-        'layout-theme-light': layoutConfig.colorScheme === 'light',
-        'layout-theme-dark': layoutConfig.colorScheme === 'dark',
         'layout-overlay': layoutConfig.menuMode === 'overlay',
         'layout-static': layoutConfig.menuMode === 'static',
         'layout-static-inactive': layoutState.staticMenuDesktopInactive && layoutConfig.menuMode === 'static',
@@ -119,7 +134,7 @@ const Layout = (props: { children: string | number | boolean | React.ReactElemen
                     <AppSidebar />
                 </div>
                 <div className="layout-main-container">
-                    <div className="layout-main">{props.children}</div>
+                    <div className="layout-main">{children}</div>
                     <AppFooter />
                 </div>
                 <AppConfig />
