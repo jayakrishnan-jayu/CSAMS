@@ -151,6 +151,11 @@ export type CurriculumUploadType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type DeleteBatchExtraCourse = {
+  __typename?: 'DeleteBatchExtraCourse';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type DeleteCurriculumUpload = {
   __typename?: 'DeleteCurriculumUpload';
   response?: Maybe<Scalars['Boolean']>;
@@ -206,6 +211,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   addBatchExtraCourse?: Maybe<AddBatchExtraCourse>;
   addPreference?: Maybe<AddPreference>;
+  deleteBatchExtraCourse?: Maybe<DeleteBatchExtraCourse>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
   updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
@@ -227,6 +233,12 @@ export type MutationAddPreferenceArgs = {
   courseId: Scalars['ID'];
   experience: Scalars['Int'];
   weightage: Scalars['Int'];
+};
+
+
+export type MutationDeleteBatchExtraCourseArgs = {
+  batchId: Scalars['ID'];
+  oldExtraCourseId: Scalars['ID'];
 };
 
 
@@ -492,6 +504,14 @@ export type UpdateBatchExtraCourseMutationVariables = Exact<{
 
 export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: boolean | null } | null };
 
+export type DeleteBatchExtraCourseMutationVariables = Exact<{
+  BATCHID: Scalars['ID'];
+  OLD_EXTRA_COURSEID: Scalars['ID'];
+}>;
+
+
+export type DeleteBatchExtraCourseMutation = { __typename?: 'Mutation', deleteBatchExtraCourse?: { __typename?: 'DeleteBatchExtraCourse', response?: boolean | null } | null };
+
 export type DeleteCurriculumUploadMutationVariables = Exact<{
   CURRICULUMUPLOADID: Scalars['ID'];
 }>;
@@ -586,7 +606,7 @@ export type CurriculumExtraCoursesQueryVariables = Exact<{
 }>;
 
 
-export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtraCourses?: Array<{ __typename?: 'CurriculumExtraCoursesType', extra?: string | null, courses?: Array<{ __typename?: 'ExtraCourseType', code?: string | null, name?: string | null } | null> | null } | null> | null, batchSelectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null> | null };
+export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtraCourses?: Array<{ __typename?: 'CurriculumExtraCoursesType', extra?: string | null, courses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null } | null> | null } | null> | null, batchSelectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null> | null };
 
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1176,6 +1196,21 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "DeleteBatchExtraCourse",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "DeleteCurriculumUpload",
         "fields": [
           {
@@ -1421,6 +1456,36 @@ export default {
               },
               {
                 "name": "weightage",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteBatchExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteBatchExtraCourse",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "batchId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "oldExtraCourseId",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -2483,7 +2548,7 @@ export function useAddBatchExtraCourseMutation() {
 export const UpdateBatchExtraCourseDocument = gql`
     mutation updateBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!, $NEW_EXTRA_COURSEID: ID!) {
   updateBatchExtraCourse(
-    batchId: 90
+    batchId: $BATCHID
     oldExtraCourseId: $OLD_EXTRA_COURSEID
     newExtraCourseId: $NEW_EXTRA_COURSEID
   ) {
@@ -2494,6 +2559,17 @@ export const UpdateBatchExtraCourseDocument = gql`
 
 export function useUpdateBatchExtraCourseMutation() {
   return Urql.useMutation<UpdateBatchExtraCourseMutation, UpdateBatchExtraCourseMutationVariables>(UpdateBatchExtraCourseDocument);
+};
+export const DeleteBatchExtraCourseDocument = gql`
+    mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!) {
+  deleteBatchExtraCourse(batchId: $BATCHID, oldExtraCourseId: $OLD_EXTRA_COURSEID) {
+    response
+  }
+}
+    `;
+
+export function useDeleteBatchExtraCourseMutation() {
+  return Urql.useMutation<DeleteBatchExtraCourseMutation, DeleteBatchExtraCourseMutationVariables>(DeleteBatchExtraCourseDocument);
 };
 export const DeleteCurriculumUploadDocument = gql`
     mutation deleteCurriculumUpload($CURRICULUMUPLOADID: ID!) {
@@ -2689,6 +2765,7 @@ export const CurriculumExtraCoursesDocument = gql`
   ) {
     extra
     courses {
+      id
       code
       name
     }

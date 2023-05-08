@@ -18,7 +18,13 @@ mutation addBatchExtraCourse($BATCHID: ID!, $EXTRA_COURSEID: ID!){
 }
 
 mutation updateBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!, $NEW_EXTRA_COURSEID: ID!){
-  updateBatchExtraCourse(batchId:90, oldExtraCourseId:$OLD_EXTRA_COURSEID, newExtraCourseId:$NEW_EXTRA_COURSEID){
+  updateBatchExtraCourse(batchId:$BATCHID, oldExtraCourseId:$OLD_EXTRA_COURSEID, newExtraCourseId:$NEW_EXTRA_COURSEID){
+    response
+  }
+}
+
+mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!){
+  deleteBatchExtraCourse(batchId:$BATCHID, oldExtraCourseId:$OLD_EXTRA_COURSEID){
     response
   }
 }

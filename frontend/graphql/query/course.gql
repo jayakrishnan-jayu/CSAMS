@@ -50,6 +50,7 @@ query curriculumExtraCourses($EXTRAS: [String]!, $PROGRAM:String!, $CURRICULUMYE
   curriculumExtraCourses(extras:$EXTRAS ,program:$PROGRAM, curriculumYear:$CURRICULUMYEAR){
     extra
     courses{
+      id
       code
       name
     }

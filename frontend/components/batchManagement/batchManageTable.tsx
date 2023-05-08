@@ -1,7 +1,6 @@
 import { useBatchManagementQuery } from '@/graphql/generated/graphql';
 import React from 'react';
 import ActiveBatchTable from './activeBatchTable';
-import BatchUpdateSettings from './batchUpdateSettings';
 
 const BatchManageTable = () => {
   const [result] = useBatchManagementQuery()

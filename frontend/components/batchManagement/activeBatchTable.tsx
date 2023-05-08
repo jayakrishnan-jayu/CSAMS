@@ -1,10 +1,10 @@
-import { ActiveBatchType } from '@/graphql/generated/graphql';
+import { ActiveBatchType, AddBatchExtraCourseMutationVariables, DeleteBatchExtraCourseMutationVariables, UpdateBatchExtraCourseMutationVariables, useAddBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation } from '@/graphql/generated/graphql';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Sidebar } from 'primereact/sidebar';
 import { classNames } from 'primereact/utils';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import BatchUpdateSettings from './batchUpdateSettings';
 import { Dialog } from 'primereact/dialog';
 
@@ -15,13 +15,11 @@ interface ActiveBatchTableProps {
 
 
 const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
-    const dt = useRef(null);
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
     const [activeBatchID, setActiveBatchID] = useState<string>("");
 
-
     const isCompleteBodyTemplate = (rowData: ActiveBatchType) => {
-        return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.isComplete, 'text-pink-500 pi-times-circle': !rowData.isActive })}></i>;
+        return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.isComplete, 'text-pink-500 pi-times-circle': !rowData.isComplete })}></i>;
     };
 
     const programBodyTemplate = (rowData: ActiveBatchType) => {
@@ -47,7 +45,6 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
                 <div className="card">
                     <h5>Active Batches</h5>
                     <DataTable
-                        ref={dt}
                         value={activeBatches}
                         rows={10}
                         loading={loading}
@@ -68,7 +65,7 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
                         {
                         visibleFullScreen && 
                         <BatchUpdateSettings batchID={activeBatchID} />
-                            }
+                        }
                     </Dialog>
                 </div>
             </div>

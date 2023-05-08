@@ -44,7 +44,7 @@ class UpdateBatchExtraCourse(graphene.Mutation):
     @login_required
     @resolve_user
     @staff_privilege_required
-    def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID, new_extra_course_id):
+    def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID, new_extra_course_id: graphene.ID):
         try:
             b = Batch.objects.get(id=batch_id)
         except Batch.DoesNotExist:
@@ -61,6 +61,29 @@ class UpdateBatchExtraCourse(graphene.Mutation):
             b.add_selected_extra_course(ec_new)
         
         return UpdateBatchExtraCourse(response=True)
+
+class DeleteBatchExtraCourse(graphene.Mutation):
+    class Arguments:
+        batch_id = graphene.ID(required=True)
+        old_extra_course_id = graphene.ID(required=True)
+
+    response = graphene.Boolean()
+
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID):
+        print("yay")
+        try:
+            b = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException(message="Batch not found", code="INVALID_BATCH_ID")
+        try:
+            ec_old = ExtraCourse.objects.get(id=old_extra_course_id)
+        except ExtraCourse.DoesNotExist:
+            raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
+        b.remove_selected_extra_course(ec_old)
+        return DeleteBatchExtraCourse(response=True)
 
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
@@ -247,6 +270,7 @@ class CourseMutation(graphene.ObjectType):
 
     add_batch_extra_course =  AddBatchExtraCourse.Field()
     update_batch_extra_course =  UpdateBatchExtraCourse.Field()
+    delete_batch_extra_course = DeleteBatchExtraCourse.Field()
 
 __all__ = [
     'CourseMutation'
