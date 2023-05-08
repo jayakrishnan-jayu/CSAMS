@@ -1,8 +1,11 @@
 import graphene
-from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType, CurriculumUploadType, BatchManagementType
+
+from preference.models import Config
+from ..types.course import ProgramType, CurriculumType,BatchType, BatchInfoType, CurriculumUploadType, BatchManagementType, IdentifierInput
 from course.models import Batch, Program, Curriculum, CurriculumUpload
 from backend.api import APIException
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
+from django.db.models import F
 
 class BatchQueries(graphene.ObjectType):
     programs = graphene.List(
@@ -13,7 +16,11 @@ class BatchQueries(graphene.ObjectType):
         program=graphene.String(description="Department Program eg BCA"),
         year=graphene.Int(description="Year of Curriculum"),
     )
-
+    curriculum_upload = graphene.Field(
+        CurriculumUploadType,
+        program=graphene.String(description="Department Program eg BCA", required=True),
+        year=graphene.Int(description="Year of Curriculum", required=True),
+    )
     curriculum_uploads = graphene.List(
         CurriculumUploadType
     )
@@ -29,9 +36,7 @@ class BatchQueries(graphene.ObjectType):
     )
     batches = graphene.List(
         BatchType,
-        curriculum_id=graphene.ID(description="Curriculum ID"),
-        program=graphene.String(description="Department Program eg BCA"),
-        year=graphene.Int(description="Year of Batch"),
+        identifier=graphene.Argument(IdentifierInput, required=False)
     )
     batch_info = graphene.Field(
         BatchInfoType,
@@ -65,7 +70,7 @@ class BatchQueries(graphene.ObjectType):
             raise APIException('Curriculums not found', 'CURRICULUM_NOT_FOUND')
         return curriculums
     
-    # @login_required
+    @login_required
     def resolve_batch(self, info, batch_id:int):
         try:
             batch = Batch.objects.get(id=batch_id)
@@ -74,24 +79,10 @@ class BatchQueries(graphene.ObjectType):
         return batch
     
     @login_required
-    def resolve_batches(self, info, curriculum_id:int=None, program:str=None, year:int=None):
-        if curriculum_id is None and program is None and year is None:
-            raise APIException('Required argument year or program missing', code='INVALID_INPUT')
-        batches = Batch.objects.all()
-        if curriculum_id is not None:
-            batches = batches.filter(curriculum_id=curriculum_id)
-        if not batches.exists():
-            raise APIException('Batches not found', 'BATCHES_NOT_FOUND')
-        if program is not None:
-            try:
-                p = Program.objects.get(name=program)
-                batches = batches.filter(curriculum__program=p)
-            except Program.DoesNotExist:
-                raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
-        if year is not None:
-            batches = batches.filter(year=year)
-        if not batches.exists():
-            raise APIException('Batches not found', 'BATCHES_NOT_FOUND')
+    def resolve_batches(self, info, identifier:IdentifierInput = None):
+        if identifier is None:
+            identifier = Config.objects.first().current_preference_sem
+        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not identifier.is_even_sem , sem_year=identifier.year)
         return batches
     
     @login_required
@@ -100,7 +91,7 @@ class BatchQueries(graphene.ObjectType):
             p = Program.objects.get(name=program)
             return p
         except Program.DoesNotExist:
-                raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
+            raise APIException('Program not found', code='PROGRAM_NOT_FOUND')
 
     @login_required
     @resolve_user
@@ -128,6 +119,15 @@ class BatchQueries(graphene.ObjectType):
                 result.append(BatchType(curriculum=CurriculumType(program=p, year=expected_year, duration=lc.year), year=yr, sem=sem+1))
         return result
 
+    @login_required
+    @resolve_user
+    @staff_privilege_required
+    def resolve_curriculum_upload(self, info, program: str, year: int):
+        try:
+            c =  CurriculumUpload.objects.get(program__name=program, year=year)
+        except CurriculumUpload.DoesNotExist:
+            raise APIException(message="Curriculum Upload not found")
+        return c
 
     @login_required
     @resolve_user
@@ -135,6 +135,8 @@ class BatchQueries(graphene.ObjectType):
     def resolve_curriculum_uploads(self, info):
         return CurriculumUpload.objects.all()
     
+    @login_required
+    @resolve_user
+    @staff_privilege_required
     def resolve_batch_management(self, info):
-        print("resolving management")
         return {}

@@ -1,9 +1,13 @@
-import graphene
-from course.models import Batch, Program, Course, BatchCurriculumExtra, CurriculumExtras, Curriculum, ExtraCourse
-from preference.models import Config, Identifier
-from backend.api import APIException
 from typing import List
+
+import graphene
 from django.db.models import F
+
+from backend.api import APIException
+from course.models import (Batch, BatchCurriculumExtra, Course, Curriculum,
+                           CurriculumExtras, ExtraCourse, Program)
+from preference.models import Config, Identifier
+
 
 class ProgramType(graphene.ObjectType):
     id = graphene.ID()
@@ -99,6 +103,13 @@ class BatchType(graphene.ObjectType):
         return batch_extra_courses_count - selected_courses_count
 
 
+class IdentifierInput(graphene.InputObjectType):
+    year = graphene.Int(required=True)
+    is_even_sem = graphene.Boolean(required=True)
+
+# class BatchFilterInput(graphene.Argument):
+#     curriculum_id = graphene.ID(required=False)
+#     program = graphene.String(required=False)
 
 class BatchYearSemType(graphene.ObjectType):
     year = graphene.Int()

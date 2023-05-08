@@ -161,11 +161,11 @@ const WorkloadTable = () => {
                         <div className="formgrid grid">
                             <div className="field col">
                                 <label>Min Hours/Week</label>
-                                <InputNumber id="minHoursPerWeek" value={product.minHoursPerWeek} onValueChange={(e) => onInputNumberChange(e, 'minHoursPerWeek')} integeronly/>
+                                <InputNumber id="minHoursPerWeek" value={product.minHoursPerWeek} onValueChange={(e) => onInputNumberChange(e, 'minHoursPerWeek')}/>
                             </div>
                             <div className="field col">
                                 <label>Max Hours/Week</label>
-                                <InputNumber id="maxHoursPerWeek" value={product.maxHoursPerWeek} onValueChange={(e) => onInputNumberChange(e, 'maxHoursPerWeek')} integeronly/>
+                                <InputNumber id="maxHoursPerWeek" value={product.maxHoursPerWeek} onValueChange={(e) => onInputNumberChange(e, 'maxHoursPerWeek')}/>
                             </div>
                         </div>
                     </Dialog>

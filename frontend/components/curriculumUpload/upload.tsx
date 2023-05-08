@@ -5,37 +5,9 @@ import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import { VerifyNewCurriculumQuery, useVerifyNewCurriculumQuery, CurriculumUploadInput } from '@/graphql/generated/graphql';
 
-// export type Curriculum = {
-//     program:   string;
-//     year:     number;
-//     extra:    Extra[];
-//     semsters: Semester[];
-// }
-
-// export type Extra = {
-//     name: string;
-//     courses: Course[];
-// }
-
-// export type Semester = {
-//     sem: number;
-//     courses: Course[];
-//     extra:   string[];
-// }
-
-// export type Course = {
-//     code: string;
-//     name: string;
-//     L:    number;
-//     T:    number;
-//     P:    number;
-//     C:    number;
-// }
-
-
 interface UploadCurriculumProps {
     onUpload: (c: CurriculumUploadInput, verifiedCourses: VerifyNewCurriculumQuery)=>void
-    toast: React.MutableRefObject<null>;
+    toast: any;
 }
 
 
@@ -77,10 +49,10 @@ const UploadCurriculum = ({onUpload, toast}: UploadCurriculumProps) => {
     }
 
     const onTemplateSelect = (e) => {
-        const fr = new FileReader();
+        const fr: any = new FileReader();
         let tmpTotalSize = totalSize;
 
-        Array.from(e.files).forEach((file) => {
+        Array.from(e.files).forEach((file: any) => {
             tmpTotalSize += file.size;
         });
         setTotalSize(tmpTotalSize);

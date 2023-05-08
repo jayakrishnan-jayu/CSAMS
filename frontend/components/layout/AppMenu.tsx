@@ -26,7 +26,7 @@ const AppMenu = () => {
       { label: "Report", icon: "pi pi-fw pi-file", to: "/faculty/report" },
     ],
   };
-  const adminSection = {
+  const adminSection: any = {
     label: "Management",
     items: [
       {
@@ -56,6 +56,11 @@ const AppMenu = () => {
             label: "Manage",
             to: "/management/batch/manage",
           },
+          {
+            label: "Verify",
+            to: "/management/batch/verify",
+          
+          },
         ],
       },
       {
@@ -74,7 +79,7 @@ const AppMenu = () => {
           },
         ],
       },
-    ],
+    ]
   };
 
   const { metaData } = useContext(MetaDataContext);
@@ -87,9 +92,9 @@ const AppMenu = () => {
   return (
     <MenuProvider>
       <ul className="layout-menu">
-        {model.map((item, i) => {
+        {model.map((item: any, i: number) => {
           return !item.seperator ? (
-            <AppMenuitem item={item} root={true} index={i} key={item.label} />
+            <AppMenuitem parentKey={i.toString()} item={item} root={true} index={i.toString()} key={item.label} />
           ) : (
             <li className="menu-separator"></li>
           );

@@ -182,7 +182,8 @@ const CurriculumUploadTable = () => {
                         {
                         visibleFullScreen && 
                         <VerifyCurriculum 
-                            curriculum={JSON.parse(curriculumUpload?.data) as CurriculumUploadInput} 
+                            curriculum_program={curriculumUpload?.program || ''}
+                            curriculum_year={curriculumUpload?.year || 0}
                             footerElement={footerElement}
                         />
                             }

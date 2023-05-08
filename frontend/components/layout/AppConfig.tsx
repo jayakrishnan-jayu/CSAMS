@@ -53,7 +53,7 @@ const AppConfig = (props: any) => {
         }
 
         const id = linkElement.getAttribute('id');
-            const cloneLinkElement = linkElement.cloneNode(true);
+            const cloneLinkElement: any = linkElement.cloneNode(true);
 
             cloneLinkElement.setAttribute('href', href);
             cloneLinkElement.setAttribute('id', id + '-clone');
@@ -109,7 +109,7 @@ const AppConfig = (props: any) => {
                 { !props.simple &&
                     <>
                         <h5>Menu Type</h5>
-                        <div class="flex">
+                        <div className="flex">
                             <div className="field-radiobutton flex-1">
                                 <RadioButton name="menuMode" value={'static'} checked={layoutConfig.menuMode === 'static'} onChange={(e) => changeMenuMode(e)} inputId="mode1"></RadioButton>
                                 <label htmlFor="mode1">Static</label>

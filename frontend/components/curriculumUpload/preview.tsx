@@ -1,11 +1,9 @@
 import React from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { CurriculumUploadInput, VerifyNewCurriculumQuery } from '@/graphql/generated/graphql';
 import { Button } from 'primereact/button';
 
 
-interface PreviewCurriculumProps {
+export interface PreviewCurriculumProps {
     curriculum: CurriculumUploadInput,
     verifiedCourses: VerifyNewCurriculumQuery, 
     onPreviewComplete: ()=>void,

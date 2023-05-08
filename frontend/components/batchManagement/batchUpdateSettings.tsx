@@ -9,11 +9,11 @@ import { classNames } from 'primereact/utils';
 
 
 interface BatchUpdateSettingsProps {
-    batchID: number
+    batchID: string
 }
 
 const BatchUpdateSettings = ({batchID}:BatchUpdateSettingsProps) => {
-    const [result] = useBatchQuery({variables:{BATCHID:batchID.toString()},requestPolicy:'network-only'})
+    const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
     const {fetching, data, error} = result;
     const toast = useRef(null);
 
@@ -39,7 +39,7 @@ const BatchUpdateSettings = ({batchID}:BatchUpdateSettingsProps) => {
                     <h6>Semester</h6>
                     <InputText
                         type="number"
-                        value={data?.batch?.sem}
+                        value={data?.batch?.sem.toString()}
                         disabled
                     ></InputText>
                     </span>
@@ -61,8 +61,8 @@ interface ExtraCourseMappingTableProps {
     extras: Array<string>,
     program: string,
     curriculumYear: number,
-    batchID: number,
-    toast: MutableRefObject<null>,
+    batchID: string,
+    toast: any,
 }
 
 interface ExtraCourseTableData {
@@ -79,7 +79,13 @@ interface ModeType {
     type: null | 'delete' | 'update' | 'create'
 }
 
-const ExtraCourseMappingTable = ({id, extras, program, curriculumYear, batchID, toast}:ExtraCourseMappingTableProps) => {
+interface Label {
+    label?: String
+}
+
+type ExtraCourseCustomType = ExtraCourseType & Label;
+
+const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toast}:ExtraCourseMappingTableProps) => {
     let filteredExtras = extras.filter(function(item, pos) {
         return extras.indexOf(item) == pos;
     })
@@ -99,7 +105,7 @@ const ExtraCourseMappingTable = ({id, extras, program, curriculumYear, batchID, 
     const [updateBatchExtraCourse, updateBatchExtraCourseMutation] = useUpdateBatchExtraCourseMutation();
     const [deleteBatchExtraCourse, deleteBatchExtraCourseMutation] = useDeleteBatchExtraCourseMutation();
 
-    const [result] = useCurriculumExtraCoursesQuery({variables:{CURRICULUMYEAR: curriculumYear, EXTRAS: filteredExtras, PROGRAM: program, BATCHID: batchID.toString()}});
+    const [result] = useCurriculumExtraCoursesQuery({variables:{CURRICULUMYEAR: curriculumYear, EXTRAS: filteredExtras, PROGRAM: program, BATCHID: batchID}});
     const {fetching, data, error} = result;
 
     if (error?.message) {
@@ -176,12 +182,13 @@ const ExtraCourseMappingTable = ({id, extras, program, curriculumYear, batchID, 
         }
     }
 
-    const onExtraCourseChange = async (x: ExtraCourseType, ec: ExtraCourseTableData) => {
+    const onExtraCourseChange = async (x: ExtraCourseCustomType, ec: ExtraCourseTableData) => {
         setDialogShown(false);
-        if (x?.label === 'None') {
+
+        if (x.label === 'None') {
             setCurrentID(ec.id);
             setMode({type: 'delete'});
-            await deleteBatchExtraCourseMutation({BATCHID: batchID.toString(), OLD_EXTRA_COURSEID: ec.selectedCourseID})
+            await deleteBatchExtraCourseMutation({BATCHID: batchID, OLD_EXTRA_COURSEID: ec.selectedCourseID})
         }
         else if (ec.selectedCourseID){
             setCurrentID(ec.id);

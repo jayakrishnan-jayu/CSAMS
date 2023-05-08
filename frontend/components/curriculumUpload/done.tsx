@@ -14,7 +14,7 @@ const DoneCurriculum = ({curriculum, curriculumUploadData, onDoneCurriculumUploa
     const router = useRouter();
     const [newCurriculum, uploadCurriculum] = useUploadCurriculumMutation();
     if (newCurriculum.data?.uploadCurriculum){
-        onDoneCurriculumUpload(newCurriculum.data.uploadCurriculum as CurriculumUploadType)
+        onDoneCurriculumUpload(newCurriculum.data.uploadCurriculum as unknown as CurriculumUploadType)
     }
     
     const renderUploadButton = () => {

@@ -27,3 +27,28 @@ query batchManagement {
     }
   }
 }
+
+query batches ($IDENTIFIER: IdentifierInput) {
+  batches(identifier: $IDENTIFIER){
+    curriculum{
+      program
+      year
+    }
+    
+    semesterExtraCourses
+    selectedExtraCourses{
+      id
+      code
+      name
+      l
+      t
+      p
+      credit
+      hours
+      courseType
+    }
+    extraCourseLeftToAssign
+    year
+    sem
+  }
+}

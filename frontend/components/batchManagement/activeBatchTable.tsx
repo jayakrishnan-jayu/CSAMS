@@ -1,8 +1,7 @@
-import { ActiveBatchType, AddBatchExtraCourseMutationVariables, DeleteBatchExtraCourseMutationVariables, UpdateBatchExtraCourseMutationVariables, useAddBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation } from '@/graphql/generated/graphql';
+import { ActiveBatchType} from '@/graphql/generated/graphql';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
-import { Sidebar } from 'primereact/sidebar';
 import { classNames } from 'primereact/utils';
 import { useState } from 'react';
 import BatchUpdateSettings from './batchUpdateSettings';
@@ -10,14 +9,14 @@ import { Dialog } from 'primereact/dialog';
 import { useRouter } from "next/navigation";
 
 interface ActiveBatchTableProps {
-    activeBatches: ActiveBatchType[],
+    activeBatches: ActiveBatchType[] | undefined,
     loading: boolean,
 }
 
 
 const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
-    const [activeBatchID, setActiveBatchID] = useState<string>("");
+    const [activeBatchID, setActiveBatchID] = useState<string>("-1");
     const router = useRouter();
 
     const isCompleteBodyTemplate = (rowData: ActiveBatchType) => {
@@ -29,7 +28,7 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
     };
 
     const editBatch = (batch: ActiveBatchType) => {
-        setActiveBatchID(batch?.id || "")
+        setActiveBatchID(batch?.id || "-1")
         setVisibleFullScreen(true);
     }
 

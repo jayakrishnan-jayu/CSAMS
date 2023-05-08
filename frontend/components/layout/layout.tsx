@@ -56,10 +56,12 @@ const Layout = (props: { children: string | number | boolean | React.ReactElemen
     };
 
     const blockBodyScroll = () => {
+        //@ts-ignore
         DomHandler.addClass('blocked-scroll');
     };
 
     const unblockBodyScroll = () => {
+        //@ts-ignore
         DomHandler.removeClass('blocked-scroll');
     };
 

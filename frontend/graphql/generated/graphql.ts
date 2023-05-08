@@ -210,6 +210,11 @@ export type IdentiferType = {
   year?: Maybe<Scalars['Int']>;
 };
 
+export type IdentifierInput = {
+  isEvenSem: Scalars['Boolean'];
+  year: Scalars['Int'];
+};
+
 export type MetaDataType = {
   __typename?: 'MetaDataType';
   config?: Maybe<ConfigType>;
@@ -329,6 +334,7 @@ export type Query = {
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
   courses?: Maybe<Array<Maybe<CourseType>>>;
   curriculumExtraCourses?: Maybe<Array<Maybe<CurriculumExtraCoursesType>>>;
+  curriculumUpload?: Maybe<CurriculumUploadType>;
   curriculumUploads?: Maybe<Array<Maybe<CurriculumUploadType>>>;
   curriculums?: Maybe<Array<Maybe<CurriculumType>>>;
   faculties?: Maybe<Array<Maybe<FacultyType>>>;
@@ -366,9 +372,7 @@ export type QueryBatchSelectedExtraCoursesArgs = {
 
 
 export type QueryBatchesArgs = {
-  curriculumId?: InputMaybe<Scalars['ID']>;
-  program?: InputMaybe<Scalars['String']>;
-  year?: InputMaybe<Scalars['Int']>;
+  identifier?: InputMaybe<IdentifierInput>;
 };
 
 
@@ -393,6 +397,12 @@ export type QueryCurriculumExtraCoursesArgs = {
   curriculumYear: Scalars['Int'];
   extras: Array<InputMaybe<Scalars['String']>>;
   program: Scalars['String'];
+};
+
+
+export type QueryCurriculumUploadArgs = {
+  program: Scalars['String'];
+  year: Scalars['Int'];
 };
 
 
@@ -581,6 +591,13 @@ export type BatchManagementQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type BatchManagementQuery = { __typename?: 'Query', batchManagement?: { __typename?: 'BatchManagementType', activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null };
 
+export type BatchesQueryVariables = Exact<{
+  IDENTIFIER?: InputMaybe<IdentifierInput>;
+}>;
+
+
+export type BatchesQuery = { __typename?: 'Query', batches?: Array<{ __typename?: 'BatchType', semesterExtraCourses?: Array<string | null> | null, extraCourseLeftToAssign?: number | null, year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, l?: number | null, t?: number | null, p?: number | null, credit?: number | null, hours?: number | null, courseType?: string | null } | null> | null } | null> | null };
+
 export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -609,10 +626,18 @@ export type CurriculumsQueryVariables = Exact<{
 
 export type CurriculumsQuery = { __typename?: 'Query', curriculums?: Array<{ __typename?: 'CurriculumType', program?: string | null, year?: number | null, duration?: number | null } | null> | null };
 
+export type CurriculumUploadQueryVariables = Exact<{
+  PROGRAM: Scalars['String'];
+  YEAR: Scalars['Int'];
+}>;
+
+
+export type CurriculumUploadQuery = { __typename?: 'Query', curriculumUpload?: { __typename?: 'CurriculumUploadType', program?: string | null, year?: number | null, isPopulated?: boolean | null, uploadedOn?: any | null, data?: any | null } | null };
+
 export type CurriculumUploadsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurriculumUploadsQuery = { __typename?: 'Query', curriculumUploads?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, data?: any | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null };
+export type CurriculumUploadsQuery = { __typename?: 'Query', curriculumUploads?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null };
 
 export type CurriculumExtraCoursesQueryVariables = Exact<{
   EXTRAS: Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>;
@@ -1992,21 +2017,7 @@ export default {
             },
             "args": [
               {
-                "name": "curriculumId",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "program",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "year",
+                "name": "identifier",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -2130,6 +2141,36 @@ export default {
               },
               {
                 "name": "program",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "curriculumUpload",
+            "type": {
+              "kind": "OBJECT",
+              "name": "CurriculumUploadType",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "program",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "year",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -2785,6 +2826,35 @@ export const BatchManagementDocument = gql`
 export function useBatchManagementQuery(options?: Omit<Urql.UseQueryArgs<BatchManagementQueryVariables>, 'query'>) {
   return Urql.useQuery<BatchManagementQuery, BatchManagementQueryVariables>({ query: BatchManagementDocument, ...options });
 };
+export const BatchesDocument = gql`
+    query batches($IDENTIFIER: IdentifierInput) {
+  batches(identifier: $IDENTIFIER) {
+    curriculum {
+      program
+      year
+    }
+    semesterExtraCourses
+    selectedExtraCourses {
+      id
+      code
+      name
+      l
+      t
+      p
+      credit
+      hours
+      courseType
+    }
+    extraCourseLeftToAssign
+    year
+    sem
+  }
+}
+    `;
+
+export function useBatchesQuery(options?: Omit<Urql.UseQueryArgs<BatchesQueryVariables>, 'query'>) {
+  return Urql.useQuery<BatchesQuery, BatchesQueryVariables>({ query: BatchesDocument, ...options });
+};
 export const ProgramsDocument = gql`
     query programs {
   programs {
@@ -2842,13 +2912,27 @@ export const CurriculumsDocument = gql`
 export function useCurriculumsQuery(options?: Omit<Urql.UseQueryArgs<CurriculumsQueryVariables>, 'query'>) {
   return Urql.useQuery<CurriculumsQuery, CurriculumsQueryVariables>({ query: CurriculumsDocument, ...options });
 };
+export const CurriculumUploadDocument = gql`
+    query curriculumUpload($PROGRAM: String!, $YEAR: Int!) {
+  curriculumUpload(program: $PROGRAM, year: $YEAR) {
+    program
+    year
+    isPopulated
+    uploadedOn
+    data
+  }
+}
+    `;
+
+export function useCurriculumUploadQuery(options: Omit<Urql.UseQueryArgs<CurriculumUploadQueryVariables>, 'query'>) {
+  return Urql.useQuery<CurriculumUploadQuery, CurriculumUploadQueryVariables>({ query: CurriculumUploadDocument, ...options });
+};
 export const CurriculumUploadsDocument = gql`
     query curriculumUploads {
   curriculumUploads {
     id
     program
     year
-    data
     uploadedOn
     isPopulated
   }

@@ -35,12 +35,21 @@ query curriculums($PROGRAM: String, $YEAR: Int) {
   }
 }
 
+query curriculumUpload ($PROGRAM:String!, $YEAR:Int!) {
+  curriculumUpload(program:$PROGRAM, year:$YEAR){
+    program
+    year
+    isPopulated
+    uploadedOn
+    data
+  }
+}
+
 query curriculumUploads {
   curriculumUploads {
     id
     program
     year
-    data
     uploadedOn
     isPopulated
   }

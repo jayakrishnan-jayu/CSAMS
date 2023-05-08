@@ -1,16 +1,22 @@
 import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { CourseInput, CourseLabInput, CurriculumUploadInput, InputMaybe } from '@/graphql/generated/graphql';
+import { CourseInput, CourseLabInput, CurriculumUploadInput, CurriculumUploadType, InputMaybe, useCurriculumUploadQuery } from '@/graphql/generated/graphql';
 
 
 interface VerifyCurriculumProps {
-    curriculum: CurriculumUploadInput,
-    footerElement: () => JSX.Element,
+    curriculum_program: string,
+    curriculum_year: number,
+    footerElement?: () => JSX.Element,
 }
 
-const VerifyCurriculum = ({curriculum, footerElement} : VerifyCurriculumProps) => {
-    const {program, extra, semesters, year} = curriculum;
+const VerifyCurriculum = ({curriculum_program, curriculum_year, footerElement} : VerifyCurriculumProps) => {
+    const [result] = useCurriculumUploadQuery({variables:{PROGRAM: curriculum_program, YEAR:curriculum_year }})
+    const {data, fetching, error} = result;
+    if (error?.message) return <div>Failed to load data: {error.message}</div>
+    if (fetching) return <div>Loading</div>
+    
+    const {program, extra, semesters, year}: CurriculumUploadInput = JSON.parse(data?.curriculumUpload?.data);
     const renderSemsterTitle = (sem : number) => {
         return (
             <div className="flex justify-content-between">
@@ -119,7 +125,7 @@ const VerifyCurriculum = ({curriculum, footerElement} : VerifyCurriculumProps) =
                     {semesters.map(s => {let data = renderCourseLabsTable(s?.courseLabs, s?.courses, s?.sem); if (data !== undefined) return data;})}
                     {semesters.map(s => {let data = labsOnlyFilter(s?.courseLabs, s?.courses, s?.sem); if (data !== undefined) return renderTable(data, () => renderLabTitle(s.sem))})}
                 </div>
-                {footerElement()}
+                {footerElement && footerElement()}
             </div>
         </div>
     );

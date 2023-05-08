@@ -35,8 +35,6 @@ const SemesterIdentifierSettings = () => {
     console.log(dropDownValue, "is_even_sem", dropDownValue.code === dropdownValues[1].code);
     await updateSemIdentifier({ISEVENSEM: dropDownValue.code === dropdownValues[1].code, YEAR: year})
   }
-
-
     return (
       <div className="card">
       <h5>Preference Semester Identifier</h5>
