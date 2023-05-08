@@ -30,7 +30,12 @@ export type ActiveBatchType = {
 
 export type AddBatchExtraCourse = {
   __typename?: 'AddBatchExtraCourse';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<AddBatchExtraCourseResponse>;
+};
+
+export type AddBatchExtraCourseResponse = {
+  __typename?: 'AddBatchExtraCourseResponse';
+  extraCourse?: Maybe<ExtraCourseType>;
 };
 
 export type AddPreference = {
@@ -153,7 +158,12 @@ export type CurriculumUploadType = {
 
 export type DeleteBatchExtraCourse = {
   __typename?: 'DeleteBatchExtraCourse';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<DeleteBatchExtraCourseResponse>;
+};
+
+export type DeleteBatchExtraCourseResponse = {
+  __typename?: 'DeleteBatchExtraCourseResponse';
+  oldExtraCourse?: Maybe<ExtraCourseType>;
 };
 
 export type DeleteCurriculumUpload = {
@@ -413,7 +423,13 @@ export type SemesterInput = {
 
 export type UpdateBatchExtraCourse = {
   __typename?: 'UpdateBatchExtraCourse';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<UpdateBatchExtraCourseResponse>;
+};
+
+export type UpdateBatchExtraCourseResponse = {
+  __typename?: 'UpdateBatchExtraCourseResponse';
+  newExtraCourse?: Maybe<ExtraCourseType>;
+  oldExtraCourse?: Maybe<ExtraCourseType>;
 };
 
 export type UpdatePreferenceCount = {
@@ -493,7 +509,7 @@ export type AddBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type AddBatchExtraCourseMutation = { __typename?: 'Mutation', addBatchExtraCourse?: { __typename?: 'AddBatchExtraCourse', response?: boolean | null } | null };
+export type AddBatchExtraCourseMutation = { __typename?: 'Mutation', addBatchExtraCourse?: { __typename?: 'AddBatchExtraCourse', response?: { __typename?: 'AddBatchExtraCourseResponse', extraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null } | null } | null } | null };
 
 export type UpdateBatchExtraCourseMutationVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -502,7 +518,7 @@ export type UpdateBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: boolean | null } | null };
+export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: { __typename?: 'UpdateBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null, newExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null } | null } | null };
 
 export type DeleteBatchExtraCourseMutationVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -510,7 +526,7 @@ export type DeleteBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type DeleteBatchExtraCourseMutation = { __typename?: 'Mutation', deleteBatchExtraCourse?: { __typename?: 'DeleteBatchExtraCourse', response?: boolean | null } | null };
+export type DeleteBatchExtraCourseMutation = { __typename?: 'Mutation', deleteBatchExtraCourse?: { __typename?: 'DeleteBatchExtraCourse', response?: { __typename?: 'DeleteBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null } | null } | null };
 
 export type DeleteCurriculumUploadMutationVariables = Exact<{
   CURRICULUMUPLOADID: Scalars['ID'];
@@ -722,8 +738,25 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "AddBatchExtraCourseResponse",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AddBatchExtraCourseResponse",
+        "fields": [
+          {
+            "name": "extraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ExtraCourseType",
+              "ofType": null
             },
             "args": []
           }
@@ -1201,8 +1234,25 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "DeleteBatchExtraCourseResponse",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeleteBatchExtraCourseResponse",
+        "fields": [
+          {
+            "name": "oldExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ExtraCourseType",
+              "ofType": null
             },
             "args": []
           }
@@ -2282,8 +2332,34 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "UpdateBatchExtraCourseResponse",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateBatchExtraCourseResponse",
+        "fields": [
+          {
+            "name": "newExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ExtraCourseType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "oldExtraCourse",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ExtraCourseType",
+              "ofType": null
             },
             "args": []
           }
@@ -2537,7 +2613,13 @@ export function useUploadCurriculumMutation() {
 export const AddBatchExtraCourseDocument = gql`
     mutation addBatchExtraCourse($BATCHID: ID!, $EXTRA_COURSEID: ID!) {
   addBatchExtraCourse(batchId: $BATCHID, extraCourseId: $EXTRA_COURSEID) {
-    response
+    response {
+      extraCourse {
+        id
+        code
+        name
+      }
+    }
   }
 }
     `;
@@ -2552,7 +2634,20 @@ export const UpdateBatchExtraCourseDocument = gql`
     oldExtraCourseId: $OLD_EXTRA_COURSEID
     newExtraCourseId: $NEW_EXTRA_COURSEID
   ) {
-    response
+    response {
+      oldExtraCourse {
+        id
+        code
+        name
+        courseType
+      }
+      newExtraCourse {
+        id
+        code
+        name
+        courseType
+      }
+    }
   }
 }
     `;
@@ -2563,7 +2658,14 @@ export function useUpdateBatchExtraCourseMutation() {
 export const DeleteBatchExtraCourseDocument = gql`
     mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!) {
   deleteBatchExtraCourse(batchId: $BATCHID, oldExtraCourseId: $OLD_EXTRA_COURSEID) {
-    response
+    response {
+      oldExtraCourse {
+        id
+        code
+        name
+        courseType
+      }
+    }
   }
 }
     `;

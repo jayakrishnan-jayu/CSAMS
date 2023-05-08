@@ -13,18 +13,44 @@ mutation uploadCurriculum ($CURRICULUM: CurriculumUploadInput!){
 
 mutation addBatchExtraCourse($BATCHID: ID!, $EXTRA_COURSEID: ID!){
   addBatchExtraCourse(batchId:$BATCHID, extraCourseId: $EXTRA_COURSEID) {
-    response
+    response {
+      extraCourse{
+        id
+        code
+        name
+      }
+    }
   }
 }
 
 mutation updateBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!, $NEW_EXTRA_COURSEID: ID!){
   updateBatchExtraCourse(batchId:$BATCHID, oldExtraCourseId:$OLD_EXTRA_COURSEID, newExtraCourseId:$NEW_EXTRA_COURSEID){
-    response
+    response {
+      oldExtraCourse{
+        id
+        code
+        name
+        courseType
+      }
+      newExtraCourse{
+        id
+        code
+        name
+        courseType
+      }
+    }
   }
 }
 
 mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!){
   deleteBatchExtraCourse(batchId:$BATCHID, oldExtraCourseId:$OLD_EXTRA_COURSEID){
-    response
+    response {
+      oldExtraCourse{
+        id
+        code
+        name
+        courseType
+      }
+    }
   }
 }

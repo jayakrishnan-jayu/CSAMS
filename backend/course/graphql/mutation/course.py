@@ -4,6 +4,7 @@ import graphene
 from django.db import transaction
 
 from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput, CourseLabMapInput
+from ..types.course import AddBatchExtraCourseResponse, UpdateBatchExtraCourseResponse, DeleteBatchExtraCourseResponse
 from course.graphql.types.course import CurriculumUploadType
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 from backend.api import APIException
@@ -15,7 +16,7 @@ class AddBatchExtraCourse(graphene.Mutation):
     class Arguments:
         batch_id = graphene.ID(required=True)
         extra_course_id = graphene.ID(required=True)
-    response = graphene.Boolean()
+    response = graphene.Field(AddBatchExtraCourseResponse)
 
     @login_required
     @resolve_user
@@ -30,7 +31,7 @@ class AddBatchExtraCourse(graphene.Mutation):
         except ExtraCourse.DoesNotExist:
             raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
         b.add_selected_extra_course(ec)
-        return AddBatchExtraCourse(response=True)
+        return AddBatchExtraCourse(response=AddBatchExtraCourseResponse(extra_course=ec))
 
 
 class UpdateBatchExtraCourse(graphene.Mutation):
@@ -39,7 +40,7 @@ class UpdateBatchExtraCourse(graphene.Mutation):
         old_extra_course_id = graphene.ID(required=True)
         new_extra_course_id = graphene.ID(required=True)
 
-    response = graphene.Boolean()
+    response = graphene.Field(UpdateBatchExtraCourseResponse)
 
     @login_required
     @resolve_user
@@ -60,14 +61,14 @@ class UpdateBatchExtraCourse(graphene.Mutation):
             b.remove_selected_extra_course(ec_old)
             b.add_selected_extra_course(ec_new)
         
-        return UpdateBatchExtraCourse(response=True)
+        return UpdateBatchExtraCourse(response=UpdateBatchExtraCourseResponse(old_extra_course=ec_old, new_extra_course=ec_new))
 
 class DeleteBatchExtraCourse(graphene.Mutation):
     class Arguments:
         batch_id = graphene.ID(required=True)
         old_extra_course_id = graphene.ID(required=True)
 
-    response = graphene.Boolean()
+    response = graphene.Field(DeleteBatchExtraCourseResponse)
 
     @login_required
     @resolve_user
@@ -83,7 +84,7 @@ class DeleteBatchExtraCourse(graphene.Mutation):
         except ExtraCourse.DoesNotExist:
             raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
         b.remove_selected_extra_course(ec_old)
-        return DeleteBatchExtraCourse(response=True)
+        return DeleteBatchExtraCourse(response=DeleteBatchExtraCourseResponse(old_extra_course=ec_old))
 
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
@@ -103,7 +104,6 @@ class VerifyCurriculumUpload(graphene.Mutation):
         if c.is_populated or Curriculum.objects.filter(program=c.program, year=c.year).exists():
             raise APIException(message="Curriculum already uploaded", code="CURRICULUM_EXISTS")
         
-
         semesters_data = c.data['semesters']
         curriculum_extras = c.data['extra']
 

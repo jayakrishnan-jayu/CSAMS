@@ -176,6 +176,16 @@ class CourseLabType(graphene.ObjectType):
     lab = graphene.Field(CourseType)
 
 
+class AddBatchExtraCourseResponse(graphene.ObjectType):
+    extra_course = graphene.Field(ExtraCourseType)
+
+class UpdateBatchExtraCourseResponse(graphene.ObjectType):
+    old_extra_course = graphene.Field(ExtraCourseType)
+    new_extra_course = graphene.Field(ExtraCourseType)
+
+class DeleteBatchExtraCourseResponse(graphene.ObjectType):
+    old_extra_course = graphene.Field(ExtraCourseType)
+
 # class BatchManagementStatusType(graphene.ObjectType):
 #     selected_courses = graphene.List(graphene.List)
 #     is_complete = graphene.Boolean(description="Specifies whether the batch has been assigned the extra courses, if any")

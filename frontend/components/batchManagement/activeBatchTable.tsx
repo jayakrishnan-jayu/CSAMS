@@ -7,6 +7,7 @@ import { classNames } from 'primereact/utils';
 import { useState } from 'react';
 import BatchUpdateSettings from './batchUpdateSettings';
 import { Dialog } from 'primereact/dialog';
+import { useRouter } from "next/navigation";
 
 interface ActiveBatchTableProps {
     activeBatches: ActiveBatchType[],
@@ -17,6 +18,7 @@ interface ActiveBatchTableProps {
 const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
     const [activeBatchID, setActiveBatchID] = useState<string>("");
+    const router = useRouter();
 
     const isCompleteBodyTemplate = (rowData: ActiveBatchType) => {
         return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.isComplete, 'text-pink-500 pi-times-circle': !rowData.isComplete })}></i>;
@@ -61,7 +63,7 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
                         <Column field="isComplete" header="Verified" dataType="boolean"  style={{ minWidth: '6rem' }} body={isCompleteBodyTemplate} /> 
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '5rem' }}></Column>
                     </DataTable>
-                    <Dialog visible={visibleFullScreen} onHide={() => setVisibleFullScreen(false)} baseZIndex={1000}>
+                    <Dialog visible={visibleFullScreen} onHide={() => {setVisibleFullScreen(false); router.refresh()}} baseZIndex={1000}>
                         {
                         visibleFullScreen && 
                         <BatchUpdateSettings batchID={activeBatchID} />

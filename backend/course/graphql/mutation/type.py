@@ -31,4 +31,4 @@ class CurriculumUploadInput(graphene.InputObjectType):
 
 class CourseLabMapInput(graphene.InputObjectType):
     courseID = graphene.ID(required=True)
-    labID = graphene.ID(required=True)
+    labID = graphene.ID(required=True)    
