@@ -206,7 +206,11 @@ export type IdentfierInput = {
 
 export type IdentiferType = {
   __typename?: 'IdentiferType';
+  areCoursesVerified?: Maybe<Scalars['Boolean']>;
+  endTimestamp?: Maybe<Scalars['DateTime']>;
   isEvenSem?: Maybe<Scalars['Boolean']>;
+  isPaused?: Maybe<Scalars['Boolean']>;
+  startTimestamp?: Maybe<Scalars['DateTime']>;
   year?: Maybe<Scalars['Int']>;
 };
 
@@ -228,7 +232,9 @@ export type Mutation = {
   addPreference?: Maybe<AddPreference>;
   deleteBatchExtraCourse?: Maybe<DeleteBatchExtraCourse>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
+  releaseCoursesForFaculty?: Maybe<ReleaseCoursesForFaculty>;
   updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
+  updateDeadline?: Maybe<UpdateDeadline>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
   updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
   updateUser?: Maybe<UpdateUser>;
@@ -262,10 +268,22 @@ export type MutationDeleteCurriculumUploadArgs = {
 };
 
 
+export type MutationReleaseCoursesForFacultyArgs = {
+  identifier: IdentifierInput;
+};
+
+
 export type MutationUpdateBatchExtraCourseArgs = {
   batchId: Scalars['ID'];
   newExtraCourseId: Scalars['ID'];
   oldExtraCourseId: Scalars['ID'];
+};
+
+
+export type MutationUpdateDeadlineArgs = {
+  endTimestamp: Scalars['DateTime'];
+  identifier: IdentifierInput;
+  startTimestamp: Scalars['DateTime'];
 };
 
 
@@ -423,6 +441,11 @@ export type QueryVerifyNewCurriculumArgs = {
   year: Scalars['Int'];
 };
 
+export type ReleaseCoursesForFaculty = {
+  __typename?: 'ReleaseCoursesForFaculty';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
 export type SemesterInput = {
   courseLabs: Array<InputMaybe<CourseLabInput>>;
   courses: Array<InputMaybe<CourseInput>>;
@@ -440,6 +463,11 @@ export type UpdateBatchExtraCourseResponse = {
   __typename?: 'UpdateBatchExtraCourseResponse';
   newExtraCourse?: Maybe<ExtraCourseType>;
   oldExtraCourse?: Maybe<ExtraCourseType>;
+};
+
+export type UpdateDeadline = {
+  __typename?: 'UpdateDeadline';
+  response?: Maybe<Scalars['Boolean']>;
 };
 
 export type UpdatePreferenceCount = {
@@ -505,6 +533,22 @@ export type UpdateSemIdentifierMutationVariables = Exact<{
 
 
 export type UpdateSemIdentifierMutation = { __typename?: 'Mutation', updateSemIdentifier?: { __typename?: 'UpdateSemIdentifier', response?: boolean | null } | null };
+
+export type ReleaseCoursesForFacultyMutationVariables = Exact<{
+  IDENTIFIER: IdentifierInput;
+}>;
+
+
+export type ReleaseCoursesForFacultyMutation = { __typename?: 'Mutation', releaseCoursesForFaculty?: { __typename?: 'ReleaseCoursesForFaculty', response?: boolean | null } | null };
+
+export type UpdateDeadlineMutationVariables = Exact<{
+  IDENTIFIER: IdentifierInput;
+  START_TIMESTAMP: Scalars['DateTime'];
+  END_TIMESTAMP: Scalars['DateTime'];
+}>;
+
+
+export type UpdateDeadlineMutation = { __typename?: 'Mutation', updateDeadline?: { __typename?: 'UpdateDeadline', response?: boolean | null } | null };
 
 export type UploadCurriculumMutationVariables = Exact<{
   CURRICULUM: CurriculumUploadInput;
@@ -652,7 +696,7 @@ export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtr
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null } | null } | null } | null };
+export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null } | null } | null } | null };
 
 export type PreferencesQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
@@ -1415,7 +1459,39 @@ export default {
         "name": "IdentiferType",
         "fields": [
           {
+            "name": "areCoursesVerified",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "endTimestamp",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "isEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isPaused",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "startTimestamp",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -1592,6 +1668,26 @@ export default {
             ]
           },
           {
+            "name": "releaseCoursesForFaculty",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ReleaseCoursesForFaculty",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "identifier",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateBatchExtraCourse",
             "type": {
               "kind": "OBJECT",
@@ -1621,6 +1717,46 @@ export default {
               },
               {
                 "name": "oldExtraCourseId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateDeadline",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateDeadline",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "endTimestamp",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "identifier",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "startTimestamp",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -2368,6 +2504,21 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "ReleaseCoursesForFaculty",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpdateBatchExtraCourse",
         "fields": [
           {
@@ -2401,6 +2552,21 @@ export default {
               "kind": "OBJECT",
               "name": "ExtraCourseType",
               "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateDeadline",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -2632,6 +2798,32 @@ export const UpdateSemIdentifierDocument = gql`
 
 export function useUpdateSemIdentifierMutation() {
   return Urql.useMutation<UpdateSemIdentifierMutation, UpdateSemIdentifierMutationVariables>(UpdateSemIdentifierDocument);
+};
+export const ReleaseCoursesForFacultyDocument = gql`
+    mutation releaseCoursesForFaculty($IDENTIFIER: IdentifierInput!) {
+  releaseCoursesForFaculty(identifier: $IDENTIFIER) {
+    response
+  }
+}
+    `;
+
+export function useReleaseCoursesForFacultyMutation() {
+  return Urql.useMutation<ReleaseCoursesForFacultyMutation, ReleaseCoursesForFacultyMutationVariables>(ReleaseCoursesForFacultyDocument);
+};
+export const UpdateDeadlineDocument = gql`
+    mutation updateDeadline($IDENTIFIER: IdentifierInput!, $START_TIMESTAMP: DateTime!, $END_TIMESTAMP: DateTime!) {
+  updateDeadline(
+    identifier: $IDENTIFIER
+    startTimestamp: $START_TIMESTAMP
+    endTimestamp: $END_TIMESTAMP
+  ) {
+    response
+  }
+}
+    `;
+
+export function useUpdateDeadlineMutation() {
+  return Urql.useMutation<UpdateDeadlineMutation, UpdateDeadlineMutationVariables>(UpdateDeadlineDocument);
 };
 export const UploadCurriculumDocument = gql`
     mutation uploadCurriculum($CURRICULUM: CurriculumUploadInput!) {
@@ -2989,6 +3181,10 @@ export const MetadataDocument = gql`
       currentPreferenceSem {
         year
         isEvenSem
+        startTimestamp
+        endTimestamp
+        isPaused
+        areCoursesVerified
       }
     }
   }

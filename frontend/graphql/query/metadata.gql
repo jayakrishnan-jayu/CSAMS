@@ -18,6 +18,10 @@ query metadata {
             currentPreferenceSem {
                 year
                 isEvenSem
+                startTimestamp
+                endTimestamp
+                isPaused
+                areCoursesVerified
             }
         }
     }

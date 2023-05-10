@@ -37,7 +37,6 @@ const AppConfig = (props: AppConfigProps) => {
     };
 
     const changeTheme = (theme: string, colorScheme: string) => {
-        //@ts-ignore
         PrimeReact.changeTheme?.(layoutConfig.theme, theme, 'theme-css', () => {
             setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme, colorScheme }));
         });

@@ -29,6 +29,23 @@ class Identifier(models.Model):
     year = models.PositiveSmallIntegerField()
     is_even_sem = models.BooleanField()
 
+    start_timestamp = models.DateTimeField(null=True, blank=True) # Preference deadline for faculties - null : not set (not yet released)
+    end_timestamp = models.DateTimeField(null=True, blank=True) # Preference deadline for faculties - null : not set (not yet released)
+    is_paused = models.BooleanField(default=True) # is Preference Paused for faculties
+    are_courses_verified = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if self.start_timestamp or self.end_timestamp:
+            if not self.start_timestamp:
+                raise Exception("Start timestamp is required")
+            if not self.end_timestamp:
+                raise Exception("End timestamp is required")
+            if self.start_timestamp > self.end_timestamp:
+                raise Exception("Start timestamp must be lesser than end timestamp")
+            if not self.are_courses_verified:
+                raise Exception("Courses should be verified before providing deadline")
+        super().save(*args, **kwargs)
+
     class Meta:
         unique_together = ('year', 'is_even_sem')
 

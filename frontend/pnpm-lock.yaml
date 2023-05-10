@@ -21,7 +21,7 @@ specifiers:
   next: 13.1.6
   primeflex: ^3.3.0
   primeicons: ^6.0.1
-  primereact: ^9.2.0
+  primereact: 9.2.3
   react: 18.2.0
   react-dom: 18.2.0
   react-transition-group: ^4.4.5
@@ -39,7 +39,7 @@ dependencies:
   next: 13.1.6_wiv434v7erz4aedd5whhdwmpv4
   primeflex: 3.3.0
   primeicons: 6.0.1
-  primereact: 9.2.0_ft3yxljkuufbrk5sastnye3lky
+  primereact: 9.2.3_ft3yxljkuufbrk5sastnye3lky
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
@@ -4457,8 +4457,8 @@ packages:
     resolution: {integrity: sha512-KDeO94CbWI4pKsPnYpA1FPjo79EsY9I+M8ywoPBSf9XMXoe/0crjbUK7jcQEDHuc0ZMRIZsxH3TYLv4TUtHmAA==}
     dev: false
 
-  /primereact/9.2.0_ft3yxljkuufbrk5sastnye3lky:
-    resolution: {integrity: sha512-Du9GlRi9QelUynTW0nDamG+aj3UmSvbk0pu5zvw1tqp+mH1IntJ3dWKaOnqqPaNPF1dx0N/TmcIjQvXRjUVagw==}
+  /primereact/9.2.3_ft3yxljkuufbrk5sastnye3lky:
+    resolution: {integrity: sha512-LIkVpgH2EZOn0CViZ/vFxBLWgK/ULYYYNTFch6CUvvJ2HUDnn3sAxII7ltblwEmT8hryCiEHDU/AiG8cqXVmNA==}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
       primeicons: ^5.0.0 || ^6.0.0

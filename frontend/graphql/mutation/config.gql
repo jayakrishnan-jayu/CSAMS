@@ -8,3 +8,21 @@ mutation updateSemIdentifier ($ISEVENSEM: Boolean!, $YEAR: Int!) {
         response
     }
 }
+
+mutation releaseCoursesForFaculty ($IDENTIFIER: IdentifierInput!) {
+  releaseCoursesForFaculty(identifier: $IDENTIFIER){
+    response
+  }
+}
+
+mutation releaseCoursesForFaculty ($IDENTIFIER: IdentifierInput!) {
+  releaseCoursesForFaculty(identifier: $IDENTIFIER){
+    response
+  }
+}
+
+mutation updateDeadline($IDENTIFIER: IdentifierInput!, $START_TIMESTAMP: DateTime!, $END_TIMESTAMP: DateTime!) {
+  updateDeadline(identifier: $IDENTIFIER, startTimestamp:$START_TIMESTAMP, endTimestamp: $END_TIMESTAMP){
+    response
+  }
+}

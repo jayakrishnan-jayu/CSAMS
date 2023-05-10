@@ -28,6 +28,10 @@ class WorkloadType(graphene.ObjectType):
 class IdentiferType(graphene.ObjectType):
     year = graphene.Int()
     is_even_sem = graphene.Boolean()
+    start_timestamp = graphene.DateTime()
+    end_timestamp = graphene.DateTime()
+    is_paused = graphene.Boolean()
+    are_courses_verified = graphene.Boolean()
 
 class ConfigType(graphene.ObjectType):
     preference_count = graphene.Int()

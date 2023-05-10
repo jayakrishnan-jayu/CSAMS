@@ -317,4 +317,5 @@ __all__ = [
     'CourseType',
     'CourseLabType',
     'SemesterCourseType',
+    'IdentifierInput',
 ]
