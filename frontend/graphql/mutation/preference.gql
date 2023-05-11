@@ -3,3 +3,15 @@ mutation addPreference ($COURSEID: ID!, $EXPERIENCE: Int!, $WEIGHTAGE:Int!){
         response
     }
 }
+
+mutation updatePreference ($ID: ID!, $EXPERIENCE: Int, $WEIGHTAGE:Int){
+    updatePreference(id:$ID, experience:$EXPERIENCE, weightage:$WEIGHTAGE){
+        response
+    }
+}
+
+mutation deletePreference ($ID: ID!){
+    deletePreference(id:$ID){
+        response
+    }
+}

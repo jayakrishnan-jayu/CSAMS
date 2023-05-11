@@ -1,5 +1,5 @@
 from django.db.models.signals import pre_save
-
+from django.db import transaction
 from django.dispatch import receiver
 from django.db import models
 from typing import List
@@ -151,21 +151,35 @@ class Batch(models.Model):
             bce.delete()
     
     def add_selected_extra_course(self, ec: ExtraCourse):
-        qs = BatchCurriculumExtra.objects.filter(batch=self, extra=ec.course_type)
-        exisiting_count = self.selected_extra_courses.filter(course_type=ec.course_type).count()
-        if not qs.exists():
-            raise Exception("Invalid Extra Course for semester")
-        if exisiting_count >= qs.first().count:
-            raise Exception("Invalid Extra Course for semester, maximum count already reached!")
-            
-        self.selected_extra_courses.add(ec)
-        self.save()
+        with transaction.atomic():
+            qs = BatchCurriculumExtra.objects.filter(batch=self, extra=ec.course_type)
+            exisiting_count = self.selected_extra_courses.filter(course_type=ec.course_type).count()
+            if not qs.exists():
+                raise Exception("Invalid Extra Course for semester")
+            if exisiting_count >= qs.first().count:
+                raise Exception("Invalid Extra Course for semester, maximum count already reached!")
+            Course.objects.create(
+                is_extra=True, 
+                batch=self,
+                code=ec.code,
+                name=ec.name,
+                credit=ec.credit, 
+                hours=ec.hours, 
+                l=ec.l, 
+                t=ec.t, 
+                p=ec.p
+            )
+            self.selected_extra_courses.add(ec)
+            self.save()
     
     def remove_selected_extra_course(self, ec: ExtraCourse):
-        if not self.selected_extra_courses.filter(id=ec.id).exists():
-            raise Exception("Extra Course not found in batch")
-        self.selected_extra_courses.remove(ec)
-        self.save()
+        with transaction.atomic():
+            if not self.selected_extra_courses.filter(id=ec.id).exists():
+                raise Exception("Extra Course not found in batch")
+            c = Course.objects.get(batch=self, code= ec.code, name=ec.name)
+            c.delete()
+            self.selected_extra_courses.remove(ec)
+            self.save()
 
     # def sem_identifier(self) -> Tuple[int, bool]:
     #     increment = (self.sem - 1) // 2

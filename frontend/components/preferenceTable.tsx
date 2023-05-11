@@ -9,10 +9,11 @@ import { usePreferencesQuery } from '@/graphql/generated/graphql';
 
 interface PreferenceTableProps {
     courseID?: number,
+    userID?: number,
 }
 
 const PreferenceTable = ({courseID}: PreferenceTableProps) => {
-    const prefNums = ['first', 'second', 'third']
+    const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
     let variables = {}
     if (courseID) {
         variables = {COURSEID: courseID.toString()}
@@ -27,10 +28,11 @@ const PreferenceTable = ({courseID}: PreferenceTableProps) => {
             return {
                 id: p?.id,
                 course: p?.course?.code + " " + p?.course?.name,
-                weigtage: p?.weigtage && p.weigtage >= 1 && p.weigtage <=3 ? prefNums[p.weigtage-1] : p?.weigtage ,
+                weigtage: p?.weigtage && p.weigtage >= 1 && p.weigtage <=6 ? prefNums[p.weigtage-1] : p?.weigtage ,
                 experience: p?.experience,
                 program: p?.course?.program,
-                username: p?.faculty?.user?.username,
+                username: p?.faculty?.user?.firstName + " " + p?.faculty?.user?.lastName,
+                email: p?.faculty?.user?.email,
                 timestamp: p?.timestamp,
                 batch: p?.course?.batchYear + " S"+p?.course?.sem,
                 curriculum: p?.course?.curriculumYear
@@ -127,36 +129,50 @@ const PreferenceTable = ({courseID}: PreferenceTableProps) => {
     const header = renderHeader();
 
     return (
-        <div className="grid">
-            <div className="col-12">
-                <div className="card">
-                    <h5>Preferences</h5>
+            <>
+                {courseID ? 
                     <DataTable
                         value={faculties}
-                        paginator
-                        className="p-datatable-gridlines"
-                        showGridlines
+                        className="datatable-responsive"
                         rows={15}
                         dataKey="id"
-                        filters={filters1}
                         filterDisplay="menu"
                         loading={fetching}
                         responsiveLayout="scroll"
                         emptyMessage="No faculties found."
-                        header={header}
                     >
-                        <Column field="username" header="Name" filter filterPlaceholder="Search by username" style={{ minWidth: '10rem' }} />
-                        <Column field="course" header="Course" filter filterPlaceholder="Search by course" style={{ minWidth: '10rem' }} />
-                        <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>
-                        <Column field="curriculum" header="Curriculum" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
-                        <Column field="batch" header="Batch" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter/>
-                        <Column field="weigtage" header="Pref." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} body={prefBodyTemplate} filter filterElement={perfFilterTemplate} />
-                        <Column field="experience" header="Exp." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
-                        <Column field="timestamp" header="At" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }}  body={dateTimeBodyTemplate} sortable/>
+                        <Column field="username" header="Name" style={{ minWidth: '10rem' }} />
+                        <Column field="email" header="Email" style={{ minWidth: '10rem' }} />
+                        <Column field="weigtage" header="Pref." style={{ minWidth: '2rem' }} body={prefBodyTemplate}  />
+                        <Column field="experience" header="Exp." style={{ minWidth: '2rem' }} />
+                        <Column field="timestamp" header="At"style={{ minWidth: '2rem' }}  body={dateTimeBodyTemplate} />
                     </DataTable>
-                </div>
-            </div>
-        </div>
+                    :
+                    <DataTable
+                    value={faculties}
+                    paginator
+                    className="p-datatable-gridlines"
+                    showGridlines
+                    rows={15}
+                    dataKey="id"
+                    filters={filters1}
+                    filterDisplay="menu"
+                    loading={fetching}
+                    responsiveLayout="scroll"
+                    emptyMessage="No faculties found."
+                    header={header}
+                >
+                    <Column field="username" header="Name" filter filterPlaceholder="Search by username" style={{ minWidth: '10rem' }} />
+                    <Column field="course" header="Course" filter filterPlaceholder="Search by course" style={{ minWidth: '10rem' }} />
+                    <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>
+                    <Column field="curriculum" header="Curriculum" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
+                    <Column field="batch" header="Batch" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter/>
+                    <Column field="weigtage" header="Pref." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} body={prefBodyTemplate} filter filterElement={perfFilterTemplate} />
+                    <Column field="experience" header="Exp." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
+                    <Column field="timestamp" header="At" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }}  body={dateTimeBodyTemplate} sortable/>
+                </DataTable>
+                }
+        </>
     );
 };
 

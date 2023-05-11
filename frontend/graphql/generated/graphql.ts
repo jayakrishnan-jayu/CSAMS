@@ -108,6 +108,18 @@ export type CourseLabType = {
   lab?: Maybe<CourseType>;
 };
 
+export type CoursePreferenceType = {
+  __typename?: 'CoursePreferenceType';
+  courseId?: Maybe<Scalars['ID']>;
+  experience?: Maybe<Scalars['Int']>;
+  faculty?: Maybe<FacultyType>;
+  id?: Maybe<Scalars['ID']>;
+  identifierIsEvenSem?: Maybe<Scalars['Boolean']>;
+  identifierYear?: Maybe<Scalars['Int']>;
+  timestamp?: Maybe<Scalars['DateTime']>;
+  weigtage?: Maybe<Scalars['Int']>;
+};
+
 export type CourseType = {
   __typename?: 'CourseType';
   batchYear?: Maybe<Scalars['Int']>;
@@ -120,6 +132,7 @@ export type CourseType = {
   l?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   p?: Maybe<Scalars['Int']>;
+  preferences?: Maybe<Array<Maybe<CoursePreferenceType>>>;
   program?: Maybe<Scalars['String']>;
   sem?: Maybe<Scalars['Int']>;
   t?: Maybe<Scalars['Int']>;
@@ -168,6 +181,11 @@ export type DeleteBatchExtraCourseResponse = {
 
 export type DeleteCurriculumUpload = {
   __typename?: 'DeleteCurriculumUpload';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
+export type DeletePreference = {
+  __typename?: 'DeletePreference';
   response?: Maybe<Scalars['Boolean']>;
 };
 
@@ -232,9 +250,11 @@ export type Mutation = {
   addPreference?: Maybe<AddPreference>;
   deleteBatchExtraCourse?: Maybe<DeleteBatchExtraCourse>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
+  deletePreference?: Maybe<DeletePreference>;
   releaseCoursesForFaculty?: Maybe<ReleaseCoursesForFaculty>;
   updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
   updateDeadline?: Maybe<UpdateDeadline>;
+  updatePreference?: Maybe<UpdatePreference>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
   updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
   updateUser?: Maybe<UpdateUser>;
@@ -268,6 +288,11 @@ export type MutationDeleteCurriculumUploadArgs = {
 };
 
 
+export type MutationDeletePreferenceArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type MutationReleaseCoursesForFacultyArgs = {
   identifier: IdentifierInput;
 };
@@ -284,6 +309,13 @@ export type MutationUpdateDeadlineArgs = {
   endTimestamp: Scalars['DateTime'];
   identifier: IdentifierInput;
   startTimestamp: Scalars['DateTime'];
+};
+
+
+export type MutationUpdatePreferenceArgs = {
+  experience?: InputMaybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  weightage?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -433,6 +465,7 @@ export type QueryCurriculumsArgs = {
 export type QueryPreferencesArgs = {
   courseId?: InputMaybe<Scalars['ID']>;
   identifier?: InputMaybe<IdentfierInput>;
+  userId?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -467,6 +500,11 @@ export type UpdateBatchExtraCourseResponse = {
 
 export type UpdateDeadline = {
   __typename?: 'UpdateDeadline';
+  response?: Maybe<Scalars['Boolean']>;
+};
+
+export type UpdatePreference = {
+  __typename?: 'UpdatePreference';
   response?: Maybe<Scalars['Boolean']>;
 };
 
@@ -613,6 +651,22 @@ export type AddPreferenceMutationVariables = Exact<{
 
 export type AddPreferenceMutation = { __typename?: 'Mutation', addPreference?: { __typename?: 'AddPreference', response?: boolean | null } | null };
 
+export type UpdatePreferenceMutationVariables = Exact<{
+  ID: Scalars['ID'];
+  EXPERIENCE?: InputMaybe<Scalars['Int']>;
+  WEIGHTAGE?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpdatePreferenceMutation = { __typename?: 'Mutation', updatePreference?: { __typename?: 'UpdatePreference', response?: boolean | null } | null };
+
+export type DeletePreferenceMutationVariables = Exact<{
+  ID: Scalars['ID'];
+}>;
+
+
+export type DeletePreferenceMutation = { __typename?: 'Mutation', deletePreference?: { __typename?: 'DeletePreference', response?: boolean | null } | null };
+
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
   DESIGNATION: Scalars['String'];
@@ -647,12 +701,13 @@ export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProgramsQuery = { __typename?: 'Query', programs?: Array<{ __typename?: 'ProgramType', id?: string | null, name?: string | null, duration?: string | null } | null> | null };
 
-export type CoursesQueryVariables = Exact<{
+export type CoursesForPreferenceQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
+  USERID?: InputMaybe<Scalars['ID']>;
 }>;
 
 
-export type CoursesQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null };
+export type CoursesForPreferenceQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null, preferences?: Array<{ __typename?: 'CoursePreferenceType', id?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', id?: string | null } | null } | null } | null> | null } | null> | null, preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, weigtage?: number | null, experience?: number | null, course?: { __typename?: 'CourseType', id?: string | null } | null } | null> | null };
 
 export type VerifyNewCurriculumQueryVariables = Exact<{
   PROGRAM: Scalars['String'];
@@ -704,7 +759,7 @@ export type PreferencesQueryVariables = Exact<{
 }>;
 
 
-export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null } | null> | null };
+export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null, email?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1066,6 +1121,78 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CoursePreferenceType",
+        "fields": [
+          {
+            "name": "courseId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "experience",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "faculty",
+            "type": {
+              "kind": "OBJECT",
+              "name": "FacultyType",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierIsEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "timestamp",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "weigtage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "CourseType",
         "fields": [
           {
@@ -1145,6 +1272,18 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "preferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CoursePreferenceType",
+                "ofType": null
+              }
             },
             "args": []
           },
@@ -1331,6 +1470,21 @@ export default {
       {
         "kind": "OBJECT",
         "name": "DeleteCurriculumUpload",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeletePreference",
         "fields": [
           {
             "name": "response",
@@ -1668,6 +1822,26 @@ export default {
             ]
           },
           {
+            "name": "deletePreference",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeletePreference",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "releaseCoursesForFaculty",
             "type": {
               "kind": "OBJECT",
@@ -1763,6 +1937,40 @@ export default {
                     "kind": "SCALAR",
                     "name": "Any"
                   }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updatePreference",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdatePreference",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "experience",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "weightage",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               }
             ]
@@ -2427,6 +2635,13 @@ export default {
                   "kind": "SCALAR",
                   "name": "Any"
                 }
+              },
+              {
+                "name": "userId",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
               }
             ]
           },
@@ -2561,6 +2776,21 @@ export default {
       {
         "kind": "OBJECT",
         "name": "UpdateDeadline",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdatePreference",
         "fields": [
           {
             "name": "response",
@@ -2957,6 +3187,28 @@ export const AddPreferenceDocument = gql`
 export function useAddPreferenceMutation() {
   return Urql.useMutation<AddPreferenceMutation, AddPreferenceMutationVariables>(AddPreferenceDocument);
 };
+export const UpdatePreferenceDocument = gql`
+    mutation updatePreference($ID: ID!, $EXPERIENCE: Int, $WEIGHTAGE: Int) {
+  updatePreference(id: $ID, experience: $EXPERIENCE, weightage: $WEIGHTAGE) {
+    response
+  }
+}
+    `;
+
+export function useUpdatePreferenceMutation() {
+  return Urql.useMutation<UpdatePreferenceMutation, UpdatePreferenceMutationVariables>(UpdatePreferenceDocument);
+};
+export const DeletePreferenceDocument = gql`
+    mutation deletePreference($ID: ID!) {
+  deletePreference(id: $ID) {
+    response
+  }
+}
+    `;
+
+export function useDeletePreferenceMutation() {
+  return Urql.useMutation<DeletePreferenceMutation, DeletePreferenceMutationVariables>(DeletePreferenceDocument);
+};
 export const UpdateWorkloadDocument = gql`
     mutation updateWorkload($TRACK: String!, $DESIGNATION: String!, $MINHOURS: Int!, $MAXHOURS: Int!) {
   updateWorkload(
@@ -3060,8 +3312,8 @@ export const ProgramsDocument = gql`
 export function useProgramsQuery(options?: Omit<Urql.UseQueryArgs<ProgramsQueryVariables>, 'query'>) {
   return Urql.useQuery<ProgramsQuery, ProgramsQueryVariables>({ query: ProgramsDocument, ...options });
 };
-export const CoursesDocument = gql`
-    query courses($IDENTIFIER: IdentfierInput) {
+export const CoursesForPreferenceDocument = gql`
+    query coursesForPreference($IDENTIFIER: IdentfierInput, $USERID: ID) {
   courses(identifier: $IDENTIFIER) {
     id
     code
@@ -3072,12 +3324,32 @@ export const CoursesDocument = gql`
     curriculumYear
     batchYear
     sem
+    preferences {
+      id
+      courseId
+      faculty {
+        user {
+          id
+        }
+      }
+      weigtage
+      experience
+      timestamp
+    }
+  }
+  preferences(identifier: $IDENTIFIER, userId: $USERID) {
+    id
+    course {
+      id
+    }
+    weigtage
+    experience
   }
 }
     `;
 
-export function useCoursesQuery(options?: Omit<Urql.UseQueryArgs<CoursesQueryVariables>, 'query'>) {
-  return Urql.useQuery<CoursesQuery, CoursesQueryVariables>({ query: CoursesDocument, ...options });
+export function useCoursesForPreferenceQuery(options?: Omit<Urql.UseQueryArgs<CoursesForPreferenceQueryVariables>, 'query'>) {
+  return Urql.useQuery<CoursesForPreferenceQuery, CoursesForPreferenceQueryVariables>({ query: CoursesForPreferenceDocument, ...options });
 };
 export const VerifyNewCurriculumDocument = gql`
     query verifyNewCurriculum($PROGRAM: String!, $YEAR: Int!) {
@@ -3205,6 +3477,7 @@ export const PreferencesDocument = gql`
         firstName
         lastName
         username
+        email
       }
     }
     course {

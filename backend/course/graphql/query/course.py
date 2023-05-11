@@ -1,8 +1,8 @@
 import graphene
 from course.graphql.types.course import CourseType, CourseLabType, CurriculumExtraCoursesType, ExtraCourseType, SemesterCourseType
-from course.models import Course, Program, Batch, CourseLab, CurriculumExtras,Curriculum, ExtraCourse
+from course.models import Course, Program, Batch, CourseLab, CurriculumExtras,Curriculum,ExtraCourse
 from preference.graphql.types.preference import IdentfierInput
-from preference.models import Config
+from preference.models import Config, Identifier
 from backend.api import APIException
 from backend.api.decorator import login_required
 from typing import List
@@ -48,10 +48,18 @@ class CourseQueries(graphene.ObjectType):
 
     @login_required
     def resolve_courses(self, info, identifier:IdentfierInput=None):
+        config = Config.objects.first()
         if identifier is None:
-            identifier = Config.objects.first().current_preference_sem
-        
-        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not identifier.is_even_sem , sem_year=identifier.year)
+            i = config.current_preference_sem
+        else:
+            try:
+                i = Identifier.objects.filter(year=identifier.year, is_event_sem=identifier.is_even_sem)
+            except Identifier.DoesNotExist:
+                raise APIException(message="Invalid Identifer")
+        if not i.are_courses_verified:
+            raise APIException(message="Courses not yet released")
+
+        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not i.is_even_sem , sem_year=i.year)
         courses_in_batches = Course.objects.filter(batch__in=batches)
         return courses_in_batches
     

@@ -7,7 +7,14 @@ export default function MyPage() {
   const { metaData } = useContext(MetaDataContext);
   return (
     <>
-      <PreferenceTable/>
+    <div className="grid">
+      <div className="col-12">
+        <div className="card">
+          <h5>Preferences</h5>
+          <PreferenceTable/>
+        </div>
+      </div>
+    </div>
     </>
   )
 }

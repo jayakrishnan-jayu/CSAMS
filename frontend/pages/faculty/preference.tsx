@@ -1,183 +1,159 @@
 import {
-  useCoursesQuery,
+  useCoursesForPreferenceQuery,
   useAddPreferenceMutation,
+  useUpdatePreferenceMutation,
+  useDeletePreferenceMutation,
   CourseType,
+
 } from "@/graphql/generated/graphql";
 import { Dropdown } from "primereact/dropdown";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
 import { InputNumber } from "primereact/inputnumber";
+import { FilterMatchMode, FilterOperator } from "primereact/api";
+import { MetaDataContext } from "@/components/layout/context/metadatacontext";
+import PreferenceTable from "@/components/preferenceTable";
 
 const FacultyPreference = () => {
-  let emptyCourseData = {
+  
+  const { metaData } = useContext(MetaDataContext);
+
+  let emptyPrefData = {
+    id: "",
+    courseName: "",
     courseId: "",
     experience: 0,
-    weightage: 0,
+    weightage: 0
   };
-  const [result] = useCoursesQuery();
+
+  const [result] = useCoursesForPreferenceQuery();
   const { fetching, data, error } = result;
   const [productDialog, setProductDialog] = useState(false);
-  const [product, setProduct] = useState(emptyCourseData);
+  const [preference, setPreference] = useState(emptyPrefData);
   const [dialogShown, setDialogShown] = useState(true);
-  const [newPreferences, updatePreferences] = useAddPreferenceMutation();
+  const [expandedRows, setExpandedRows] = useState(null);
+  const [currentDropdownValues, setCurrentDropdownValues] = useState(null)
+  const [isUpdateMutation, setIsUpdateMutation] = useState(false);
+
+  const [addPreference, addPreferenceMutation] = useAddPreferenceMutation();
+  const [updatePreference, updatePreferenceMutation] = useUpdatePreferenceMutation();
+  const [deletePreference, deletePreferenceMutation] = useDeletePreferenceMutation();
+
+  const filters = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    program: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+  };
+
+  const programs = ['BCA', 'BCA DS', 'MCA'];
+  const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+
+  const prefCount = metaData.metadata.config.preferenceCount;
+  let dropdownValues = Array.from({length: prefCount}, (_, i) => {return {name: prefNums[i], code: i+1}})
 
   const toast = useRef(null);
   const dt = useRef(null);
-
-  if (error) return <div>{error.toString()}</div>;
-  let courses: any[] | undefined = [];
-  if (data?.courses) {
-    courses = data?.courses;
+  if (error) {
+    if (error.message === "[GraphQL] Courses not yet released") return <div> Courses not yet released</div>;
+    return <div>{error.toString()}</div>;
+  } 
+  let courses: CourseType []= [];
+  if (data?.courses && data?.preferences) {
+    courses = data?.courses;      
   }
 
-  if (newPreferences.error?.message && !dialogShown) {
+
+  if (addPreference.error?.message && !dialogShown) {
     toast.current.show({
       severity: "error",
-      summary: "Error updating workload",
-      detail: newPreferences.error.message,
+      summary: "Error adding preference",
+      detail: addPreference.error.message,
       life: 3000,
     });
     setDialogShown(true);
   }
 
-  if (newPreferences.data?.addPreference?.response && !dialogShown) {
+  if (addPreference.data?.addPreference?.response && !dialogShown) {
     toast.current.show({
       severity: "success",
-      summary: "Workload Updated",
+      summary: "Preferenes Added",
       life: 3000,
     });
+
     setDialogShown(true);
   }
 
   const hideDialog = () => {
     setProductDialog(false);
+    setPreference(emptyPrefData);
   };
 
-  const saveProduct = async () => {
+  const savePreference = async () => {
     setDialogShown(false);
-    await updatePreferences({
-      COURSEID: product.courseId,
-      EXPERIENCE: product.experience,
-      WEIGHTAGE: product.weightage,
+    await addPreferenceMutation({
+      COURSEID: preference.courseId,
+      EXPERIENCE: preference.experience,
+      WEIGHTAGE: preference.weightage,
     });
-    setProduct(emptyCourseData);
+    setPreference(emptyPrefData);
     setProductDialog(false);
   };
 
+  // const changePreference = async () => {
+  //   setDialogShown(false);
+  //   await updatePreference({
+  //     ID: preference.id,
+  //     EXPERIENCE: preference.experience,
+  //     WEIGHTAGE: preference.weightage,
+  //   });
+  //   setPreference(emptyPrefData);
+  //   setProductDialog(false);
+  // };
+
   const editCourses = (course: CourseType) => {
-    setProduct({ ...product, courseId: course.id,  });
+    const c = course.preferences.filter(p => p?.faculty?.user?.id === metaData.metadata.user.id && course.id === p.courseId)
+    
+    // setCurrentDropdownValues(dropdownValues.filter(d => d.code !=))
+    let _pref = {...preference, courseName: course.code + " " + course.name, courseId: course.id };
+    if (c.length === 1) {
+      _pref = {..._pref, experience: c[0].experience, weightage: c[0].weigtage, id: c[0].id}
+      setCurrentDropdownValues(dropdownValues.filter(d => d.code === c[0].weigtage || !data.preferences.map(e => e.weigtage).includes(d.code)))
+      setIsUpdateMutation(true);
+    } else {
+      setCurrentDropdownValues(dropdownValues.filter(d => !data.preferences.map(e => e.weigtage).includes(d.code)))
+      setIsUpdateMutation(false);
+    }
+    setPreference(_pref);
     setProductDialog(true);
   };
 
   const onInputNumberChange = (e, name: string) => {
     const val = e.value || 0; // TODO: parse to integer
-    let _product = { ...product };
-    if (name === "preference") _product.weightage = val;
-    else if (name === "experience") _product.experience = val;
-    setProduct(_product);
+    let _pref = { ...preference };
+    if (name === "preference") _pref.weightage = val;
+    else if (name === "experience") _pref.experience = val;
+    setPreference(_pref);
   };
 
-  const courseIDBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Course Id</span>
-        <span className={`generic-badge code-${rowData?.id.toLowerCase()}`}>
-          {rowData?.id}
-        </span>
-      </>
-    );
+  const programBodyTemplate = (rowData) => {
+    return <span className={`generic-badge program-${rowData.program.toLowerCase().replace(/ +/g, "")}`}>{rowData.program}</span>;
+  };
+  const programFilterTemplate = (options) => {
+    return <Dropdown value={options.value} options={programs} onChange={(e) => options.filterCallback(e.value, options.index)} itemTemplate={programItemTemplate} placeholder="Select a Program" className="p-column-filter" showClear />;
+  };
+  const programItemTemplate = (option) => {
+    return <span className={`generic-badge program-${option.toLowerCase().replace(/ +/g, "")}`}>{option}</span>;
   };
 
-  const courseCodeBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Course Code</span>
-        <span className={`generic-badge code-${rowData?.code.toLowerCase()}`}>
-          {rowData?.code}
-        </span>
-      </>
-    );
+  const courseBodyTemplate = (rowData: CourseType) => {
+    return <span>{rowData.code} {rowData.name}</span>;
   };
 
-  const courseNameBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Course Name</span>
-        <span className={`generic-badge name-${rowData?.name.toLowerCase()}`}>
-          {rowData?.name}
-        </span>
-      </>
-    );
-  };
-
-  const courseCreditBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Credit</span>
-        <span className={`generic-badge code-${rowData?.credit}`}>
-          {rowData?.credit}
-        </span>
-      </>
-    );
-  };
-
-  // const courseExtraBodyTemplate = (rowData) => {
-  //   return (
-  //     <>
-  //       <span className="p-column-title">Is Extra</span>
-  //       <span className={`generic-badge code-${rowData?.isExtra}`}>
-  //         {rowData?.isExtra}
-  //       </span>
-  //     </>
-  //   );
-  // };
-
-  const courseProgramBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Program</span>
-        <span className={`generic-badge code-${rowData?.program}`}>
-          {rowData?.program}
-        </span>
-      </>
-    );
-  };
-
-  const courseYearBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Curriculum Year</span>
-        <span className={`generic-badge code-${rowData?.curriculumYear}`}>
-          {rowData?.curriculumYear}
-        </span>
-      </>
-    );
-  };
-
-  const courseBatchYearBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Batch Year</span>
-        <span className={`generic-badge code-${rowData?.batchYear}`}>
-          {rowData?.batchYear}
-        </span>
-      </>
-    );
-  };
-
-  const courseSemBodyTemplate = (rowData) => {
-    return (
-      <>
-        <span className="p-column-title">Sem</span>
-        <span className={`generic-badge code-${rowData?.sem}`}>
-          {rowData?.sem}
-        </span>
-      </>
-    );
+  const totalPrefBodyTemplate = (rowData: CourseType) => {
+    return <span>{rowData.preferences.length}</span>;
   };
 
   const actionBodyTemplate = (rowData) => {
@@ -192,23 +168,29 @@ const FacultyPreference = () => {
     );
   };
 
-  const productDialogFooter = (
+  const prefDialogFooter = () => {
+    return (
     <>
-      <Button
-        label="Cancel"
-        icon="pi pi-times"
-        className="p-button-text"
-        onClick={hideDialog}
+      <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}
       />
-      <Button
-        label="Save"
-        icon="pi pi-check"
-        className="p-button-text"
-        onClick={saveProduct}
-      />
+      {isUpdateMutation ?
+      <>
+        {/* <Button label="Delete" icon="pi pi-trash" className="p-button-text" severity="danger" onClick={deletePreference} />
+        <Button label="Update" icon="pi pi-check" className="p-button-text" severity="warning" onClick={updatePreference}/> */}
+      </>
+      :
+      <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={savePreference} />
+      }
     </>
-  );
-  console.log(product)
+    );
+  };
+
+  const rowExpansionTemplate = (data: CourseType) => {
+    
+    if (data.preferences.length === 0) return <div> No one has given preferences to this course yet!</div>
+    // if (data.selectedExtraCourses.length === 0) return <div>No extra courses assigned</div>
+    return <PreferenceTable courseID={Number(data?.id)}/>
+};
 
   return (
     <div className="">
@@ -219,79 +201,25 @@ const FacultyPreference = () => {
           value={courses}
           rows={10}
           loading={fetching}
+          filters={filters}
           rowsPerPageOptions={[5, 10, 25]}
+          expandedRows={expandedRows}
+          onRowToggle={(b) => setExpandedRows(b.data)}
+          rowExpansionTemplate={rowExpansionTemplate}
           className="datatable-responsive"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
           emptyMessage="No courses info found."
           responsiveLayout="scroll"
         >
-          {/* <Column
-            field="id"
-            header="Course Id"
-            sortable
-            body={courseIDBodyTemplate}
-            headerStyle={{ minWidth: "10rem" }}
-          /> */}
-          <Column
-            field="code"
-            header="Course Code"
-            sortable
-            body={courseCodeBodyTemplate}
-            headerStyle={{ minWidth: "10rem" }}
-          />
-          <Column
-            field="name"
-            header="Course Name"
-            sortable
-            body={courseNameBodyTemplate}
-            headerStyle={{ minWidth: "10rem" }}
-          />
-          <Column
-            field="credit"
-            header="Credit"
-            sortable
-            body={courseCreditBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
-          {/* <Column
-            field="isExtra"
-            header="Is Extra"
-            sortable
-            body={courseExtraBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          /> */}
-          <Column
-            field="program"
-            header="Program"
-            sortable
-            body={courseProgramBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
-          <Column
-            field="curriculumYear"
-            header="Curriculum Year"
-            sortable
-            body={courseYearBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
-          <Column
-            field="batchYear"
-            header="Batch Year"
-            sortable
-            body={courseBatchYearBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
-          <Column
-            field="sem"
-            header="Sem"
-            sortable
-            body={courseSemBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
-          <Column
-            body={actionBodyTemplate}
-            headerStyle={{ minWidth: "5rem" }}
-          />
+          <Column expander style={{ width: '3em' }} />
+          <Column field="name" header="Course" body={courseBodyTemplate} headerStyle={{ minWidth: "10rem" }} />
+          <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate} sortable/>
+          <Column field="curriculumYear" header="Curriculum Year" sortable headerStyle={{ minWidth: "5rem" }}/>
+          <Column field="batchYear" header="Batch Year" sortable headerStyle={{ minWidth: "5rem" }}/>
+          <Column field="credit" header="Credit" sortable headerStyle={{ minWidth: "5rem" }}/>
+          <Column field="sem" header="Sem" headerStyle={{ minWidth: "5rem" }}/>
+          <Column header="Total No. Pref" body={totalPrefBodyTemplate} headerStyle={{ minWidth: "5rem" }}/>
+          <Column body={actionBodyTemplate} headerStyle={{ minWidth: "5rem" }}/>
         </DataTable>
         <Dialog
           visible={productDialog}
@@ -299,35 +227,26 @@ const FacultyPreference = () => {
           header="Preference"
           modal
           className="p-fluid"
-          footer={productDialogFooter}
+          footer={prefDialogFooter}
           onHide={hideDialog}
         >
           <div className="formgrid grid">
             <div className="field col">
-              <label>Course ID</label>
-              <div className={`generic-badge track-${product?.courseId}`}>
-                {product?.courseId}
-              </div>
+              <label>Course</label>
+              <div>{preference?.courseName}</div>
             </div>
           </div>
 
           <div className="formgrid grid">
             <div className="field col">
               <label>Preference</label>
-              <InputNumber
-                id="preference"
-                value={product.weightage}
-                onValueChange={(e) => onInputNumberChange(e, "preference")}
-                mode="decimal"
-                showButtons
-                format={false}
-              />
+              <Dropdown value={preference.weightage ? dropdownValues[preference.weightage-1] : null} onChange={(e:any) => setPreference({...preference, weightage: e.value.code})} options={currentDropdownValues} optionLabel="name" placeholder="Select" />
             </div>
             <div className="field col">
               <label>Experience</label>
               <InputNumber
                 id="experience"
-                value={product.experience}
+                value={preference.experience}
                 onValueChange={(e) => onInputNumberChange(e, "experience")}
                 mode="decimal"
                 showButtons

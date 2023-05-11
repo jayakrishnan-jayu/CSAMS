@@ -6,7 +6,7 @@ query programs {
   }
 }
 
-query courses($IDENTIFIER: IdentfierInput) {
+query coursesForPreference($IDENTIFIER: IdentfierInput, $USERID: ID ) {
   courses(identifier: $IDENTIFIER) {
     id
     code
@@ -17,6 +17,26 @@ query courses($IDENTIFIER: IdentfierInput) {
     curriculumYear
     batchYear
     sem
+    preferences{
+      id
+      courseId
+      faculty{
+        user{
+          id
+        }
+      }
+      weigtage
+      experience
+      timestamp
+    }
+  }
+  preferences(identifier: $IDENTIFIER, userId: $USERID) {
+    id
+    course {
+      id
+    }
+    weigtage
+    experience
   }
 }
 

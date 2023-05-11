@@ -9,11 +9,12 @@ class PreferenceQueries(graphene.ObjectType):
     preferences = graphene.List(
         PreferenceType,
         identifier = graphene.Argument(IdentfierInput, required=False),
-        course_id = graphene.ID(required=False)
+        course_id = graphene.ID(required=False),
+        user_id = graphene.ID(required=False),
     )
 
     @login_required
-    def resolve_preferences(self, info, identifier: IdentfierInput = None, course_id: int = None):
+    def resolve_preferences(self, info, identifier: IdentfierInput = None, course_id: int = None, user_id: int = None):
         if Config.objects.first() is None:
             raise APIException("Identifier Not Set", code="IDENTIFIER_NOT_SET")
         i = Config.objects.first().current_preference_sem
@@ -26,9 +27,13 @@ class PreferenceQueries(graphene.ObjectType):
                 raise APIException("Invalid Identifier Argument", code="IDENTIFIER_INVALID")
         
         qs = Preference.objects.filter(preference_sem_identifier=i)
-        if course_id is None:
+        if course_id is None and user_id is None:
             return qs
-        return qs.filter(course=course_id)
+        if course_id is not None and user_id is not None:
+            raise APIException("Provide only either course_id or user_id")
+        if course_id is not None:
+            return qs.filter(course=course_id)
+        return qs.filter(faculty=user_id)
 
 __all__ = [
     'PreferenceQueries'

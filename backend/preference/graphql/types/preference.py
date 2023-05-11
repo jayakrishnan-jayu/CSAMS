@@ -1,6 +1,6 @@
 import graphene
 from user.graphql.types.user import FacultyType
-from course.graphql.types.course import CourseType
+from course.graphql.types import CourseType
 
 class PreferenceType(graphene.ObjectType):
     id = graphene.ID()
@@ -22,3 +22,5 @@ class PreferenceType(graphene.ObjectType):
 class IdentfierInput(graphene.InputObjectType):
     year = graphene.Int(required=True, description="Year at which the preference was recorded")
     is_even_sem = graphene.Boolean(required=True, description="Odd/Even Sem")
+
+

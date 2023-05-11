@@ -8,6 +8,7 @@ query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
         firstName
         lastName
         username
+        email
       }
     }
     course {

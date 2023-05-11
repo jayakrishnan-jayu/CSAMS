@@ -6,8 +6,8 @@ from django.db.models import F
 from backend.api import APIException
 from course.models import (Batch, BatchCurriculumExtra, Course, Curriculum,
                            CurriculumExtras, ExtraCourse, Program)
-from preference.models import Config, Identifier
-
+from preference.models import Config, Preference
+from user.graphql.types import FacultyType
 
 class ProgramType(graphene.ObjectType):
     id = graphene.ID()
@@ -143,6 +143,31 @@ class BatchInfoType(graphene.ObjectType):
         return [BatchYearSemType(year=year, semesters=batches.filter(year=year).values_list('sem', flat=True)) for year in years]    
 
 
+class CoursePreferenceType(graphene.ObjectType):
+    id = graphene.ID()
+    course_id = graphene.ID()
+    identifier_year = graphene.Int()
+    identifier_is_even_sem = graphene.Boolean()
+    faculty = graphene.Field(FacultyType)
+    weigtage = graphene.Int()
+    experience = graphene.Int()
+    timestamp = graphene.DateTime()
+
+
+    def resolve_course_id(self, info):
+        if not isinstance(self, Preference):
+            raise APIException("Preference not found", "PREFERENCE_NOT_FOUND")
+        return self.course.id
+    def resolve_identifier_year(self, info):
+        if not isinstance(self, Preference):
+            raise APIException("Preference not found", "PREFERENCE_NOT_FOUND")
+        return self.preference_sem_identifier.year
+    
+    def resolve_identifier_is_even_sem(self, info):
+        if not isinstance(self, Preference):
+            raise APIException("Preference not found", "PREFERENCE_NOT_FOUND")
+        return self.preference_sem_identifier.is_even_sem
+    
 class CourseType(graphene.ObjectType):
     id = graphene.ID()
     code = graphene.String()
@@ -157,6 +182,7 @@ class CourseType(graphene.ObjectType):
     curriculum_year = graphene.Int()
     batch_year = graphene.Int()
     sem = graphene.Int()
+    preferences = graphene.List(CoursePreferenceType)
 
     def resolve_program(self, info):
         if not isinstance(self, Course):
@@ -177,6 +203,11 @@ class CourseType(graphene.ObjectType):
         if not isinstance(self, Course):
             raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
         return self.batch.sem
+
+    def resolve_preferences(self, info):
+        if not isinstance(self, Course):
+            raise APIException(message="Course Not Found", code="COURSE_NOT_FOUND")
+        return Preference.objects.filter(course=self)
         
 
 
