@@ -1,0 +1,177 @@
++Language I 200 2
+21HIN101 Hindi I 200 2
+21KAN101 Kannada I 200 2
+21MAL101 Malayalam I 200 2
+21SAN101 Sanskrit I 200 2
+21TAM101 Tamil I 200 2
+
++Language II 110 2
+18HIN111 Hindi II 110 2
+18KAN111 Kannada II 110 2
+18MAL111 Malayalam II 110 2
+18SAN111 Sanskrit II 110 2
+18TAM111 TAMIL II 110 2
+
++Mathematics core I 310 4
+21MAT231 Mathematical Foundation for Computer Science 310 4
+21MAT232 Discrete Mathematics 310 4
+
++Mathematics core II 310 4
+21MAT233 Statistical and Numerical Methods 310 4
+21MAT234 Algebra and Number Theory 310 4
+
++Mathematics core III 310 4
+21MAT235 Foundations of Applied Mathematics - Part I 310 4
+21MAT236 Foundations of Applied Mathematics - Part II 310 4
+
++Open Elective 300 3
+21OEL231 Advertising 300 3
+21OEL232 Basic Statistics 300 3
+21OEL233 Citizen Journalismh 300 3
+21OEL234 Creative Writing for Beginners 300 3
+21OEL235 Desktop Support and Services 300 3
+21OEL236 Development Journalism 300 3
+21OEL237 Digital Photography 300 3
+21OEL238 Emotional Intelligence 300 3
+21OEL239 Essence of Spiritual Literature 300 3
+21OEL240 Film Theory 300 3
+21OEL241 Fundamentals of Network Administration 300 3
+21OEL242 Gender Studies 300 3
+21OEL243 Glimpses of Indian Economy and Polity 300 3
+21OEL244 Graphics and Web-designing Tools 300 3
+21OEL245 Green Marketing 300 3
+21OEL246 Healthcare and Technology 300 3
+21OEL247 History of English Literature 300 3
+21OEL248 Indian Writing in English 300 3
+21OEL249 Industrial Relations and Labour Welfare 300 3
+21OEL250 Introduction to Ancient Indian Yogic and Vedic Wisdom 300 3
+21OEL251 Introduction to Computer Hardware 300 3
+21OEL252 Introduction to Event Management 300 3
+21OEL253 Introduction to Media 300 3
+21OEL254 Introduction to Right to Information Act 300 3
+21OEL255 Introduction to Translation 300 3
+21OEL256 Linguistic Abilities 300 3
+21OEL257 Literary Criticism and Theory 300 3
+21OEL258 Macro Economics 300 3
+21OEL259 Managing Failure 300 3
+21OEL260 Media Management 300 3
+21OEL261 Micro Economics 300 3
+21OEL262 Micro Finance, Small Group Management and Cooperatives 300 3
+21OEL263 Negotiation and Counselling 300 3
+21OEL264 New Literatures 300 3
+21OEL265 Non-Profit Organisation 300 3
+21OEL266 Personal Effectiveness 300 3
+21OEL267 Perspectives in Astrophysics and Cosmology 300 3
+21OEL268 Principles of Marketing 300 3
+21OEL269 Principles of Public Relations 300 3
+21OEL270 Science, Society and Culture 300 3
+21OEL271 Statistical Analysis 300 3
+21OEL272 Teamwork and Collaboration 300 3
+21OEL273 The Message of Bhagwad Gita 300 3
+21OEL274 Understanding Travel and Tourism 300 3
+21OEL275 Videography 300 3
+21OEL276 Vistas of English Literature 300 3
+21OEL277 Web-Designing Techniques 300 3
+21OEL278 Organic Farming 300 3
+21OEL279 Basic Legal Awareness on Protection of Women and Rights 300 3
+21OEL280 Ritual Performances of Kerala 300 3
+21OEL281 Documenting Social Issues 300 3
+21OEL282 Fabrication of Advanced Solar Cell 300 3
+21OEL283 Basic Concepts of X-ray Diffraction 300 3
+21OEL284 Introduction to FORTRAN and GNUPLOT 300 3
+21OEL285 Introduction to Porous Materials 300 3
+21OEL286 Forensic Science 300 3
+21OEL287 Introduction to solar Physics 300 3
+21OEL288 Recycling Recovery and Treatment Methods for Wastes 300 3
+21OEL289 Acting and Dramatic Presentation 202 3
+21OEL290 Computerised Accounting 202 3
+21OEL291 Kerala Mural Art and Painting 202 3
+21OEL292 Painting 202 3
+21OEL293 Reporting Rural Issues 300 3
+21CSA390 Live in Labs 300 3
+
++Elective I 300 3
+21CSA331 Artificial Intelligence 300 3
+21CSA332 Client Server Computing 300 3
+21CSA333 Embedded Systems 300 3
+21CSA334 Enterprise Resource Planning Management 300 3
+21CSA335 Knowledge Management 300 3
+
++Elective II 300 3
+21CSA336 Microprocessor Systems 300 3
+21CSA337 Multimedia and Graphics 300 3
+21CSA338 Social and Professional Issues in Computing 300 3
+21CSA339 Soft Computing 300 3
+21CSA340 Systems and Network Administration 300 3
+21CSA341 Computer Graphics 300 3
+
++Professional Elective I 301 4
+21CSA342 IoT Architectures and Programming 301 4
+21CSA343 Advanced Software Engineering and Design Patterns 301 4
+21CSA344 Advanced Data Mining and Applications 301 4
+21CSA345 Cloud Computing 301 4
+21CSA346 System Security 301 4
+21CSA347 Architecture and Deployment of Secure and Scalable WAN 301 4
+21CSA348 Introduction to Business Analytics and Visualization 301 4
+
+SEMESTER 1
+21CUL101 Cultural Education I 200 2
+21ENG101 Communicative English 201 3
+21ENV200 Environmental Science and Sustainability 300 3
+21CSA103 Computer Essentials 301 4
+21CSA106 Problem Solving and Algorithmic Thinking 300 3
+21CSA182 Problem Solving and Algorithmic Thinking Lab 001 1
++Language I 200 2
++Mathematics core I 310 4
+
+SEMESTER 2
+21CUL111 Cultural Education II 200 2
+21ENG111 Professional Communication 101 2
+21CSA112 Database Management System 310 4
+21CSA113 Programming in C 310 4
+21CSA114 Computer Organization 310 4
+21CSA183 Database Management System Lab 001 1
+21CSA186 Programming in C Lab 001 1
++Language II 110 2
++Mathematics core II 310 4
+
+SEMESTER 3
+21AVP201 Amrita Values Programme I 100 1
+21SSK201 Life Skills I 101 2
+21CSA201 Data Structures and Algorithms 310 4
+21CSA202 Object Oriented Programming using JAVA 310 4
+21CSA203 Operating Systems 310 4
+21CSA204 Principles of Management and Accounting 300 3
+21CSA282 Data Structures and Algorithms Lab 001 1
+21CSA283 Object Oriented Programming Lab using JAVA 001 1
++Mathematics core III 310 4
+
+SEMESTER 4
+21AVP211 Amrita Values Programme II 100 1
+21SSK211 Life Skills II 101 2
+21CSA212 Computer Networks 310 4
+21CSA213 Advanced JAVA and J2EE 310 4
+21CSA214 Web Technologies 310 4
+21CSA215 Software Engineering 301 4
+21CSA285 Advanced JAVA and J2EE Lab 001 1
+21CSA286 Web Technologies Lab 001 1
++Open Elective 300 3
+
+SEMESTER 5
+21SSK301 Life Skills III 101 2
+21CSA301 Data Warehousing and Data Mining 310 4
+21CSA302 Python Programming 300 3
+21CSA303 Mobile Application Development 011 2
+21CSA381 Python Programming Lab 001 1
+21CSA391 Comprehensive Technical VIVA-Voce 000 2
+21CSA398 Minor Project 000 4
+21CSA390 Live in Labs 300 3
++Elective I 300 3
+
+SEMESTER 6
+21CSA311 C# and .NET Framework 011 2
+21CSA312 Cryptography and Cyber Security 400 4
+21CSA399 Major Project 000 8
++Elective II 300 3
++Professional Elective I 301 4
+
