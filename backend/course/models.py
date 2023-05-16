@@ -47,6 +47,7 @@ class AbstractCourse(models.Model):
     l = models.SmallIntegerField()
     t = models.SmallIntegerField()
     p = models.SmallIntegerField()
+    is_elective = models.BooleanField(default=False)
    
     class Meta:
         abstract = True 
@@ -75,7 +76,6 @@ class Course(AbstractCourse, models.Model):
     )
 
 class ExtraCourse(AbstractCourse, models.Model):
-    is_elective = models.BooleanField(default=False)
     course_type = models.ForeignKey(
         'CurriculumExtras',
         on_delete=models.PROTECT,
@@ -167,7 +167,8 @@ class Batch(models.Model):
                 hours=ec.hours, 
                 l=ec.l, 
                 t=ec.t, 
-                p=ec.p
+                p=ec.p,
+                is_elective=ec.is_elective,
             )
             self.selected_extra_courses.add(ec)
             self.save()

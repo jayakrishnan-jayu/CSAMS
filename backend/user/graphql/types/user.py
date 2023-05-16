@@ -15,9 +15,22 @@ class UserType(graphene.ObjectType):
 
 
 class FacultyType(graphene.ObjectType):
+    id = graphene.ID()
     user = graphene.Field(UserType)
     track = graphene.String()
     designation = graphene.String()
+    min_workload = graphene.Int()
+    max_workload = graphene.Int()
+    workload = graphene.Int()
+
+    def resolve_workload(self, info):
+        if not isinstance(self, Faculty):
+            return APIException(message="Not an instance of Faculty")
+        if hasattr(self, 'identifier') and isinstance(self.identifier, Identifier):
+            identifier: Identifier = self.identifier
+        else:
+            identifier = Config.objects.first().current_preference_sem
+        return self.workload(identifier)
 
 class WorkloadType(graphene.ObjectType):
     track = graphene.String()

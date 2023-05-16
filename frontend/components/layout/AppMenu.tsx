@@ -39,6 +39,11 @@ const AppMenu = () => {
         to: "/management/faculties",
       },
       {
+        label: "Allocation",
+        icon: "pi pi-fw pi-book",
+        to: "/management/allocation",
+      },
+      {
         label: "Curriculum",
         icon: "pi pi-fw pi-money-bill",
         items: [

@@ -172,7 +172,7 @@ const VerifyBatch = () => {
                             value={values}
                             rows={10}
                             expandedRows={expandedRows}
-                            onRowToggle={(b) => {console.log("expanding ", b.data); setExpandedRows(b.data)}}
+                            onRowToggle={(b) => setExpandedRows(b.data)}
                             rowExpansionTemplate={rowExpansionTemplate}
                             rowsPerPageOptions={[5, 10, 25]}
                             className="datatable-responsive"

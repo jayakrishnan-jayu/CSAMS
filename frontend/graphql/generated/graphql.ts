@@ -43,9 +43,43 @@ export type AddPreference = {
   response?: Maybe<Scalars['Boolean']>;
 };
 
-export type AllocationFilterInput = {
-  isEvenSem?: InputMaybe<Scalars['Boolean']>;
-  year?: InputMaybe<Scalars['Int']>;
+export type AllocationBatchType = {
+  __typename?: 'AllocationBatchType';
+  batchSem?: Maybe<Scalars['Int']>;
+  batchYear?: Maybe<Scalars['Int']>;
+  courseAllocations?: Maybe<Array<Maybe<CourseAllocationType>>>;
+  courseIds?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  courseLabs?: Maybe<Array<Maybe<AllocationCourseLabType>>>;
+  curriculumName?: Maybe<Scalars['String']>;
+  curriculumYear?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
+  labAllocations?: Maybe<Array<Maybe<LabAllocationType>>>;
+};
+
+export type AllocationCourseLabType = {
+  __typename?: 'AllocationCourseLabType';
+  courseId?: Maybe<Scalars['ID']>;
+  labId?: Maybe<Scalars['ID']>;
+};
+
+export type AllocationManagementType = {
+  __typename?: 'AllocationManagementType';
+  batches?: Maybe<Array<Maybe<AllocationBatchType>>>;
+  bestPreferences?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  courses?: Maybe<Array<Maybe<CourseType>>>;
+  faculties?: Maybe<Array<Maybe<FacultyType>>>;
+  preferences?: Maybe<Array<Maybe<AllocationPreferenceType>>>;
+};
+
+export type AllocationPreferenceType = {
+  __typename?: 'AllocationPreferenceType';
+  courseId?: Maybe<Scalars['ID']>;
+  experience?: Maybe<Scalars['Int']>;
+  facultyId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
+  score?: Maybe<Scalars['Float']>;
+  timestamp?: Maybe<Scalars['DateTime']>;
+  weigtage?: Maybe<Scalars['Int']>;
 };
 
 export type BatchInfoType = {
@@ -82,10 +116,10 @@ export type ConfigType = {
   preferenceCount?: Maybe<Scalars['Int']>;
 };
 
-export type CourseAndFacultyType = {
-  __typename?: 'CourseAndFacultyType';
-  course?: Maybe<CourseType>;
-  faculty?: Maybe<FacultyType>;
+export type CourseAllocationType = {
+  __typename?: 'CourseAllocationType';
+  courseId?: Maybe<Scalars['ID']>;
+  facultyId?: Maybe<Scalars['ID']>;
 };
 
 export type CourseInput = {
@@ -128,6 +162,7 @@ export type CourseType = {
   curriculumYear?: Maybe<Scalars['Int']>;
   hours?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['ID']>;
+  isElective?: Maybe<Scalars['Boolean']>;
   isExtra?: Maybe<Scalars['Boolean']>;
   l?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -211,8 +246,12 @@ export type ExtraInput = {
 export type FacultyType = {
   __typename?: 'FacultyType';
   designation?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  maxWorkload?: Maybe<Scalars['Int']>;
+  minWorkload?: Maybe<Scalars['Int']>;
   track?: Maybe<Scalars['String']>;
   user?: Maybe<UserType>;
+  workload?: Maybe<Scalars['Int']>;
 };
 
 export type IdentfierInput = {
@@ -235,6 +274,13 @@ export type IdentiferType = {
 export type IdentifierInput = {
   isEvenSem: Scalars['Boolean'];
   year: Scalars['Int'];
+};
+
+export type LabAllocationType = {
+  __typename?: 'LabAllocationType';
+  courseId?: Maybe<Scalars['ID']>;
+  facultyId?: Maybe<Scalars['ID']>;
+  isInCharge?: Maybe<Scalars['Boolean']>;
 };
 
 export type MetaDataType = {
@@ -374,7 +420,7 @@ export type ProgramType = {
 
 export type Query = {
   __typename?: 'Query';
-  allocation?: Maybe<Array<Maybe<CourseAndFacultyType>>>;
+  allocationManagement?: Maybe<AllocationManagementType>;
   batch?: Maybe<BatchType>;
   batchInfo?: Maybe<BatchInfoType>;
   batchManagement?: Maybe<BatchManagementType>;
@@ -400,9 +446,8 @@ export type Query = {
 };
 
 
-export type QueryAllocationArgs = {
-  facultyId?: InputMaybe<Scalars['ID']>;
-  filter: AllocationFilterInput;
+export type QueryAllocationManagementArgs = {
+  identifier?: InputMaybe<IdentifierInput>;
 };
 
 
@@ -677,6 +722,13 @@ export type UpdateWorkloadMutationVariables = Exact<{
 
 export type UpdateWorkloadMutation = { __typename?: 'Mutation', updateWorkload?: { __typename?: 'UpdateWorkload', workload?: { __typename?: 'WorkloadType', track?: string | null, designation?: string | null, minHoursPerWeek?: number | null, maxHoursPerWeek?: number | null } | null } | null };
 
+export type AllocationManagementQueryVariables = Exact<{
+  IDENTIFIER?: InputMaybe<IdentifierInput>;
+}>;
+
+
+export type AllocationManagementQuery = { __typename?: 'Query', allocationManagement?: { __typename?: 'AllocationManagementType', bestPreferences?: Array<string | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseLabs?: Array<{ __typename?: 'AllocationCourseLabType', courseId?: string | null, labId?: string | null } | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null, preferences?: Array<{ __typename?: 'AllocationPreferenceType', id?: string | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, score?: number | null } | null> | null, faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null } | null> | null } | null };
+
 export type BatchQueryVariables = Exact<{
   BATCHID: Scalars['ID'];
 }>;
@@ -904,6 +956,252 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "AllocationBatchType",
+        "fields": [
+          {
+            "name": "batchSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "batchYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "courseAllocations",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseAllocationType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "courseIds",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "courseLabs",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AllocationCourseLabType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "curriculumName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "curriculumYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "labAllocations",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "LabAllocationType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AllocationCourseLabType",
+        "fields": [
+          {
+            "name": "courseId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "labId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AllocationManagementType",
+        "fields": [
+          {
+            "name": "batches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AllocationBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "bestPreferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "courses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "faculties",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FacultyType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "preferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AllocationPreferenceType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AllocationPreferenceType",
+        "fields": [
+          {
+            "name": "courseId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "experience",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "facultyId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "score",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "timestamp",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "weigtage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "BatchInfoType",
         "fields": [
           {
@@ -1071,23 +1369,21 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "CourseAndFacultyType",
+        "name": "CourseAllocationType",
         "fields": [
           {
-            "name": "course",
+            "name": "courseId",
             "type": {
-              "kind": "OBJECT",
-              "name": "CourseType",
-              "ofType": null
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           },
           {
-            "name": "faculty",
+            "name": "facultyId",
             "type": {
-              "kind": "OBJECT",
-              "name": "FacultyType",
-              "ofType": null
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -1237,6 +1533,14 @@ export default {
           },
           {
             "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isElective",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -1589,6 +1893,30 @@ export default {
             "args": []
           },
           {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "maxWorkload",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "minWorkload",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "track",
             "type": {
               "kind": "SCALAR",
@@ -1602,6 +1930,14 @@ export default {
               "kind": "OBJECT",
               "name": "UserType",
               "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "workload",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
             },
             "args": []
           }
@@ -1654,6 +1990,37 @@ export default {
           },
           {
             "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "LabAllocationType",
+        "fields": [
+          {
+            "name": "courseId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "facultyId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isInCharge",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -2251,31 +2618,18 @@ export default {
         "name": "Query",
         "fields": [
           {
-            "name": "allocation",
+            "name": "allocationManagement",
             "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CourseAndFacultyType",
-                "ofType": null
-              }
+              "kind": "OBJECT",
+              "name": "AllocationManagementType",
+              "ofType": null
             },
             "args": [
               {
-                "name": "facultyId",
+                "name": "identifier",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
                 }
               }
             ]
@@ -3229,6 +3583,79 @@ export const UpdateWorkloadDocument = gql`
 
 export function useUpdateWorkloadMutation() {
   return Urql.useMutation<UpdateWorkloadMutation, UpdateWorkloadMutationVariables>(UpdateWorkloadDocument);
+};
+export const AllocationManagementDocument = gql`
+    query allocationManagement($IDENTIFIER: IdentifierInput) {
+  allocationManagement(identifier: $IDENTIFIER) {
+    batches {
+      id
+      curriculumYear
+      curriculumName
+      batchYear
+      batchSem
+      courseLabs {
+        courseId
+        labId
+      }
+      courseAllocations {
+        courseId
+        facultyId
+      }
+      labAllocations {
+        courseId
+        facultyId
+        isInCharge
+      }
+      courseIds
+    }
+    bestPreferences
+    courses {
+      id
+      code
+      name
+      credit
+      hours
+      l
+      t
+      p
+      isExtra
+      isElective
+      program
+      curriculumYear
+      batchYear
+      sem
+    }
+    preferences {
+      id
+      facultyId
+      courseId
+      weigtage
+      experience
+      timestamp
+      score
+    }
+    faculties {
+      id
+      user {
+        id
+        email
+        firstName
+        lastName
+        username
+        isStaff
+      }
+      track
+      designation
+      minWorkload
+      maxWorkload
+      workload
+    }
+  }
+}
+    `;
+
+export function useAllocationManagementQuery(options?: Omit<Urql.UseQueryArgs<AllocationManagementQueryVariables>, 'query'>) {
+  return Urql.useQuery<AllocationManagementQuery, AllocationManagementQueryVariables>({ query: AllocationManagementDocument, ...options });
 };
 export const BatchDocument = gql`
     query batch($BATCHID: ID!) {

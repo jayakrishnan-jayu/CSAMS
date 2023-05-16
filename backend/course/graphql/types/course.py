@@ -178,6 +178,7 @@ class CourseType(graphene.ObjectType):
     t = graphene.Int()
     p = graphene.Int()
     is_extra = graphene.Boolean()
+    is_elective = graphene.Boolean()
     program = graphene.String()
     curriculum_year = graphene.Int()
     batch_year = graphene.Int()
@@ -295,7 +296,7 @@ class BatchManagementType(graphene.ObjectType):
     def resolve_active_batches(self, info):
         config = Config.objects.first()
         qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
-        print(config, qs)
+
         return qs
 
 #     program_name = graphene.String()

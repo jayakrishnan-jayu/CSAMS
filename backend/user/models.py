@@ -126,9 +126,10 @@ class Faculty(models.Model):
     def workload(self, identifier: Identifier) -> int:
         batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not identifier.is_even_sem, sem_year=identifier.year)
         courses = Course.objects.filter(batch__in=batches)
-        course_hours = CourseAllocation.objects.filter(course__in=courses).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
-        in_charge_lab_hours = LabAllocation.objects.filter(course__in=courses, is_in_charge=True).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
-        assistant_lab_hours = LabAllocation.objects.filter(course__in=courses, is_in_charge=False).aggregate(total=Sum(F('course__p')))['total']
+        course_hours = CourseAllocation.objects.filter(course__in=courses, faculty=self).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
+        labs_allocations = LabAllocation.objects.filter(course__in=courses, faculty=self)
+        in_charge_lab_hours = labs_allocations.filter(is_in_charge=True).aggregate(total=Sum(F('course__l') + F('course__t') + F('course__p')))['total']
+        assistant_lab_hours = labs_allocations.filter(is_in_charge=False).aggregate(total=Sum(F('course__p')))['total']
         if course_hours is None:
             course_hours = 0
         if in_charge_lab_hours is None:
