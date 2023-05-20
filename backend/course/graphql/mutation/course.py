@@ -4,11 +4,11 @@ import graphene
 from django.db import transaction
 
 from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput, CourseLabMapInput
-from ..types.course import AddBatchExtraCourseResponse, UpdateBatchExtraCourseResponse, DeleteBatchExtraCourseResponse
+from ..types.course import AddBatchExtraCourseResponse, UpdateBatchExtraCourseResponse, DeleteBatchExtraCourseResponse, UpdateBatchCurriculumExtraCourseResponse
 from course.graphql.types.course import CurriculumUploadType
 from backend.api.decorator import login_required, resolve_user, staff_privilege_required
 from backend.api import APIException
-from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab
+from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab, BatchCurriculumExtra
 from typing import List
 
 
@@ -74,7 +74,6 @@ class DeleteBatchExtraCourse(graphene.Mutation):
     @resolve_user
     @staff_privilege_required
     def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID):
-        print("yay")
         try:
             b = Batch.objects.get(id=batch_id)
         except Batch.DoesNotExist:
@@ -85,6 +84,48 @@ class DeleteBatchExtraCourse(graphene.Mutation):
             raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
         b.remove_selected_extra_course(ec_old)
         return DeleteBatchExtraCourse(response=DeleteBatchExtraCourseResponse(old_extra_course=ec_old))
+
+
+class UpdateBatchCurriculumExtraCourse(graphene.Mutation):
+    class Arguments:
+        batch_id = graphene.ID(required=True)
+        extra_course_type = graphene.String(required=True)
+        add = graphene.Boolean(required=True)
+    response = graphene.Field(UpdateBatchCurriculumExtraCourseResponse)
+
+    # @login_required
+    # @resolve_user
+    # @staff_privilege_required
+    def mutate(self, info, batch_id: graphene.ID, extra_course_type: str, add: bool):
+        try:
+            b = Batch.objects.get(id=batch_id)
+        except Batch.DoesNotExist:
+            raise APIException(message="Batch not found", code="INVALID_BATCH_ID")
+        try:
+            ce = CurriculumExtras.objects.get(curriculum=b.curriculum, name=extra_course_type)
+        except CurriculumExtras.DoesNotExist:
+            raise APIException(message="Curriculum Extra not found", code="INVALID_EXTRA_COURSE_TYPE")
+        
+        if not ce.is_elective:
+            raise APIException(message="Only electives can be updated")
+        bce = BatchCurriculumExtra.objects.get(batch=b, extra=ce) 
+        if add:
+            if bce.count >= ExtraCourse.objects.filter(course_type=ce).count():
+                raise APIException(message="Can not add more extra course type, length exceeds occurences of extra course")
+            b.add_extra(ce)
+        else:
+            
+            if bce.count <= 1:
+                raise APIException(message="Can not delete all occurences of extra course type")
+            if bce.count <= b.selected_extra_courses.filter(course_type=ce).count():
+                raise APIException(message="extra course alloacted, can not delete extra course type")
+            b.remove_extra(ce)
+        result = []
+        extras = b.extras
+        for bce in extras:
+            result += [bce.extra]*bce.count
+        return UpdateBatchCurriculumExtraCourse(response=UpdateBatchCurriculumExtraCourseResponse(semester_extra_courses=result))
+
 
 class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
@@ -113,7 +154,7 @@ class VerifyCurriculumUpload(graphene.Mutation):
                 c_extras:List[CurriculumExtras] = []
                 for e in curriculum_extras:
                     is_elective = e['isElective']
-                    ce = CurriculumExtras.objects.create(curriculum=curriculum, name=e['name'])
+                    ce = CurriculumExtras.objects.create(curriculum=curriculum, name=e['name'], is_elective=is_elective)
                     c_extras.append(ce)
                     for ec in e['courses']:
                         ExtraCourse.objects.create(code=ec['code'].strip(),name=ec['name'], l=ec['L'], t=ec['T'], p=ec['P'], credit=ec['C'], hours=0, course_type=ce, is_elective=is_elective)
@@ -267,6 +308,8 @@ class CourseMutation(graphene.ObjectType):
     upload_curriculum = UploadCurriculum.Field()
     delete_curriculum_upload = DeleteCurriculumUpload.Field()
     verify_curriculum_upload = VerifyCurriculumUpload.Field()
+
+    update_batch_curriculum_extra_course = UpdateBatchCurriculumExtraCourse.Field()
 
     add_batch_extra_course =  AddBatchExtraCourse.Field()
     update_batch_extra_course =  UpdateBatchExtraCourse.Field()

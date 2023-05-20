@@ -1,7 +1,7 @@
-import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, ExtraCourseType } from '@/graphql/generated/graphql';
+import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchCurriculumExtraCourseMutation, ExtraCourseType } from '@/graphql/generated/graphql';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import { MutableRefObject, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
@@ -14,6 +14,7 @@ interface BatchUpdateSettingsProps {
 
 const BatchUpdateSettings = ({batchID}:BatchUpdateSettingsProps) => {
     const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
+    const [updateBatchCurriculumExtraCourse, updateBatchCurriculumExtraCourseMutation] = useUpdateBatchCurriculumExtraCourseMutation();
     const {fetching, data, error} = result;
     const toast = useRef(null);
 
@@ -116,16 +117,16 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
     }
 
     if (!dialogShown) {
-        if (addBatchExtraCourse.error?.message) {
+        if (mode.type === 'create' && addBatchExtraCourse.error?.message) {
             toast.current.show({ severity: 'error', summary: 'Error assigning Extra course', detail: addBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
         }
-        if (updateBatchExtraCourse.error?.message) {
+        if (mode.type === 'update' && updateBatchExtraCourse.error?.message) {
             toast.current.show({ severity: 'error', summary: 'Error updating Extra course', detail: updateBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
         }
         
-        if (deleteBatchExtraCourse.error?.message) {
+        if (mode.type === 'delete' && deleteBatchExtraCourse.error?.message) {
             toast.current.show({ severity: 'error', summary: 'Error deleting Extra course', detail: deleteBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
         }

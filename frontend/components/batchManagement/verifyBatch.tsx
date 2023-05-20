@@ -7,7 +7,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import VerifyCurriculum from '../curriculumUpload/verify';
+import {VerifyCurriculum} from '../curriculumUpload/verify';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { classNames } from 'primereact/utils';
@@ -92,7 +92,7 @@ const VerifyBatch = () => {
 
     const dropDownValue = dropdownValues[metaData?.metadata?.config?.currentPreferenceSem?.isEvenSem ? 1 : 0];
     const batchesLeftToFill = [];
-
+    let activeBatchesCount = 0;
     const renderTableHeader = (program: string, year: number) => {
         return (
             <div className="flex justify-content-between">
@@ -164,6 +164,7 @@ const VerifyBatch = () => {
             const [p, y] = cy.split('-');
             const header = renderTableHeader(p, Number(y));
             const values = data?.batches.filter(b => b?.curriculum?.program === p && b.curriculum.year?.toString() === y).map(b => {return {...b, semesterExtraCoursesLength: b?.semesterExtraCourses?.length, selectedExtraCoursesLength: b?.selectedExtraCourses?.length}});
+            activeBatchesCount =  values.length;
             batchesLeftToFill.push(...values.filter(e => e.extraCourseLeftToAssign !== 0));
             return (
                 <div className="col-12">
@@ -223,6 +224,10 @@ const VerifyBatch = () => {
         }
         if (batchesLeftToFill.length !== 0) {
             return batchesLeftToFill.map(b => <div>{b.curriculum.program} {b.year} Batch S{b.sem} has {b.extraCourseLeftToAssign} Courses Left to be assigned</div>);
+        }
+
+        if (activeBatchesCount === 0) {
+            return <h5>No active batches</h5>
         }
         
         return (

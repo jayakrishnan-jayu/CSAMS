@@ -218,6 +218,9 @@ class CourseLabType(graphene.ObjectType):
     course = graphene.Field(CourseType)
     lab = graphene.Field(CourseType)
 
+class UpdateBatchCurriculumExtraCourseResponse(graphene.ObjectType):
+    semester_extra_courses = graphene.List(graphene.String)
+
 
 class AddBatchExtraCourseResponse(graphene.ObjectType):
     extra_course = graphene.Field(ExtraCourseType)

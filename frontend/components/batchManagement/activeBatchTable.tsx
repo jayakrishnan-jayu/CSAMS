@@ -52,7 +52,7 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
                         rowsPerPageOptions={[5, 10, 25]}
                         className="datatable-responsive"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-                        emptyMessage="No workload info found."
+                        emptyMessage="No Active Batches Found."
                         responsiveLayout="scroll"
                     >
                         <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} body={programBodyTemplate}/>

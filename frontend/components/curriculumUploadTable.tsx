@@ -10,7 +10,7 @@ import { Toast } from 'primereact/toast';
 import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { classNames } from 'primereact/utils';
 import React, { useRef, useState } from 'react';
-import VerifyCurriculum from './curriculumUpload/verify';
+import {VerifyCurriculum} from './curriculumUpload/verify';
 import { useRouter } from "next/navigation";
 
 const CurriculumUploadTable = () => {
@@ -84,7 +84,7 @@ const CurriculumUploadTable = () => {
   };
 
     const actionBodyTemplate = (rowData: CurriculumUploadType) => {
-        return <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editCurriculum(rowData)} />
+        return <Button icon={`pi ${rowData?.isPopulated ? "pi-search" : "pi-pencil"}`} className="p-button-rounded p-button-success mr-2" onClick={() => editCurriculum(rowData)} />
     };
 
 
@@ -130,24 +130,32 @@ const CurriculumUploadTable = () => {
         return (
         <div className="flex align-items-center flex-wrap">
             <div className="flex mt-6 ml-auto mr-auto">
-                <Button 
-                    label='Verify'
-                    icon="pi pi-check"
-                    onClick={() => setVerifyDisplayConfirmation(true)}
-                />
-                <Dialog header="Verify Confirmation" visible={verifyDisplayConfirmation} onHide={() => setVerifyDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={verifyConfirmationDialogFooter}>
-                    <div className="flex align-items-center justify-content-center">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        <span>Are you sure you want to verify {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?. This action cannot be reverted.</span>
-                    </div>
-                </Dialog>
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger ml-8" onClick={() => setDeleteDisplayConfirmation(true)} />
-                <Dialog header="Delete Confirmation" visible={deleteDisplayConfirmation} onHide={() => setDeleteDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={deleteConfirmationDialogFooter}>
-                    <div className="flex align-items-center justify-content-center">
-                        <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                        <span>Are you sure you want to delete {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?</span>
-                    </div>
-                </Dialog>
+                {!curriculumUpload?.isPopulated ? 
+                    <>
+                        <Button 
+                            label='Verify'
+                            icon="pi pi-check"
+                            onClick={() => setVerifyDisplayConfirmation(true)}
+                        />
+                    
+                        <Dialog header="Verify Confirmation" visible={verifyDisplayConfirmation} onHide={() => setVerifyDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={verifyConfirmationDialogFooter}>
+                            <div className="flex align-items-center justify-content-center">
+                                <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                                <span>Are you sure you want to verify {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?. This action cannot be reverted.</span>
+                            </div>
+                        </Dialog>
+                        <Button label="Delete" icon="pi pi-trash" className="p-button-danger ml-8" onClick={() => setDeleteDisplayConfirmation(true)} />
+                        <Dialog header="Delete Confirmation" visible={deleteDisplayConfirmation} onHide={() => setDeleteDisplayConfirmation(false)} style={{ width: '350px' }} modal footer={deleteConfirmationDialogFooter}>
+                            <div className="flex align-items-center justify-content-center">
+                                <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                                <span>Are you sure you want to delete {curriculumUpload?.program} - {curriculumUpload?.year} Curriculum Data?</span>
+                            </div>
+                        </Dialog>
+                    </>
+                :
+                <Button label='Verified' icon="pi pi-check" security='info' disabled/>
+                }
+                
             </div>
         </div>
         )

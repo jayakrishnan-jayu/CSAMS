@@ -112,6 +112,7 @@ class CurriculumExtras(models.Model):
         on_delete=models.PROTECT,
     )
     name = models.TextField()
+    is_elective = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('curriculum', 'name')
@@ -149,15 +150,19 @@ class Batch(models.Model):
                 bce.save()
                 return
             bce.delete()
-    
+        
     def add_selected_extra_course(self, ec: ExtraCourse):
         with transaction.atomic():
             qs = BatchCurriculumExtra.objects.filter(batch=self, extra=ec.course_type)
-            exisiting_count = self.selected_extra_courses.filter(course_type=ec.course_type).count()
+            selected_courses = self.selected_extra_courses.filter(course_type=ec.course_type)
+            exisiting_count = selected_courses.count()
+            if selected_courses.filter(code=ec.code).exists():
+                raise Exception("Course already allocated")
             if not qs.exists():
                 raise Exception("Invalid Extra Course for semester")
             if exisiting_count >= qs.first().count:
                 raise Exception("Invalid Extra Course for semester, maximum count already reached!")
+            
             Course.objects.create(
                 is_extra=True, 
                 batch=self,
@@ -210,6 +215,9 @@ class BatchCurriculumExtra(models.Model):
 
     class Meta:
         unique_together = ('batch', 'extra')
+
+    def __str__(self) -> str:
+        return f'{self.batch} {self.extra}'
 
 class Program(models.Model):
     name = models.TextField(

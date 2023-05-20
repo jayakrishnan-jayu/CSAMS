@@ -10,13 +10,22 @@ interface VerifyCurriculumProps {
     footerElement?: () => JSX.Element,
 }
 
-const VerifyCurriculum = ({curriculum_program, curriculum_year, footerElement} : VerifyCurriculumProps) => {
+export const VerifyCurriculum = ({curriculum_program, curriculum_year, footerElement} : VerifyCurriculumProps) => {
     const [result] = useCurriculumUploadQuery({variables:{PROGRAM: curriculum_program, YEAR:curriculum_year }})
     const {data, fetching, error} = result;
     if (error?.message) return <div>Failed to load data: {error.message}</div>
     if (fetching) return <div>Loading</div>
-    
-    const {program, extra, semesters, year}: CurriculumUploadInput = JSON.parse(data?.curriculumUpload?.data);
+    return <VerifyCurriculumFromCurriculumUpload curriculum={JSON.parse(data?.curriculumUpload?.data)} footerElement={footerElement}/>
+
+};
+
+interface VerifyCurriculumFromCurriculumUploadProps {
+    curriculum: CurriculumUploadInput
+    footerElement?: () => JSX.Element,
+}
+
+export const VerifyCurriculumFromCurriculumUpload = ({curriculum, footerElement}: VerifyCurriculumFromCurriculumUploadProps) => {
+    const {program, extra, semesters, year}: CurriculumUploadInput = curriculum;
     const renderSemsterTitle = (sem : number) => {
         return (
             <div className="flex justify-content-between">
@@ -129,7 +138,4 @@ const VerifyCurriculum = ({curriculum_program, curriculum_year, footerElement} :
             </div>
         </div>
     );
-};
-
-
-export default VerifyCurriculum;
+}

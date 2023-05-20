@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useRef } from 'react';
 import { Steps } from 'primereact/steps';
 import UploadCurriculum from '@/components/curriculumUpload/upload';
-import VerifyCurriculum from '@/components/curriculumUpload/verify';
+import {VerifyCurriculumFromCurriculumUpload} from '@/components/curriculumUpload/verify';
 import PreviewCurriculum from '@/components/curriculumUpload/preview';
 import { Toast } from 'primereact/toast';
 import { VerifyNewCurriculumQuery, CurriculumUploadInput, CurriculumUploadType } from '@/graphql/generated/graphql';
@@ -64,7 +64,7 @@ const render = (activeIndex: number) => {
             return <UploadCurriculum onUpload={onUpload} toast={toast}/>;
         case 1:
             console.log("veryifying curriculum")
-            if (curriculum) return <VerifyCurriculum curriculum_program={curriculum.program} curriculum_year={curriculum.year} footerElement={footerElement}/>;
+            if (curriculum) return <VerifyCurriculumFromCurriculumUpload curriculum={curriculum} footerElement={footerElement}/>;
             setActiveIndex(0)
             break;
         case 2:

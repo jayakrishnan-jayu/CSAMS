@@ -7,6 +7,8 @@ import { classNames } from 'primereact/utils';
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
+import { ToggleButton } from 'primereact/togglebutton';
+import { Button } from 'primereact/button';
 
 interface BatchAllocationPreferenceTableProps {
     batches: AllocationBatchType[] | null | undefined
@@ -53,11 +55,22 @@ interface AllocationFields {
 }
 
 
+
+interface FacultyDropDownField{
+  id?: string
+  name?: string
+}
+
+
 type AllocationPreferenceCourseType = AllocationFields & CourseType
 
 const BatchAllocationPreferenceTable = ({batches, courses, preferences, faculties, bestPreferences, loading}: BatchAllocationPreferenceTableProps) => {
+  const [expandedRows, setExpandedRows] = useState(null);
+  const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
   const [courseAllocations, setCourseAllocations] = useState<null | CourseAllocationWithCourse[]>(null);
   const [labAllocations, setLabAllocations] = useState<null | LabAllocationWithCourse[]>(null);
+  let facultyDropdownvalues: FacultyDropDownField[] = [];
+
   const getCourse = (id: string): CourseType | null => {
     const c = courses?.filter(c=>c.id === id)
     if (c?.length == 1) return c[0];
@@ -96,8 +109,14 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
     const data = retriveLabAllocations();
     if (data !== undefined && data !== null) setLabAllocations(retriveLabAllocations());
   }
-  const [expandedRows, setExpandedRows] = useState(null);
-  const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
+
+  if (facultyDropdownvalues.length === 0 && faculties !== null && faculties !== undefined) {
+    facultyDropdownvalues = [{id: "-1", name: "None"}].concat(faculties.map(f=> {return {id: f?.id, name: f?.user?.firstName + " " + f?.user?.lastName + " - " + f?.user?.email}}))
+  }
+
+  const getFacultyDropdownValue = (id: string) : FacultyDropDownField => {
+    return facultyDropdownvalues.find(f => f?.id === id)
+  }
 
 
   
@@ -117,7 +136,7 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
       courseAllocations: _ca,
       labAllocations: _la,
       courseLabs: cl,
-      allocated: _ca?.length === 1 || _la?.length === 1
+      allocated: _ca?.length === 1 || _la?.filter(l=> l.isInCharge === true).length === 1
     }
   }
 
@@ -195,26 +214,68 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
       workload: p?.faculty?.workload,
     }})
 
-    // const ca = data?.courseAllocations;
-    // const la = data?.labAllocations;
+    const isLab = data?.code?.charAt(data?.code?.length - 2) === '8';
+
+    const ca = data?.courseAllocations;
+    const la = data?.labAllocations;
+    
     
 
-    // const renderCourseAllocationButton = (selectedFaculty: FacultyType)
+    const renderDropDownOption = () => {
+      
+      if (isLab) {
 
-    // const renderLabAllocations = () => {
-    //   return (<>
-    //     {/* {la.map(a => {
-    //       const faculty = getFaculty(a?.facultyId);
-    //       return 
-    //     })
-    //     } */}
-    //   </>);
-    // }
+        const inChargeAllocation = la.find(l=>l.isInCharge === true)
+        const assistantAllocations = la.filter(l=>l.isInCharge === false)
 
+
+        return (
+          <div className="grid p-fluid ">
+            <div className="field col-12 md:col-6 ">
+            <h6>{inChargeAllocation ?  "Allocated In Charge Faculty" : "Allocate In Charge Faculty"}</h6>
+            <Dropdown className='mb-2' value={inChargeAllocation?.facultyId ? getFacultyDropdownValue(inChargeAllocation?.facultyId) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+            {
+            assistantAllocations.map(a=>
+              <Dropdown className='mb-2' value={a?.facultyId ? getFacultyDropdownValue(a?.facultyId) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+              )
+            }
+
+            <Dropdown className='mb-2' value={facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+          </div>
+          
+          <div className="field col-12 md:col-3 ">
+            <span className="">
+            <h6>Type</h6>
+            <Button className='mb-2' label="In Charge" severity="success" rounded disabled/>
+            {
+              assistantAllocations.map(a=>
+                <Button className='mb-2' label="Lab Assistant" severity="info" rounded disabled/>
+              )
+            }
+            <Button className='mb-2' label="Lab Assistant" severity="info" rounded disabled/>
+            </span>
+          </div>
+
+        </div>
+        );
+      }
+      if (!isLab) {
+        const facultyID = ca[0]?.facultyId;
+        return (
+          <div className="grid p-fluid">
+            <div className="field col-12 md:col-6 ">
+              <h6>{facultyID ?  "Allocated Faculty" : "Allocate Faculty"}</h6>
+              <Dropdown className='mb-2' value={facultyID ? getFacultyDropdownValue(facultyID) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+            </div>
+          </div>
+        );
+    }
+  }
+    console.log(data?.courseAllocations)
     return (
       <div className="orders-subtable">
         {/* {renderLabAllocations()} */}
-        {/* <Dropdown value={data?.courseAllocations[0]?.facultyId}/> */}
+        {renderDropDownOption()}
         <DataTable 
           value={value}
           loading={loading}

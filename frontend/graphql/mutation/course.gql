@@ -54,3 +54,13 @@ mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!){
     }
   }
 }
+
+
+
+mutation updateBatchCurriculumExtraCourse($BATCH_ID: ID!, $ADD: Boolean!, $EXTRA_COURSE_TYPE: String!){
+  updateBatchCurriculumExtraCourse(add:$ADD, batchId: $BATCH_ID, extraCourseType: $EXTRA_COURSE_TYPE){
+    response{
+      semesterExtraCourses
+    }
+  }
+}
