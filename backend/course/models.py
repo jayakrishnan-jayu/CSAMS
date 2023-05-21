@@ -61,6 +61,10 @@ class AbstractCourse(models.Model):
         return self.is_lab and not CourseLab.objects.filter(lab=self).exists()
     
     @property
+    def has_lab(self):
+        return not self.is_lab and CourseLab.objects.filter(course=self).exists()
+
+    @property
     def workload(self) -> int:
         return self.l + self.t + self.p;
 

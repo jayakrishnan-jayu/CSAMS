@@ -33,7 +33,10 @@ class AllocationQueries(graphene.ObjectType):
     #     course_allocations = CourseAllocation.objects.filter(course__in=courses)
     #     lab_allocations = LabAllocation.objects.filter(course__in=courses)
     #     return AllocationType(courses=course_allocations, labs=lab_allocations)
-            
+    
+    @login_required
+    @resolve_user
+    @staff_privilege_required
     def resolve_allocation_management(self, info, identifier:IdentifierInput = None):
         if identifier is None:
             identifier = Config.objects.first().current_preference_sem

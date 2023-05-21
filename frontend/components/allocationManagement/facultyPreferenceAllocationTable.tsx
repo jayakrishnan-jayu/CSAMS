@@ -6,6 +6,7 @@ import { ProgressBar } from 'primereact/progressbar';
 import { Dropdown } from 'primereact/dropdown';
 import AllocationTable from './allocationTable';
 import PreferenceTable from '../preferenceTable';
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
 
 
 
@@ -41,6 +42,13 @@ export type AllocationCoursePreferenceType = AllocationPreferenceType & Allocati
 const FacultyPreferenceAllocationTable = ({faculties, preferences, courseAllocations, labAllocations, courses, loading}: FacultyPreferenceAllocationTableProps) => {
     const [expandedRows, setExpandedRows] = useState(null);
 
+    const filters = {
+        facultyName: {operator: FilterOperator.OR,  constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        email: {operator: FilterOperator.OR,  constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        designation: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+        track: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
+    }
+    
     let tableData : PreferenceAllocationTableData[] = [];
     if (faculties) {
         tableData = faculties.map(f => {
@@ -163,6 +171,7 @@ const FacultyPreferenceAllocationTable = ({faculties, preferences, courseAllocat
             onRowToggle={(b) =>  setExpandedRows(b.data)}
             rowExpansionTemplate={rowExpansionTemplate}
             loading={loading}
+            filters={filters}
             rowsPerPageOptions={[5, 10, 25]}
             className="datatable-responsive"
             
@@ -171,8 +180,8 @@ const FacultyPreferenceAllocationTable = ({faculties, preferences, courseAllocat
             responsiveLayout="scroll"
         >
             <Column expander style={{ width: '3em' }} />
-            <Column field="facultyName" header="Name" style={{ minWidth: '2rem' }} />
-            <Column field="email" header="Email" style={{ minWidth: '2rem' }} />
+            <Column field="facultyName" filter filterPlaceholder="Search by name" header="Name" style={{ minWidth: '2rem' }} />
+            <Column field="email" filter filterPlaceholder="Search by email" header="Email" style={{ minWidth: '2rem' }} />
             <Column field="designation" header="Designation" sortable filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '15rem' }} body={designationBodyTemplate} filter filterElement={designationFilterTemplate} />
             <Column field="track" header="Track" sortable filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '6rem' }} body={trackBodyTemplate} filter filterElement={trackFilterTemplate} />
             <Column field="workload" header="Min/Cur/Max working Hours" sortable style={{ minWidth: '12rem' }} body={activityBodyTemplate} />

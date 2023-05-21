@@ -93,9 +93,9 @@ class UpdateBatchCurriculumExtraCourse(graphene.Mutation):
         add = graphene.Boolean(required=True)
     response = graphene.Field(UpdateBatchCurriculumExtraCourseResponse)
 
-    # @login_required
-    # @resolve_user
-    # @staff_privilege_required
+    @login_required
+    @resolve_user
+    @staff_privilege_required
     def mutate(self, info, batch_id: graphene.ID, extra_course_type: str, add: bool):
         try:
             b = Batch.objects.get(id=batch_id)

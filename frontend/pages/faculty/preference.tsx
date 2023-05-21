@@ -17,6 +17,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { FilterMatchMode, FilterOperator } from "primereact/api";
 import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import PreferenceTable from "@/components/preferenceTable";
+import Deadline from "@/components/deadline";
 
 const FacultyPreference = () => {
   
@@ -192,9 +193,21 @@ const FacultyPreference = () => {
     return <PreferenceTable courseID={Number(data?.id)}/>
 };
 
+  const metaDataStartTimeStamp = metaData.metadata.config.currentPreferenceSem.startTimestamp !== null ? new Date(metaData.metadata.config.currentPreferenceSem.startTimestamp) : null;
+  const metaDataEndTimeStamp = metaData.metadata.config.currentPreferenceSem.endTimestamp !== null ? new Date(metaData.metadata.config.currentPreferenceSem.endTimestamp) : null;
+
+
   return (
     <div className="">
       <div className="card">
+        {
+          metaData.metadata.config.currentPreferenceSem.areCoursesVerified ?
+          <>
+            {(metaDataStartTimeStamp === null || metaDataStartTimeStamp === null) && <h5>Deadline has not been set</h5>}
+            {metaDataStartTimeStamp !== null && metaDataStartTimeStamp !== null && <Deadline startTimestamp={metaDataStartTimeStamp} endTimestamp={metaDataEndTimeStamp}/>}
+          </>
+          : <div>Courses are not released yet!</div>
+        }
         <Toast ref={toast} />
         <DataTable
           ref={dt}

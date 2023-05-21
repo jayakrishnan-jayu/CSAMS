@@ -2,7 +2,7 @@ import graphene
 from user.graphql import UserQueries, UserMutation
 from course.graphql import CourseQuery, CourseMutation
 from preference.graphql import PreferenceQueries, PreferenceMutation
-from allocation.graphql import AllocationQuery
+from allocation.graphql import AllocationQuery, AllocationMutation
 
 class Query(
     UserQueries,
@@ -17,6 +17,7 @@ class Mutation(
     UserMutation,
     CourseMutation,
     PreferenceMutation,
+    AllocationMutation,
     graphene.ObjectType
 ):
     pass

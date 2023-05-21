@@ -137,7 +137,6 @@ const VerifyBatch = () => {
     };
 
     const onDeadlineSave = async () => {
-        console.log(startDateTime, endDateTime)
         if (startDateTime === undefined || startDateTime === null) {
             toast.current.show({ severity: 'error', summary: 'Invalid Timestamp', detail: "Start timestamp is required!", life:3000 });
             return;
@@ -217,6 +216,7 @@ const VerifyBatch = () => {
                         onClick={onDeadlineSave}
                     />
                 </div>
+                {(metaDataStartTimeStamp === null || metaDataStartTimeStamp === null) && <h5>Deadline has not been set</h5>}
                 {metaDataStartTimeStamp !== null && metaDataStartTimeStamp !== null && <Deadline startTimestamp={metaDataStartTimeStamp} endTimestamp={metaDataEndTimeStamp}/>}
                 
             </>
@@ -227,7 +227,7 @@ const VerifyBatch = () => {
         }
 
         if (activeBatchesCount === 0) {
-            return <h5>No active batches</h5>
+            return <h5>No active</h5>
         }
         
         return (

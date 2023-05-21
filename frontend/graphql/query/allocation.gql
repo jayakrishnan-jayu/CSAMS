@@ -11,10 +11,12 @@ query allocationManagement($IDENTIFIER: IdentifierInput){
         labId
       }
       courseAllocations{
+        id
         courseId
         facultyId
       }
       labAllocations{
+        id
         courseId
         facultyId
         isInCharge

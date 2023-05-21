@@ -1,0 +1,107 @@
+mutation addCourseAllocation($FACULTY_ID: ID!, $COURSE_ID: ID!){
+  addCourseAllocation(facultyID: $FACULTY_ID, courseID: $COURSE_ID) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}
+
+mutation addLabAllocation($FACULTY_ID: ID!, $COURSE_ID: ID! $IS_IN_CHARGE: Boolean!){
+  addLabAllocation(facultyID: $FACULTY_ID, courseID: $COURSE_ID, isInCharge: $IS_IN_CHARGE) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}
+
+mutation updateCourseAllocation($ALLOCATION_ID: ID!, $NEW_FACULTY_ID: ID!, $OLD_FACULTY_ID: ID!){
+  updateCourseAllocation(allocationID: $ALLOCATION_ID, newFacultyID:$NEW_FACULTY_ID , oldFacultyID: $OLD_FACULTY_ID) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}
+
+mutation updateLabAllocation($ALLOCATION_ID: ID!, $NEW_FACULTY_ID: ID!, $OLD_FACULTY_ID: ID!){
+  updateLabAllocation(allocationID: $ALLOCATION_ID, newFacultyID:$NEW_FACULTY_ID , oldFacultyID: $OLD_FACULTY_ID) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}
+
+mutation deleteCourseAllocation($ALLOCATION_ID: ID!, $COURSE_ID: ID!){
+  deleteCourseAllocation(allocationID: $ALLOCATION_ID, courseID: $COURSE_ID) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}
+
+mutation deleteLabAllocation($ALLOCATION_ID: ID!, $COURSE_ID: ID!){
+  deleteLabAllocation(allocationID: $ALLOCATION_ID, courseID: $COURSE_ID) {
+    response{
+      courses{
+        id
+        courseId
+      	facultyId
+      }
+      labs{
+        id
+        courseId
+      	facultyId
+        isInCharge
+      }
+    }
+  }
+}

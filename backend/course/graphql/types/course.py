@@ -287,7 +287,10 @@ class ActiveBatchType(graphene.ObjectType):
     def resolve_is_complete(self, info):
         if not isinstance(self, Batch):
             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-        return len(self.extras) == self.selected_extra_courses.count()
+        count = 0
+        for e in self.extras:
+            count += e.count
+        return count == self.selected_extra_courses.count()
     
 
     

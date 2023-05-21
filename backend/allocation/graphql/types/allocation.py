@@ -11,13 +11,19 @@ from preference.models import Identifier
 from backend.api import APIException
 
 class CourseAllocationType(graphene.ObjectType):
+    id = graphene.ID()
     course_id = graphene.ID()
     faculty_id = graphene.ID()
 
 class LabAllocationType(graphene.ObjectType):
+    id = graphene.ID()
     course_id = graphene.ID()
     faculty_id = graphene.ID()
     is_in_charge = graphene.Boolean()
+
+class AllocationsType(graphene.ObjectType):
+    courses = graphene.List(CourseAllocationType)
+    labs = graphene.List(LabAllocationType)
 
 class AllocationCourseLabType(graphene.ObjectType):
     course_id = graphene.ID()

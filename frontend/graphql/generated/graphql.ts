@@ -38,6 +38,16 @@ export type AddBatchExtraCourseResponse = {
   extraCourse?: Maybe<ExtraCourseType>;
 };
 
+export type AddCourseAllocation = {
+  __typename?: 'AddCourseAllocation';
+  response?: Maybe<AllocationsType>;
+};
+
+export type AddLabAllocation = {
+  __typename?: 'AddLabAllocation';
+  response?: Maybe<AllocationsType>;
+};
+
 export type AddPreference = {
   __typename?: 'AddPreference';
   response?: Maybe<Scalars['Boolean']>;
@@ -82,6 +92,12 @@ export type AllocationPreferenceType = {
   weigtage?: Maybe<Scalars['Int']>;
 };
 
+export type AllocationsType = {
+  __typename?: 'AllocationsType';
+  courses?: Maybe<Array<Maybe<CourseAllocationType>>>;
+  labs?: Maybe<Array<Maybe<LabAllocationType>>>;
+};
+
 export type BatchInfoType = {
   __typename?: 'BatchInfoType';
   info?: Maybe<Array<Maybe<BatchYearSemType>>>;
@@ -120,6 +136,7 @@ export type CourseAllocationType = {
   __typename?: 'CourseAllocationType';
   courseId?: Maybe<Scalars['ID']>;
   facultyId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type CourseInput = {
@@ -214,9 +231,19 @@ export type DeleteBatchExtraCourseResponse = {
   oldExtraCourse?: Maybe<ExtraCourseType>;
 };
 
+export type DeleteCourseAllocation = {
+  __typename?: 'DeleteCourseAllocation';
+  response?: Maybe<AllocationsType>;
+};
+
 export type DeleteCurriculumUpload = {
   __typename?: 'DeleteCurriculumUpload';
   response?: Maybe<Scalars['Boolean']>;
+};
+
+export type DeleteLabAllocation = {
+  __typename?: 'DeleteLabAllocation';
+  response?: Maybe<AllocationsType>;
 };
 
 export type DeletePreference = {
@@ -280,6 +307,7 @@ export type LabAllocationType = {
   __typename?: 'LabAllocationType';
   courseId?: Maybe<Scalars['ID']>;
   facultyId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
   isInCharge?: Maybe<Scalars['Boolean']>;
 };
 
@@ -293,14 +321,20 @@ export type MetaDataType = {
 export type Mutation = {
   __typename?: 'Mutation';
   addBatchExtraCourse?: Maybe<AddBatchExtraCourse>;
+  addCourseAllocation?: Maybe<AddCourseAllocation>;
+  addLabAllocation?: Maybe<AddLabAllocation>;
   addPreference?: Maybe<AddPreference>;
   deleteBatchExtraCourse?: Maybe<DeleteBatchExtraCourse>;
+  deleteCourseAllocation?: Maybe<DeleteCourseAllocation>;
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
+  deleteLabAllocation?: Maybe<DeleteLabAllocation>;
   deletePreference?: Maybe<DeletePreference>;
   releaseCoursesForFaculty?: Maybe<ReleaseCoursesForFaculty>;
   updateBatchCurriculumExtraCourse?: Maybe<UpdateBatchCurriculumExtraCourse>;
   updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
+  updateCourseAllocation?: Maybe<UpdateCourseAllocation>;
   updateDeadline?: Maybe<UpdateDeadline>;
+  updateLabAllocation?: Maybe<UpdateLabAllocation>;
   updatePreference?: Maybe<UpdatePreference>;
   updatePreferenceCount?: Maybe<UpdatePreferenceCount>;
   updateSemIdentifier?: Maybe<UpdateSemIdentifier>;
@@ -317,6 +351,19 @@ export type MutationAddBatchExtraCourseArgs = {
 };
 
 
+export type MutationAddCourseAllocationArgs = {
+  courseID: Scalars['ID'];
+  facultyID: Scalars['ID'];
+};
+
+
+export type MutationAddLabAllocationArgs = {
+  courseID: Scalars['ID'];
+  facultyID: Scalars['ID'];
+  isInCharge: Scalars['Boolean'];
+};
+
+
 export type MutationAddPreferenceArgs = {
   courseId: Scalars['ID'];
   experience: Scalars['Int'];
@@ -330,8 +377,20 @@ export type MutationDeleteBatchExtraCourseArgs = {
 };
 
 
+export type MutationDeleteCourseAllocationArgs = {
+  allocationID: Scalars['ID'];
+  courseID: Scalars['ID'];
+};
+
+
 export type MutationDeleteCurriculumUploadArgs = {
   curriculumUploadID: Scalars['ID'];
+};
+
+
+export type MutationDeleteLabAllocationArgs = {
+  allocationID: Scalars['ID'];
+  courseID: Scalars['ID'];
 };
 
 
@@ -359,10 +418,24 @@ export type MutationUpdateBatchExtraCourseArgs = {
 };
 
 
+export type MutationUpdateCourseAllocationArgs = {
+  allocationID: Scalars['ID'];
+  newFacultyID: Scalars['ID'];
+  oldFacultyID: Scalars['ID'];
+};
+
+
 export type MutationUpdateDeadlineArgs = {
   endTimestamp: Scalars['DateTime'];
   identifier: IdentifierInput;
   startTimestamp: Scalars['DateTime'];
+};
+
+
+export type MutationUpdateLabAllocationArgs = {
+  allocationID: Scalars['ID'];
+  newFacultyID: Scalars['ID'];
+  oldFacultyID: Scalars['ID'];
 };
 
 
@@ -561,9 +634,19 @@ export type UpdateBatchExtraCourseResponse = {
   oldExtraCourse?: Maybe<ExtraCourseType>;
 };
 
+export type UpdateCourseAllocation = {
+  __typename?: 'UpdateCourseAllocation';
+  response?: Maybe<AllocationsType>;
+};
+
 export type UpdateDeadline = {
   __typename?: 'UpdateDeadline';
   response?: Maybe<Scalars['Boolean']>;
+};
+
+export type UpdateLabAllocation = {
+  __typename?: 'UpdateLabAllocation';
+  response?: Maybe<AllocationsType>;
 };
 
 export type UpdatePreference = {
@@ -619,6 +702,57 @@ export type WorkloadType = {
   minHoursPerWeek?: Maybe<Scalars['Int']>;
   track?: Maybe<Scalars['String']>;
 };
+
+export type AddCourseAllocationMutationVariables = Exact<{
+  FACULTY_ID: Scalars['ID'];
+  COURSE_ID: Scalars['ID'];
+}>;
+
+
+export type AddCourseAllocationMutation = { __typename?: 'Mutation', addCourseAllocation?: { __typename?: 'AddCourseAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
+
+export type AddLabAllocationMutationVariables = Exact<{
+  FACULTY_ID: Scalars['ID'];
+  COURSE_ID: Scalars['ID'];
+  IS_IN_CHARGE: Scalars['Boolean'];
+}>;
+
+
+export type AddLabAllocationMutation = { __typename?: 'Mutation', addLabAllocation?: { __typename?: 'AddLabAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
+
+export type UpdateCourseAllocationMutationVariables = Exact<{
+  ALLOCATION_ID: Scalars['ID'];
+  NEW_FACULTY_ID: Scalars['ID'];
+  OLD_FACULTY_ID: Scalars['ID'];
+}>;
+
+
+export type UpdateCourseAllocationMutation = { __typename?: 'Mutation', updateCourseAllocation?: { __typename?: 'UpdateCourseAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
+
+export type UpdateLabAllocationMutationVariables = Exact<{
+  ALLOCATION_ID: Scalars['ID'];
+  NEW_FACULTY_ID: Scalars['ID'];
+  OLD_FACULTY_ID: Scalars['ID'];
+}>;
+
+
+export type UpdateLabAllocationMutation = { __typename?: 'Mutation', updateLabAllocation?: { __typename?: 'UpdateLabAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
+
+export type DeleteCourseAllocationMutationVariables = Exact<{
+  ALLOCATION_ID: Scalars['ID'];
+  COURSE_ID: Scalars['ID'];
+}>;
+
+
+export type DeleteCourseAllocationMutation = { __typename?: 'Mutation', deleteCourseAllocation?: { __typename?: 'DeleteCourseAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
+
+export type DeleteLabAllocationMutationVariables = Exact<{
+  ALLOCATION_ID: Scalars['ID'];
+  COURSE_ID: Scalars['ID'];
+}>;
+
+
+export type DeleteLabAllocationMutation = { __typename?: 'Mutation', deleteLabAllocation?: { __typename?: 'DeleteLabAllocation', response?: { __typename?: 'AllocationsType', courses?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labs?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null } | null };
 
 export type UpdatePreferenceCountMutationVariables = Exact<{
   COUNT: Scalars['Int'];
@@ -754,7 +888,7 @@ export type AllocationManagementQueryVariables = Exact<{
 }>;
 
 
-export type AllocationManagementQuery = { __typename?: 'Query', allocationManagement?: { __typename?: 'AllocationManagementType', bestPreferences?: Array<string | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseLabs?: Array<{ __typename?: 'AllocationCourseLabType', courseId?: string | null, labId?: string | null } | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null, preferences?: Array<{ __typename?: 'AllocationPreferenceType', id?: string | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, score?: number | null } | null> | null, faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null } | null> | null } | null };
+export type AllocationManagementQuery = { __typename?: 'Query', allocationManagement?: { __typename?: 'AllocationManagementType', bestPreferences?: Array<string | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseLabs?: Array<{ __typename?: 'AllocationCourseLabType', courseId?: string | null, labId?: string | null } | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null, preferences?: Array<{ __typename?: 'AllocationPreferenceType', id?: string | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, score?: number | null } | null> | null, faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null } | null> | null } | null };
 
 export type BatchQueryVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -959,6 +1093,38 @@ export default {
             "type": {
               "kind": "OBJECT",
               "name": "ExtraCourseType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AddCourseAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AddLabAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
               "ofType": null
             },
             "args": []
@@ -1229,6 +1395,37 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "AllocationsType",
+        "fields": [
+          {
+            "name": "courses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseAllocationType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "labs",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "LabAllocationType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "BatchInfoType",
         "fields": [
           {
@@ -1408,6 +1605,14 @@ export default {
           },
           {
             "name": "facultyId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -1800,6 +2005,22 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "DeleteCourseAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "DeleteCurriculumUpload",
         "fields": [
           {
@@ -1807,6 +2028,22 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "DeleteLabAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
+              "ofType": null
             },
             "args": []
           }
@@ -2047,6 +2284,14 @@ export default {
             "args": []
           },
           {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
             "name": "isInCharge",
             "type": {
               "kind": "SCALAR",
@@ -2115,6 +2360,76 @@ export default {
               },
               {
                 "name": "extraCourseId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "addCourseAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AddCourseAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "courseID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "facultyID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "addLabAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AddLabAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "courseID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "facultyID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "isInCharge",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -2196,6 +2511,36 @@ export default {
             ]
           },
           {
+            "name": "deleteCourseAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteCourseAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "allocationID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "courseID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "deleteCurriculumUpload",
             "type": {
               "kind": "OBJECT",
@@ -2205,6 +2550,36 @@ export default {
             "args": [
               {
                 "name": "curriculumUploadID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteLabAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "DeleteLabAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "allocationID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "courseID",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -2336,6 +2711,46 @@ export default {
             ]
           },
           {
+            "name": "updateCourseAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateCourseAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "allocationID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "newFacultyID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "oldFacultyID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateDeadline",
             "type": {
               "kind": "OBJECT",
@@ -2365,6 +2780,46 @@ export default {
               },
               {
                 "name": "startTimestamp",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateLabAllocation",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UpdateLabAllocation",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "allocationID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "newFacultyID",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "oldFacultyID",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -3230,6 +3685,22 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UpdateCourseAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpdateDeadline",
         "fields": [
           {
@@ -3237,6 +3708,22 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "UpdateLabAllocation",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "AllocationsType",
+              "ofType": null
             },
             "args": []
           }
@@ -3462,6 +3949,156 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
+export const AddCourseAllocationDocument = gql`
+    mutation addCourseAllocation($FACULTY_ID: ID!, $COURSE_ID: ID!) {
+  addCourseAllocation(facultyID: $FACULTY_ID, courseID: $COURSE_ID) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useAddCourseAllocationMutation() {
+  return Urql.useMutation<AddCourseAllocationMutation, AddCourseAllocationMutationVariables>(AddCourseAllocationDocument);
+};
+export const AddLabAllocationDocument = gql`
+    mutation addLabAllocation($FACULTY_ID: ID!, $COURSE_ID: ID!, $IS_IN_CHARGE: Boolean!) {
+  addLabAllocation(
+    facultyID: $FACULTY_ID
+    courseID: $COURSE_ID
+    isInCharge: $IS_IN_CHARGE
+  ) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useAddLabAllocationMutation() {
+  return Urql.useMutation<AddLabAllocationMutation, AddLabAllocationMutationVariables>(AddLabAllocationDocument);
+};
+export const UpdateCourseAllocationDocument = gql`
+    mutation updateCourseAllocation($ALLOCATION_ID: ID!, $NEW_FACULTY_ID: ID!, $OLD_FACULTY_ID: ID!) {
+  updateCourseAllocation(
+    allocationID: $ALLOCATION_ID
+    newFacultyID: $NEW_FACULTY_ID
+    oldFacultyID: $OLD_FACULTY_ID
+  ) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useUpdateCourseAllocationMutation() {
+  return Urql.useMutation<UpdateCourseAllocationMutation, UpdateCourseAllocationMutationVariables>(UpdateCourseAllocationDocument);
+};
+export const UpdateLabAllocationDocument = gql`
+    mutation updateLabAllocation($ALLOCATION_ID: ID!, $NEW_FACULTY_ID: ID!, $OLD_FACULTY_ID: ID!) {
+  updateLabAllocation(
+    allocationID: $ALLOCATION_ID
+    newFacultyID: $NEW_FACULTY_ID
+    oldFacultyID: $OLD_FACULTY_ID
+  ) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useUpdateLabAllocationMutation() {
+  return Urql.useMutation<UpdateLabAllocationMutation, UpdateLabAllocationMutationVariables>(UpdateLabAllocationDocument);
+};
+export const DeleteCourseAllocationDocument = gql`
+    mutation deleteCourseAllocation($ALLOCATION_ID: ID!, $COURSE_ID: ID!) {
+  deleteCourseAllocation(allocationID: $ALLOCATION_ID, courseID: $COURSE_ID) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useDeleteCourseAllocationMutation() {
+  return Urql.useMutation<DeleteCourseAllocationMutation, DeleteCourseAllocationMutationVariables>(DeleteCourseAllocationDocument);
+};
+export const DeleteLabAllocationDocument = gql`
+    mutation deleteLabAllocation($ALLOCATION_ID: ID!, $COURSE_ID: ID!) {
+  deleteLabAllocation(allocationID: $ALLOCATION_ID, courseID: $COURSE_ID) {
+    response {
+      courses {
+        id
+        courseId
+        facultyId
+      }
+      labs {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useDeleteLabAllocationMutation() {
+  return Urql.useMutation<DeleteLabAllocationMutation, DeleteLabAllocationMutationVariables>(DeleteLabAllocationDocument);
+};
 export const UpdatePreferenceCountDocument = gql`
     mutation updatePreferenceCount($COUNT: Int!) {
   updatePreferenceCount(count: $COUNT) {
@@ -3716,10 +4353,12 @@ export const AllocationManagementDocument = gql`
         labId
       }
       courseAllocations {
+        id
         courseId
         facultyId
       }
       labAllocations {
+        id
         courseId
         facultyId
         isInCharge

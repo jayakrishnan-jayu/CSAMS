@@ -1,21 +1,25 @@
-import {AllocationBatchType, AllocationCourseLabType, AllocationPreferenceType, CourseAllocationType, CourseLabType, CourseType, FacultyType, LabAllocationType, PreferenceType, useAllocationManagementQuery } from '@/graphql/generated/graphql';
+import {AllocationBatchType, AllocationCourseLabType, AllocationPreferenceType, CourseAllocationType, CourseLabType, CourseType, FacultyType, LabAllocationType, PreferenceType, useAddCourseAllocationMutation, useAddLabAllocationMutation, useAllocationManagementQuery, useDeleteCourseAllocationMutation, useDeleteLabAllocationMutation, useUpdateCourseAllocationMutation, useUpdateLabAllocationMutation } from '@/graphql/generated/graphql';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { classNames } from 'primereact/utils';
 import { ProgressBar } from 'primereact/progressbar';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
-import { ToggleButton } from 'primereact/togglebutton';
 import { Button } from 'primereact/button';
 
 interface BatchAllocationPreferenceTableProps {
     batches: AllocationBatchType[] | null | undefined
+    toast: React.MutableRefObject<any>
     courses: CourseType[] | null | undefined
     preferences: AllocationPreferenceType[] | null | undefined
     faculties: FacultyType[] | null | undefined
     bestPreferences: string[] | null | undefined
+    courseAllocations: null | CourseAllocationWithCourse[]
+    labAllocations: LabAllocationWithCourse[]
+    setCourseAllocations: (courses: null | CourseAllocationWithCourse[]) => void
+    setLabAllocations: (labs: null | LabAllocationWithCourse[]) => void
     loading: boolean
 }
 
@@ -42,8 +46,8 @@ interface FacultyField {
   faculty?: FacultyType
 }
 
-type CourseAllocationWithCourse = CourseField & CourseAllocationType
-type LabAllocationWithCourse = CourseField & LabAllocationType
+export type CourseAllocationWithCourse = CourseField & CourseAllocationType
+export type LabAllocationWithCourse = CourseField & LabAllocationType
 type AllocationPreferenceFacultyType = AllocationPreferenceType & FacultyField
 
 interface AllocationFields {
@@ -64,11 +68,22 @@ interface FacultyDropDownField{
 
 type AllocationPreferenceCourseType = AllocationFields & CourseType
 
-const BatchAllocationPreferenceTable = ({batches, courses, preferences, faculties, bestPreferences, loading}: BatchAllocationPreferenceTableProps) => {
+type ModeType =  null | 'addLabAllocation' | 'addCourseAllocation' | 'updateLabAllocation' | 'updateCourseAllocation' | 'deleteLabAllocation' | 'deleteCourseAllocation'
+type AllocationType = 'Course' | 'Lab'
+type DutyType = 'Incharge' | 'Assistant'
+
+
+const BatchAllocationPreferenceTable = ({batches, courses, preferences, faculties, bestPreferences, loading, toast, courseAllocations, labAllocations, setCourseAllocations, setLabAllocations}: BatchAllocationPreferenceTableProps) => {
   const [expandedRows, setExpandedRows] = useState(null);
   const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
-  const [courseAllocations, setCourseAllocations] = useState<null | CourseAllocationWithCourse[]>(null);
-  const [labAllocations, setLabAllocations] = useState<null | LabAllocationWithCourse[]>(null);
+  const [mode, setMode] = useState<ModeType>(null);
+  const [addCourseAllocation, addCourseAllocationMutation] = useAddCourseAllocationMutation();
+  const [addLabAllocation, addLabAllocationMutation] = useAddLabAllocationMutation();
+  const [updateCourseAllocation, updateCourseAllocationMutation] = useUpdateCourseAllocationMutation();
+  const [updateLabAllocation, updateLabAllocationMutation] = useUpdateLabAllocationMutation();
+  const [deleteCourseAllocation, deleteCourseAllocationMutation] = useDeleteCourseAllocationMutation();
+  const [deleteLabAllocation, deleteLabAllocationMutation] = useDeleteLabAllocationMutation();
+
   let facultyDropdownvalues: FacultyDropDownField[] = [];
 
   const getCourse = (id: string): CourseType | null => {
@@ -84,35 +99,148 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
   }
 
 
-  const retriveCourseAllocations = (): CourseAllocationWithCourse[] => {
-    return batches?.flatMap(batch => 
-      batch.courseAllocations.flatMap(ca => {
-          return {...ca, course: getCourse(ca?.courseId)};
-        })
-      );
+  if (mode === 'addCourseAllocation'){
+    if (addCourseAllocation?.data?.addCourseAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Course Allocation Added', life: 3000 });
+      setCourseAllocations(addCourseAllocation?.data?.addCourseAllocation?.response?.courses);
+      setLabAllocations(addCourseAllocation?.data?.addCourseAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (addCourseAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error allocating faculty to course', detail: addCourseAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
+  }
+  if (mode === 'addLabAllocation'){
+    if (addLabAllocation?.data?.addLabAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Lab Allocation Added', life: 3000 });
+      setCourseAllocations(addLabAllocation?.data?.addLabAllocation?.response?.courses);
+      setLabAllocations(addLabAllocation?.data?.addLabAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (addLabAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error allocating faculty to lab', detail: addLabAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
   }
 
-  const retriveLabAllocations = (): LabAllocationWithCourse[] => {
-    return batches?.flatMap(batch => 
-      batch.labAllocations.flatMap(la => {
-          return {...la, course: getCourse(la?.courseId)};
-        })
-      );
+  if (mode === 'updateCourseAllocation'){
+    if (updateCourseAllocation?.data?.updateCourseAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Course Allocation Updated', life: 3000 });
+      setCourseAllocations(updateCourseAllocation?.data?.updateCourseAllocation?.response?.courses);
+      setLabAllocations(updateCourseAllocation?.data?.updateCourseAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (updateCourseAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error updating course allocation', detail: updateCourseAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
   }
 
-
-  if ((courseAllocations === null || courseAllocations === undefined) && (courses !== null || courses !== undefined)) {
-    const data = retriveCourseAllocations();
-    if (data !== undefined && data !== null) setCourseAllocations(data);
+  if (mode === 'updateLabAllocation'){
+    if (updateLabAllocation?.data?.updateLabAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Lab Allocation Updated', life: 3000 });
+      setCourseAllocations(updateLabAllocation?.data?.updateLabAllocation?.response?.courses);
+      setLabAllocations(updateLabAllocation?.data?.updateLabAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (updateLabAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error updating lab allocation', detail: updateLabAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
   }
-  if ((labAllocations === null || labAllocations === undefined) &&  (courses !== null || courses !== undefined)) {
-    const data = retriveLabAllocations();
-    if (data !== undefined && data !== null) setLabAllocations(retriveLabAllocations());
+
+  if (mode === 'deleteCourseAllocation'){
+    if (deleteCourseAllocation?.data?.deleteCourseAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Course Allocation deleted', life: 3000 });
+      setCourseAllocations(deleteCourseAllocation?.data?.deleteCourseAllocation?.response?.courses);
+      setLabAllocations(deleteCourseAllocation?.data?.deleteCourseAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (deleteCourseAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error deleting course allocation', detail: deleteCourseAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
+  }
+
+  if (mode === 'deleteLabAllocation'){
+    if (deleteLabAllocation?.data?.deleteLabAllocation?.response) {
+      toast.current.show({ severity: 'success', summary: 'Lab Allocation deleted', life: 3000 });
+      setCourseAllocations(deleteLabAllocation?.data?.deleteLabAllocation?.response?.courses);
+      setLabAllocations(deleteLabAllocation?.data?.deleteLabAllocation?.response?.labs);
+      setMode(null);
+    }
+    if (deleteLabAllocation?.error?.message){
+      toast.current.show({ severity: 'error', summary: 'Error deleting lab allocation', detail: deleteLabAllocation.error.message, life: 3000 });
+      setMode(null);
+    }
+  }
+  
+
+  const onCourseAllocate = async (facultyID: string, courseID: string) =>  {
+    setMode('addCourseAllocation');
+    await addCourseAllocationMutation({COURSE_ID: courseID, FACULTY_ID: facultyID})
+  }
+
+  const onLabAllocate = async (facultyID: string, courseID: string, isInCharge: boolean) =>  {
+    setMode('addLabAllocation');
+    await addLabAllocationMutation({COURSE_ID: courseID, FACULTY_ID: facultyID, IS_IN_CHARGE: isInCharge})
+  }
+
+  const onCourseAllocationUpdate = async (allocationID: string, newFacultyID: string, oldFacultyID: string) =>  {
+    setMode('updateCourseAllocation');
+    await updateCourseAllocationMutation({ALLOCATION_ID: allocationID, NEW_FACULTY_ID: newFacultyID, OLD_FACULTY_ID: oldFacultyID })
+  }
+
+  const onLabAllocationUpdate = async (allocationID: string, newFacultyID: string, oldFacultyID: string) =>  {
+    setMode('updateLabAllocation');
+    await updateLabAllocationMutation({ALLOCATION_ID: allocationID, NEW_FACULTY_ID: newFacultyID, OLD_FACULTY_ID: oldFacultyID })
+  }
+
+  const onCourseAllocationDelete = async (allocationID: string, courseID: string) =>  {
+    setMode('deleteCourseAllocation');
+    await deleteCourseAllocationMutation({ALLOCATION_ID: allocationID, COURSE_ID: courseID })
+  }
+
+  const onLabAllocationDelete = async (allocationID: string, courseID: string) =>  {
+    setMode('deleteLabAllocation');
+    await deleteLabAllocationMutation({ALLOCATION_ID: allocationID, COURSE_ID: courseID })
+  }
+
+  const onFacultyAllocationChange = async (value:FacultyDropDownField, courseID: string, type: AllocationType, duty: DutyType,  create: boolean = false) => {
+    const newFacultyID = value?.id;
+    if (type === 'Course') {
+      const ca =  courseAllocations.find(ca=>ca.courseId===courseID)
+      if (value.id === "-1") {
+        await onCourseAllocationDelete(ca?.id, ca?.courseId)
+        return
+      }
+      if (ca?.id) {
+        await onCourseAllocationUpdate(ca?.id, newFacultyID, ca?.facultyId)
+        return
+      }
+      await onCourseAllocate(newFacultyID, courseID)
+      return
+    }
+    if (type === 'Lab') {
+      const la = labAllocations.find(la=>la?.courseId === courseID && la?.isInCharge === (duty === 'Incharge'))
+      if (value.id === "-1") {
+        await onLabAllocationDelete(la?.id, la?.courseId)
+        return
+      }
+      if (la?.id && !create) {
+        await onLabAllocationUpdate(la?.id, newFacultyID, la?.facultyId);
+        return
+      }
+      await onLabAllocate(newFacultyID, courseID, duty === 'Incharge')
+      return
+    }
   }
 
   if (facultyDropdownvalues.length === 0 && faculties !== null && faculties !== undefined) {
     facultyDropdownvalues = [{id: "-1", name: "None"}].concat(faculties.map(f=> {return {id: f?.id, name: f?.user?.firstName + " " + f?.user?.lastName + " - " + f?.user?.email}}))
   }
+
 
   const getFacultyDropdownValue = (id: string) : FacultyDropDownField => {
     return facultyDropdownvalues.find(f => f?.id === id)
@@ -198,7 +326,6 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
   };
   
   const rowExpansionTemplate = (data: AllocationPreferenceCourseType) => {
-    if (data?.allocationPreferences?.length === 0) return <div>No Preferences yet!</div>
     const value: CourseFacultyPreferenceTableDataType[] = data.allocationPreferences.map(p=> {return {
       experience: p?.experience,
       weightage: p?.weigtage && p.weigtage >= 1 && p.weigtage <=6 ? prefNums[p.weigtage-1] : p?.weigtage.toString(),
@@ -215,12 +342,9 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
     }})
 
     const isLab = data?.code?.charAt(data?.code?.length - 2) === '8';
-
     const ca = data?.courseAllocations;
     const la = data?.labAllocations;
     
-    
-
     const renderDropDownOption = () => {
       
       if (isLab) {
@@ -228,19 +352,39 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
         const inChargeAllocation = la.find(l=>l.isInCharge === true)
         const assistantAllocations = la.filter(l=>l.isInCharge === false)
 
-
         return (
           <div className="grid p-fluid ">
             <div className="field col-12 md:col-6 ">
             <h6>{inChargeAllocation ?  "Allocated In Charge Faculty" : "Allocate In Charge Faculty"}</h6>
-            <Dropdown className='mb-2' value={inChargeAllocation?.facultyId ? getFacultyDropdownValue(inChargeAllocation?.facultyId) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+            <Dropdown 
+              className='mb-2' 
+              value={inChargeAllocation?.facultyId ? getFacultyDropdownValue(inChargeAllocation?.facultyId) : facultyDropdownvalues[0]}
+              onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Incharge')}  
+              options={facultyDropdownvalues} 
+              optionLabel="name" 
+              filter
+            />
             {
             assistantAllocations.map(a=>
-              <Dropdown className='mb-2' value={a?.facultyId ? getFacultyDropdownValue(a?.facultyId) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+              <Dropdown 
+                className='mb-2' 
+                value={a?.facultyId ? getFacultyDropdownValue(a?.facultyId) : facultyDropdownvalues[0]}
+                onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Assistant')}
+                options={facultyDropdownvalues} 
+                optionLabel="name" 
+                filter
+              />
               )
             }
 
-            <Dropdown className='mb-2' value={facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+            <Dropdown 
+              className='mb-2' 
+              value={facultyDropdownvalues[0]}
+              onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Assistant', true)}  
+              options={facultyDropdownvalues} 
+              optionLabel="name" 
+              filter
+            />
           </div>
           
           <div className="field col-12 md:col-3 ">
@@ -265,13 +409,19 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
           <div className="grid p-fluid">
             <div className="field col-12 md:col-6 ">
               <h6>{facultyID ?  "Allocated Faculty" : "Allocate Faculty"}</h6>
-              <Dropdown className='mb-2' value={facultyID ? getFacultyDropdownValue(facultyID) : facultyDropdownvalues[0]}  options={facultyDropdownvalues} optionLabel="name" filter/>
+              <Dropdown 
+                  className='mb-2' 
+                  value={facultyID ? getFacultyDropdownValue(facultyID) : facultyDropdownvalues[0]} 
+                  onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Course', 'Incharge')}  
+                  options={facultyDropdownvalues} 
+                  optionLabel="name" 
+                  filter
+                />
             </div>
           </div>
         );
     }
   }
-    console.log(data?.courseAllocations)
     return (
       <div className="orders-subtable">
         {/* {renderLabAllocations()} */}
