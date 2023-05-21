@@ -3,6 +3,8 @@ from django.forms import ValidationError
 import graphene
 from django.db import transaction
 
+from preference.models import Config
+
 from .type import CurriculumUploadInput, SemesterInput, CourseInput, ExtraInput, CourseLabMapInput
 from ..types.course import AddBatchExtraCourseResponse, UpdateBatchExtraCourseResponse, DeleteBatchExtraCourseResponse, UpdateBatchCurriculumExtraCourseResponse
 from course.graphql.types.course import CurriculumUploadType
@@ -10,7 +12,7 @@ from backend.api.decorator import login_required, resolve_user, staff_privilege_
 from backend.api import APIException
 from course.models import CurriculumUpload, Program, Curriculum, Batch, Course, CurriculumExtras, ExtraCourse, CourseLab, BatchCurriculumExtra
 from typing import List
-
+from django.db.models import F
 
 class AddBatchExtraCourse(graphene.Mutation):
     class Arguments:
@@ -31,7 +33,9 @@ class AddBatchExtraCourse(graphene.Mutation):
         except ExtraCourse.DoesNotExist:
             raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
         b.add_selected_extra_course(ec)
-        return AddBatchExtraCourse(response=AddBatchExtraCourseResponse(extra_course=ec))
+        config = Config.objects.first()
+        qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
+        return AddBatchExtraCourse(response=AddBatchExtraCourseResponse(extra_course=ec, active_batches=qs))
 
 
 class UpdateBatchExtraCourse(graphene.Mutation):
@@ -60,8 +64,9 @@ class UpdateBatchExtraCourse(graphene.Mutation):
         with transaction.atomic():
             b.remove_selected_extra_course(ec_old)
             b.add_selected_extra_course(ec_new)
-        
-        return UpdateBatchExtraCourse(response=UpdateBatchExtraCourseResponse(old_extra_course=ec_old, new_extra_course=ec_new))
+        config = Config.objects.first()
+        qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
+        return UpdateBatchExtraCourse(response=UpdateBatchExtraCourseResponse(old_extra_course=ec_old, new_extra_course=ec_new, active_batches=qs))
 
 class DeleteBatchExtraCourse(graphene.Mutation):
     class Arguments:
@@ -83,7 +88,9 @@ class DeleteBatchExtraCourse(graphene.Mutation):
         except ExtraCourse.DoesNotExist:
             raise APIException(message="Extra Course not found", code="INVALID_EXTRA_COURSE_ID")
         b.remove_selected_extra_course(ec_old)
-        return DeleteBatchExtraCourse(response=DeleteBatchExtraCourseResponse(old_extra_course=ec_old))
+        config = Config.objects.first()
+        qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
+        return DeleteBatchExtraCourse(response=DeleteBatchExtraCourseResponse(old_extra_course=ec_old, active_batches=qs))
 
 
 class UpdateBatchCurriculumExtraCourse(graphene.Mutation):
@@ -131,7 +138,7 @@ class VerifyCurriculumUpload(graphene.Mutation):
     class Arguments:
         curriculumUploadID = graphene.ID(required=True)
 
-    response = graphene.Field(graphene.Boolean())
+    response = graphene.List(CurriculumUploadType)
 
     @login_required
     @resolve_user
@@ -189,13 +196,13 @@ class VerifyCurriculumUpload(graphene.Mutation):
 
         except Exception as e:
             raise APIException(message=e)
-        return VerifyCurriculumUpload(response=True)
+        return VerifyCurriculumUpload(response=CurriculumUpload.objects.all())
 
 
 class DeleteCurriculumUpload(graphene.Mutation):
     class Arguments:
         curriculumUploadID = graphene.ID(required=True)
-    response = graphene.Field(graphene.Boolean())
+    response = graphene.List(CurriculumUploadType)
 
     @login_required
     @resolve_user
@@ -208,7 +215,7 @@ class DeleteCurriculumUpload(graphene.Mutation):
         if c.is_populated:
             raise APIException(message="Curriculum is already populated, cannot delete verified curriculum")
         c.delete()
-        return DeleteCurriculumUpload(response=True)
+        return VerifyCurriculumUpload(response=CurriculumUpload.objects.all())
     
 class UploadCurriculum(graphene.Mutation):
     class Arguments:

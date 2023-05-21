@@ -221,45 +221,6 @@ class CourseLabType(graphene.ObjectType):
 class UpdateBatchCurriculumExtraCourseResponse(graphene.ObjectType):
     semester_extra_courses = graphene.List(graphene.String)
 
-
-class AddBatchExtraCourseResponse(graphene.ObjectType):
-    extra_course = graphene.Field(ExtraCourseType)
-
-class UpdateBatchExtraCourseResponse(graphene.ObjectType):
-    old_extra_course = graphene.Field(ExtraCourseType)
-    new_extra_course = graphene.Field(ExtraCourseType)
-
-class DeleteBatchExtraCourseResponse(graphene.ObjectType):
-    old_extra_course = graphene.Field(ExtraCourseType)
-
-# class BatchManagementStatusType(graphene.ObjectType):
-#     selected_courses = graphene.List(graphene.List)
-#     is_complete = graphene.Boolean(description="Specifies whether the batch has been assigned the extra courses, if any")
-#     is_current_batch = graphene.Boolean(description="Specifies whether the batch is currently in progress depeneding on the year and odd/even sem specified")
-#     extra_course_left_to_assign = graphene.Int(description="Specifies the number of courses left to be assigned ie Electives")
-
-# class BatchManagementInfoType(graphene.ObjectType):
-#     sem = graphene.Int()
-#     status = graphene.Field(BatchManagementStatusType)
-    
-
-#     def resolve_status(self, info):
-#         if not isinstance(self, Batch):
-#             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
-#         selected_courses = self.selected_extra_courses.all() # ExtraCourse (stores the elective/optionals course details from curriculum data)
-#         batch_curriculum_extras = self.extras # BatchCurriculumExtra (stores the CurriculumExtra and it's count), specifies what all extra electives are available to batch
-#         selected_courses_count = len(selected_courses)
-#         batch_extra_courses_count = 0
-#         for bce in batch_curriculum_extras:
-#             batch_extra_courses_count += bce.count
-
-#         courses_left = batch_extra_courses_count - selected_courses_count
-
-#         self.is_complete = courses_left == 0
-#         self.is_current_batch = False
-#         self.extra_course_left_to_assign = courses_left
-#         return self
-
 class ActiveBatchType(graphene.ObjectType):
     id = graphene.ID()
     program = graphene.String()
@@ -291,6 +252,47 @@ class ActiveBatchType(graphene.ObjectType):
         for e in self.extras:
             count += e.count
         return count == self.selected_extra_courses.count()
+
+class AddBatchExtraCourseResponse(graphene.ObjectType):
+    extra_course = graphene.Field(ExtraCourseType)
+    active_batches = graphene.List(ActiveBatchType)
+
+class UpdateBatchExtraCourseResponse(graphene.ObjectType):
+    old_extra_course = graphene.Field(ExtraCourseType)
+    new_extra_course = graphene.Field(ExtraCourseType)
+    active_batches = graphene.List(ActiveBatchType)
+
+class DeleteBatchExtraCourseResponse(graphene.ObjectType):
+    old_extra_course = graphene.Field(ExtraCourseType)
+    active_batches = graphene.List(ActiveBatchType)
+
+# class BatchManagementStatusType(graphene.ObjectType):
+#     selected_courses = graphene.List(graphene.List)
+#     is_complete = graphene.Boolean(description="Specifies whether the batch has been assigned the extra courses, if any")
+#     is_current_batch = graphene.Boolean(description="Specifies whether the batch is currently in progress depeneding on the year and odd/even sem specified")
+#     extra_course_left_to_assign = graphene.Int(description="Specifies the number of courses left to be assigned ie Electives")
+
+# class BatchManagementInfoType(graphene.ObjectType):
+#     sem = graphene.Int()
+#     status = graphene.Field(BatchManagementStatusType)
+    
+
+#     def resolve_status(self, info):
+#         if not isinstance(self, Batch):
+#             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
+#         selected_courses = self.selected_extra_courses.all() # ExtraCourse (stores the elective/optionals course details from curriculum data)
+#         batch_curriculum_extras = self.extras # BatchCurriculumExtra (stores the CurriculumExtra and it's count), specifies what all extra electives are available to batch
+#         selected_courses_count = len(selected_courses)
+#         batch_extra_courses_count = 0
+#         for bce in batch_curriculum_extras:
+#             batch_extra_courses_count += bce.count
+
+#         courses_left = batch_extra_courses_count - selected_courses_count
+
+#         self.is_complete = courses_left == 0
+#         self.is_current_batch = False
+#         self.extra_course_left_to_assign = courses_left
+#         return self
     
 
     
@@ -302,7 +304,6 @@ class BatchManagementType(graphene.ObjectType):
     def resolve_active_batches(self, info):
         config = Config.objects.first()
         qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
-
         return qs
 
 #     program_name = graphene.String()

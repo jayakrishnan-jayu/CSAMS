@@ -35,6 +35,7 @@ export type AddBatchExtraCourse = {
 
 export type AddBatchExtraCourseResponse = {
   __typename?: 'AddBatchExtraCourseResponse';
+  activeBatches?: Maybe<Array<Maybe<ActiveBatchType>>>;
   extraCourse?: Maybe<ExtraCourseType>;
 };
 
@@ -228,6 +229,7 @@ export type DeleteBatchExtraCourse = {
 
 export type DeleteBatchExtraCourseResponse = {
   __typename?: 'DeleteBatchExtraCourseResponse';
+  activeBatches?: Maybe<Array<Maybe<ActiveBatchType>>>;
   oldExtraCourse?: Maybe<ExtraCourseType>;
 };
 
@@ -238,7 +240,7 @@ export type DeleteCourseAllocation = {
 
 export type DeleteCurriculumUpload = {
   __typename?: 'DeleteCurriculumUpload';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<Array<Maybe<CurriculumUploadType>>>;
 };
 
 export type DeleteLabAllocation = {
@@ -630,6 +632,7 @@ export type UpdateBatchExtraCourse = {
 
 export type UpdateBatchExtraCourseResponse = {
   __typename?: 'UpdateBatchExtraCourseResponse';
+  activeBatches?: Maybe<Array<Maybe<ActiveBatchType>>>;
   newExtraCourse?: Maybe<ExtraCourseType>;
   oldExtraCourse?: Maybe<ExtraCourseType>;
 };
@@ -692,7 +695,7 @@ export type UserType = {
 
 export type VerifyCurriculumUpload = {
   __typename?: 'VerifyCurriculumUpload';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<Array<Maybe<CurriculumUploadType>>>;
 };
 
 export type WorkloadType = {
@@ -798,7 +801,7 @@ export type AddBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type AddBatchExtraCourseMutation = { __typename?: 'Mutation', addBatchExtraCourse?: { __typename?: 'AddBatchExtraCourse', response?: { __typename?: 'AddBatchExtraCourseResponse', extraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null } | null } | null } | null };
+export type AddBatchExtraCourseMutation = { __typename?: 'Mutation', addBatchExtraCourse?: { __typename?: 'AddBatchExtraCourse', response?: { __typename?: 'AddBatchExtraCourseResponse', extraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null } | null, activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null } | null };
 
 export type UpdateBatchExtraCourseMutationVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -807,7 +810,7 @@ export type UpdateBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: { __typename?: 'UpdateBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null, newExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null } | null } | null };
+export type UpdateBatchExtraCourseMutation = { __typename?: 'Mutation', updateBatchExtraCourse?: { __typename?: 'UpdateBatchExtraCourse', response?: { __typename?: 'UpdateBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null, newExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null, activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null } | null };
 
 export type DeleteBatchExtraCourseMutationVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -815,7 +818,7 @@ export type DeleteBatchExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type DeleteBatchExtraCourseMutation = { __typename?: 'Mutation', deleteBatchExtraCourse?: { __typename?: 'DeleteBatchExtraCourse', response?: { __typename?: 'DeleteBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null } | null } | null };
+export type DeleteBatchExtraCourseMutation = { __typename?: 'Mutation', deleteBatchExtraCourse?: { __typename?: 'DeleteBatchExtraCourse', response?: { __typename?: 'DeleteBatchExtraCourseResponse', oldExtraCourse?: { __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, courseType?: string | null } | null, activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null } | null };
 
 export type UpdateBatchCurriculumExtraCourseMutationVariables = Exact<{
   BATCH_ID: Scalars['ID'];
@@ -831,14 +834,14 @@ export type DeleteCurriculumUploadMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCurriculumUploadMutation = { __typename?: 'Mutation', deleteCurriculumUpload?: { __typename?: 'DeleteCurriculumUpload', response?: boolean | null } | null };
+export type DeleteCurriculumUploadMutation = { __typename?: 'Mutation', deleteCurriculumUpload?: { __typename?: 'DeleteCurriculumUpload', response?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null } | null };
 
 export type VerifyCurriculumUploadMutationVariables = Exact<{
   CURRICULUMUPLOADID: Scalars['ID'];
 }>;
 
 
-export type VerifyCurriculumUploadMutation = { __typename?: 'Mutation', verifyCurriculumUpload?: { __typename?: 'VerifyCurriculumUpload', response?: boolean | null } | null };
+export type VerifyCurriculumUploadMutation = { __typename?: 'Mutation', verifyCurriculumUpload?: { __typename?: 'VerifyCurriculumUpload', response?: Array<{ __typename?: 'CurriculumUploadType', id?: string | null, program?: string | null, year?: number | null, uploadedOn?: any | null, isPopulated?: boolean | null } | null> | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   FIRSTNAME: Scalars['String'];
@@ -1088,6 +1091,18 @@ export default {
         "kind": "OBJECT",
         "name": "AddBatchExtraCourseResponse",
         "fields": [
+          {
+            "name": "activeBatches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActiveBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
           {
             "name": "extraCourse",
             "type": {
@@ -1992,6 +2007,18 @@ export default {
         "name": "DeleteBatchExtraCourseResponse",
         "fields": [
           {
+            "name": "activeBatches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActiveBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "oldExtraCourse",
             "type": {
               "kind": "OBJECT",
@@ -2026,8 +2053,12 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CurriculumUploadType",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -3663,6 +3694,18 @@ export default {
         "name": "UpdateBatchExtraCourseResponse",
         "fields": [
           {
+            "name": "activeBatches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActiveBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "newExtraCourse",
             "type": {
               "kind": "OBJECT",
@@ -3893,8 +3936,12 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CurriculumUploadType",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -4174,6 +4221,15 @@ export const AddBatchExtraCourseDocument = gql`
         code
         name
       }
+      activeBatches {
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
+      }
     }
   }
 }
@@ -4202,6 +4258,15 @@ export const UpdateBatchExtraCourseDocument = gql`
         name
         courseType
       }
+      activeBatches {
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
+      }
     }
   }
 }
@@ -4219,6 +4284,15 @@ export const DeleteBatchExtraCourseDocument = gql`
         code
         name
         courseType
+      }
+      activeBatches {
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
       }
     }
   }
@@ -4248,7 +4322,13 @@ export function useUpdateBatchCurriculumExtraCourseMutation() {
 export const DeleteCurriculumUploadDocument = gql`
     mutation deleteCurriculumUpload($CURRICULUMUPLOADID: ID!) {
   deleteCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID) {
-    response
+    response {
+      id
+      program
+      year
+      uploadedOn
+      isPopulated
+    }
   }
 }
     `;
@@ -4259,7 +4339,13 @@ export function useDeleteCurriculumUploadMutation() {
 export const VerifyCurriculumUploadDocument = gql`
     mutation verifyCurriculumUpload($CURRICULUMUPLOADID: ID!) {
   verifyCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID) {
-    response
+    response {
+      id
+      program
+      year
+      uploadedOn
+      isPopulated
+    }
   }
 }
     `;

@@ -1,11 +1,23 @@
 mutation deleteCurriculumUpload ($CURRICULUMUPLOADID: ID!){
   deleteCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID){
-     response
+     response {
+      id
+      program
+      year
+      uploadedOn
+      isPopulated
+    }
   }
 }
 
 mutation verifyCurriculumUpload ($CURRICULUMUPLOADID: ID!){
   verifyCurriculumUpload(curriculumUploadID: $CURRICULUMUPLOADID){
-     response
+     response {
+      id
+      program
+      year
+      uploadedOn
+      isPopulated
+    }
   }
 }

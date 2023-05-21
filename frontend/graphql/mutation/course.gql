@@ -19,6 +19,15 @@ mutation addBatchExtraCourse($BATCHID: ID!, $EXTRA_COURSEID: ID!){
         code
         name
       }
+      activeBatches{
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
+      }
     }
   }
 }
@@ -38,6 +47,15 @@ mutation updateBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!, $NEW_EX
         name
         courseType
       }
+      activeBatches{
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
+      }
     }
   }
 }
@@ -50,6 +68,15 @@ mutation deleteBatchExtraCourse($BATCHID: ID!, $OLD_EXTRA_COURSEID: ID!){
         code
         name
         courseType
+      }
+      activeBatches{
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
       }
     }
   }

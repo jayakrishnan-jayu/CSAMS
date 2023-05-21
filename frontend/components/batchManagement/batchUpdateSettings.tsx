@@ -1,4 +1,4 @@
-import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchCurriculumExtraCourseMutation, ExtraCourseType } from '@/graphql/generated/graphql';
+import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchCurriculumExtraCourseMutation, ExtraCourseType, ActiveBatchType } from '@/graphql/generated/graphql';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { useRef, useState } from 'react';
@@ -10,11 +10,11 @@ import { classNames } from 'primereact/utils';
 
 interface BatchUpdateSettingsProps {
     batchID: string
+    setActiveBatches: (batches:  ActiveBatchType[] | null) => void
 }
 
-const BatchUpdateSettings = ({batchID}:BatchUpdateSettingsProps) => {
+const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProps) => {
     const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
-    const [updateBatchCurriculumExtraCourse, updateBatchCurriculumExtraCourseMutation] = useUpdateBatchCurriculumExtraCourseMutation();
     const {fetching, data, error} = result;
     const toast = useRef(null);
 
@@ -52,6 +52,7 @@ const BatchUpdateSettings = ({batchID}:BatchUpdateSettingsProps) => {
                 curriculumYear={data?.batch?.curriculum?.year} 
                 extras={data?.batch?.semesterExtraCourses} 
                 program={data?.batch?.curriculum?.program}
+                setActiveBatches={setActiveBatches}
             />
                 
         </div>
@@ -64,6 +65,7 @@ interface ExtraCourseMappingTableProps {
     curriculumYear: number,
     batchID: string,
     toast: any,
+    setActiveBatches: (batches:  ActiveBatchType[] | null) => void
 }
 
 interface ExtraCourseTableData {
@@ -86,7 +88,7 @@ interface Label {
 
 type ExtraCourseCustomType = ExtraCourseType & Label;
 
-const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toast}:ExtraCourseMappingTableProps) => {
+const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toast, setActiveBatches}:ExtraCourseMappingTableProps) => {
     let filteredExtras = extras.filter(function(item, pos) {
         return extras.indexOf(item) == pos;
     })
@@ -130,8 +132,9 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
             toast.current.show({ severity: 'error', summary: 'Error deleting Extra course', detail: deleteBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
         }
-        if (mode.type === 'create' && addBatchExtraCourse.data?.addBatchExtraCourse) {
+        if (mode.type === 'create' && addBatchExtraCourse.data?.addBatchExtraCourse?.response) {
             toast.current.show({ severity: 'success', summary: 'Extra Course assigned', life: 3000 });
+            console.log(addBatchExtraCourse)
             if (currentID>=0) {
                 let row = tableData.filter(td=>td.id===currentID);
                 if (row.length === 1) {
@@ -143,6 +146,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                 }
                 
             }
+            setActiveBatches(addBatchExtraCourse?.data?.addBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
             setMode({type: null});
         }
@@ -161,6 +165,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                 }
                 
             }
+            setActiveBatches(updateBatchExtraCourse?.data?.updateBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
             setMode({type: null});
         }
@@ -177,7 +182,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                 }
                 
             }
-            
+            setActiveBatches(deleteBatchExtraCourse?.data?.deleteBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
             setMode({type: null});
         }

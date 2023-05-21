@@ -11,13 +11,15 @@ import { TriStateCheckbox } from 'primereact/tristatecheckbox';
 import { classNames } from 'primereact/utils';
 import React, { useRef, useState } from 'react';
 import {VerifyCurriculum} from './curriculumUpload/verify';
-import { useRouter } from "next/navigation";
+
+
+type ModeType =  null | 'verifyCurriculumUpload' | 'deleteCurriculumUpload'
 
 const CurriculumUploadTable = () => {
     const programs = ['BCA', 'BCA DS', 'MCA']
     const toast = useRef(null);
     const dt = useRef(null);
-    const router = useRouter();
+    const [mode, setMode] = useState<ModeType>(null);
 
     const [visibleFullScreen, setVisibleFullScreen] = useState(false);
 
@@ -25,22 +27,50 @@ const CurriculumUploadTable = () => {
     const [verifyDisplayConfirmation, setVerifyDisplayConfirmation] = useState(false);
     
     const [curriculumUpload, setCurriculumUpload] = useState<CurriculumUploadType|null>(null);
+    const [curriculumUploads, setCurriculumUploads] = useState<CurriculumUploadType[] | null>(null);
 
-    const [, deleteCurriculumUploadMutation] = useDeleteCurriculumUploadMutation();
-    const [, verifyCurriculumUploadMutation] = useVerifyCurriculumUploadMutation();
+    const [deleteCurriculumUpload, deleteCurriculumUploadMutation] = useDeleteCurriculumUploadMutation();
+    const [verifyCurriculumUpload, verifyCurriculumUploadMutation] = useVerifyCurriculumUploadMutation();
     // const [_, deleteCurriculumUploadMutation] = useVer();
     const [result] = useCurriculumUploadsQuery()
     const {fetching, data, error} = result;
 
+
+    if (mode === 'deleteCurriculumUpload') {
+        if (deleteCurriculumUpload?.data?.deleteCurriculumUpload?.response) {
+            toast.current.show({ severity: 'success', summary: 'Curriculum Upload deleted', life: 3000 });
+            setCurriculumUploads(deleteCurriculumUpload?.data?.deleteCurriculumUpload?.response)
+            setVisibleFullScreen(false);
+            setMode(null);
+        }
+        if (deleteCurriculumUpload?.error?.message) {
+            toast.current.show({ severity: 'error', summary: 'Error deleting curriculum upload', detail: deleteCurriculumUpload.error.message, life: 3000 });
+            setMode(null);
+        }
+    }
+
+    if (mode === 'verifyCurriculumUpload') {
+        if (verifyCurriculumUpload?.data?.verifyCurriculumUpload?.response) {
+            toast.current.show({ severity: 'success', summary: 'Curriculum Upload Verified', life: 3000 });
+            setCurriculumUploads(verifyCurriculumUpload?.data?.verifyCurriculumUpload?.response)
+            setVisibleFullScreen(false);
+            setMode(null);
+        }
+        if (verifyCurriculumUpload?.error?.message) {
+            toast.current.show({ severity: 'error', summary: 'Error verifying curriculum upload', detail: verifyCurriculumUpload.error.message, life: 3000 });
+            setMode(null);
+        }
+    }
+
     const deleteCurriculumUploadData = async () => {
-        if (curriculumUpload?.id)
+        setMode('deleteCurriculumUpload')
+        // if (curriculumUpload?.id)
             await deleteCurriculumUploadMutation({CURRICULUMUPLOADID:curriculumUpload.id})
-            router.refresh()
     }
     const verifyCurriculumUploadData = async () => {
-        if (curriculumUpload?.id)
+        setMode('verifyCurriculumUpload')
+        // if (curriculumUpload?.id)
             await verifyCurriculumUploadMutation({CURRICULUMUPLOADID:curriculumUpload.id})
-            router.refresh()
     }
 
     
@@ -64,9 +94,10 @@ const CurriculumUploadTable = () => {
         return parseDateTime(rowData.uploadedOn);
     };
 
-    let curriculumUploads: CurriculumUploadType[] | undefined = [];
-    if (data?.curriculumUploads) {
-        curriculumUploads = data?.curriculumUploads as CurriculumUploadType[];
+
+
+    if (!curriculumUploads && data?.curriculumUploads) {
+        setCurriculumUploads(data?.curriculumUploads as CurriculumUploadType[]);
     }
 
     const editCurriculum = (c: CurriculumUploadType) => {
