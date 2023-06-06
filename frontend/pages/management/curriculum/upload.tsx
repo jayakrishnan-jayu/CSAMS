@@ -63,7 +63,6 @@ const render = (activeIndex: number) => {
         case 0:
             return <UploadCurriculum onUpload={onUpload} toast={toast}/>;
         case 1:
-            console.log("veryifying curriculum")
             if (curriculum) return <VerifyCurriculumFromCurriculumUpload curriculum={curriculum} footerElement={footerElement}/>;
             setActiveIndex(0)
             break;

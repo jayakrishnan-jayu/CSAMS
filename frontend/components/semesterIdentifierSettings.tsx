@@ -32,7 +32,6 @@ const SemesterIdentifierSettings = () => {
 
   const onSemIdentifierUpdate = async () => {
     setDialogShown(false);
-    console.log(dropDownValue, "is_even_sem", dropDownValue.code === dropdownValues[1].code);
     await updateSemIdentifier({ISEVENSEM: dropDownValue.code === dropdownValues[1].code, YEAR: year})
   }
     return (

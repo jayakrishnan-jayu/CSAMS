@@ -202,11 +202,11 @@ const VerifyBatch = () => {
                 <div className="formgroup-inline">
                     <div className="field">
                         <h5>Start Timestamp</h5>
-                        <Calendar id="start_timestamp" value={startDateTime}  onChange={(e: any) => {setStartDateTime(e.value); console.log(e.value)}} hourFormat='12' showTime showSeconds />
+                        <Calendar id="start_timestamp" value={startDateTime}  onChange={(e: any) => {setStartDateTime(e.value);}} hourFormat='12' showTime showSeconds />
                     </div>
                     <div className="field">
                         <h5>End Timestamp</h5>
-                        <Calendar id="end_timestamp" value={endDateTime} onChange={(e: any) => {setEndDateTime(e.value); console.log(e.value)}} hourFormat='12' showTime showSeconds/>
+                        <Calendar id="end_timestamp" value={endDateTime} onChange={(e: any) => {setEndDateTime(e.value);}} hourFormat='12' showTime showSeconds/>
                     </div>
                 </div>
                 <div className="flex mt-2 ml-auto mr-auto">

@@ -8,13 +8,11 @@ import { Toast } from 'primereact/toast';
 const AllocationManagement = () => {
   const [result] = useAllocationManagementQuery({requestPolicy: 'network-only'})
   const {fetching, data, error} = result;
-  console.log(data)
   const toast = useRef(null);
 
 
 
   const [courseAllocations, setCourseAllocations] = useState<null | CourseAllocationWithCourse[]>(null);
-  console.log(courseAllocations)
   const [labAllocations, setLabAllocations] = useState<null | LabAllocationWithCourse[]>(null);
 
 

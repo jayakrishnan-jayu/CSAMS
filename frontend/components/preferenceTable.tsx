@@ -40,7 +40,7 @@ const PreferenceTable = ({courseID, preferences}: PreferenceTableProps) => {
     };
 
     const onGlobalFilterChange1 = (e) => {
-        console.log("ongloablfilgt", e)
+
         const value = e.target.value;
         let _filters1 = { ...filters1 };
         _filters1['global'].value = value;

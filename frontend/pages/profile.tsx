@@ -11,11 +11,9 @@ const Profile: NextPage = () => {
   const lastName = metaData?.metadata?.user?.lastName;
 
 
-  const [result] = useMeQuery();
-  const { fetching, stale, data, operation } = result;
-  console.log(fetching, stale, data, operation);
+  // const [result] = useMeQuery();
+  // const { fetching, stale, data, operation } = result;
 
-  console.log(user, error, isLoading);
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;
   if (user)

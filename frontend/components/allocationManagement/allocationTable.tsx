@@ -42,7 +42,6 @@ const AllocationTable = ({ courseAllocations, labAllocations, courses}: Allocati
         isCourseType = true;
         tableData = courseAllocations.map(ca=>{
             const c = getCourse(ca.courseId)
-            console.log("course",c);
             return {
                 ...c,
                 name: c?.code + " " + c?.name,

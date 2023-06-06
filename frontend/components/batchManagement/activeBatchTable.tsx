@@ -45,7 +45,6 @@ const ActiveBatchTable = ({activeBatches, loading}: ActiveBatchTableProps) => {
     };
 
     const onChange = (a: ActiveBatchType[]) => {
-        console.log("change", a);
         setAllActiveBatches(a);
     }
 

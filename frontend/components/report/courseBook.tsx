@@ -33,9 +33,8 @@ export default function CourseBook() {
     }
 
     getCourseInfo()
-    console.log(CourseInfo)
     getFacultyName()
-    console.log(FacultyNames)
+
 
     const handleClick = () => {
 

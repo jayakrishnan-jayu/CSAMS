@@ -17,9 +17,7 @@ interface BatchUpdateSettingsProps {
 const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProps) => {
     const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
     const {fetching, data, error} = result;
-    console.log(data)
     const toast = useRef(null);
-    const [ visible, setVisible] = useState(false);
 
     if (error) return <div>Failed to fetch batch details: {error.message}</div>;
     if (fetching) return <div>Loading</div>
@@ -28,22 +26,6 @@ const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProp
             <Toast ref={toast}/>
 
             <h5>{data?.batch?.curriculum?.program} {data?.batch?.year} Batch</h5>
-            <Button onClick={()=>{
-
-                 setVisible(true);
-                // console.log("From button" + visible)
-                // AddNewElectiveModal({setVisible,visible})
-            }
-
-            }>Add new Elective</Button>
-            <Dialog header="Header" visible={visible} style={{ width: '50vw' }}  onHide={() => setVisible(false)}>
-                <p className="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-            </Dialog>
             <div className="grid p-fluid mt-5">
                 <div className="field col-12 md:col-6">
                     <span className="">
@@ -78,19 +60,6 @@ const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProp
 
         </div>
     );
-}
-
-const AddNewElectiveModal = ({setVisible,visible})=> {
-
-    <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-        <p className="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-    </Dialog>
-    console.log(visible + "After button press")
 }
 
 interface ExtraCourseMappingTableProps {
@@ -168,7 +137,6 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
         }
         if (mode.type === 'create' && addBatchExtraCourse.data?.addBatchExtraCourse?.response) {
             toast.current.show({ severity: 'success', summary: 'Extra Course assigned', life: 3000 });
-            console.log(addBatchExtraCourse)
             if (currentID>=0) {
                 let row = tableData.filter(td=>td.id===currentID);
                 if (row.length === 1) {
@@ -207,7 +175,6 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
             toast.current.show({ severity: 'success', summary: 'Extra Course deleted', life: 3000 });
             if (currentID>=0) {
                 let row = tableData.filter(td=>td.id===currentID);
-                console.log("deleted", row);
                 if (row.length === 1) {
                     let _tableData = [...tableData];
                     _tableData[tableData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: "", selectedCourseID: null, isVerified: false};
