@@ -4,20 +4,23 @@ import FacultyPreferenceAllocationTable from './facultyPreferenceAllocationTable
 import BatchAllocationPreferenceTable, { CourseAllocationWithCourse, LabAllocationWithCourse } from './batchAllocationPreferenceTable';
 import { Toast } from 'primereact/toast';
 
+
 const AllocationManagement = () => {
   const [result] = useAllocationManagementQuery({requestPolicy: 'network-only'})
   const {fetching, data, error} = result;
+  console.log(data)
   const toast = useRef(null);
 
-  
+
 
   const [courseAllocations, setCourseAllocations] = useState<null | CourseAllocationWithCourse[]>(null);
+  console.log(courseAllocations)
   const [labAllocations, setLabAllocations] = useState<null | LabAllocationWithCourse[]>(null);
 
 
   const retriveCourseAllocations = (): CourseAllocationWithCourse[] => {
-    
-    return data?.allocationManagement?.batches?.flatMap(batch => 
+
+    return data?.allocationManagement?.batches?.flatMap(batch =>
 
       batch.courseAllocations.flatMap(ca => {
           return {...ca, course: data?.allocationManagement?.courses?.find(c => c?.id === ca?.courseId)};
@@ -26,7 +29,7 @@ const AllocationManagement = () => {
   }
 
   const retriveLabAllocations = (): LabAllocationWithCourse[] => {
-    return data?.allocationManagement?.batches?.flatMap(batch => 
+    return data?.allocationManagement?.batches?.flatMap(batch =>
       batch.labAllocations.flatMap(la => {
           return {...la, course: data?.allocationManagement?.courses?.find(c => c?.id === la?.courseId)};
         })
@@ -49,9 +52,9 @@ const AllocationManagement = () => {
     <div className="grid">
       <div className="col-12">
         <div className="card">
-          <FacultyPreferenceAllocationTable 
-            loading={fetching} 
-            faculties={data?.allocationManagement?.faculties} 
+          <FacultyPreferenceAllocationTable
+            loading={fetching}
+            faculties={data?.allocationManagement?.faculties}
             preferences={data?.allocationManagement?.preferences}
             courseAllocations={courseAllocations ? courseAllocations.map(ca=>{return {courseId: ca?.courseId, facultyId: ca?.facultyId, id: ca?.id};}) : []}
             labAllocations={labAllocations ? labAllocations.map(la => {return {courseId: la?.courseId, facultyId: la?.facultyId, id: la?.id, isInCharge: la?.isInCharge};}): []}

@@ -6,7 +6,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { classNames } from 'primereact/utils';
-
+import { Button } from 'primereact/button';
+import {Dialog} from "primereact/dialog";
 
 interface BatchUpdateSettingsProps {
     batchID: string
@@ -16,14 +17,33 @@ interface BatchUpdateSettingsProps {
 const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProps) => {
     const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
     const {fetching, data, error} = result;
+    console.log(data)
     const toast = useRef(null);
+    const [ visible, setVisible] = useState(false);
 
     if (error) return <div>Failed to fetch batch details: {error.message}</div>;
     if (fetching) return <div>Loading</div>
     return (
         <div className="card">
             <Toast ref={toast}/>
+
             <h5>{data?.batch?.curriculum?.program} {data?.batch?.year} Batch</h5>
+            <Button onClick={()=>{
+
+                 setVisible(true);
+                // console.log("From button" + visible)
+                // AddNewElectiveModal({setVisible,visible})
+            }
+
+            }>Add new Elective</Button>
+            <Dialog header="Header" visible={visible} style={{ width: '50vw' }}  onHide={() => setVisible(false)}>
+                <p className="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </Dialog>
             <div className="grid p-fluid mt-5">
                 <div className="field col-12 md:col-6">
                     <span className="">
@@ -46,17 +66,31 @@ const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProp
                     </span>
                 </div>
             </div>
+
             <ExtraCourseMappingTable
-                toast={toast} 
+                toast={toast}
                 batchID={batchID}
-                curriculumYear={data?.batch?.curriculum?.year} 
-                extras={data?.batch?.semesterExtraCourses} 
+                curriculumYear={data?.batch?.curriculum?.year}
+                extras={data?.batch?.semesterExtraCourses}
                 program={data?.batch?.curriculum?.program}
                 setActiveBatches={setActiveBatches}
             />
-                
+
         </div>
     );
+}
+
+const AddNewElectiveModal = ({setVisible,visible})=> {
+
+    <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+        <p className="m-0">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </Dialog>
+    console.log(visible + "After button press")
 }
 
 interface ExtraCourseMappingTableProps {
@@ -127,7 +161,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
             toast.current.show({ severity: 'error', summary: 'Error updating Extra course', detail: updateBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
         }
-        
+
         if (mode.type === 'delete' && deleteBatchExtraCourse.error?.message) {
             toast.current.show({ severity: 'error', summary: 'Error deleting Extra course', detail: deleteBatchExtraCourse.error.message, life: 3000 });
             setDialogShown(true);
@@ -144,7 +178,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                     setTableData(_tableData);
                     setCurrentID(-1);
                 }
-                
+
             }
             setActiveBatches(addBatchExtraCourse?.data?.addBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
@@ -163,7 +197,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                     setTableData(_tableData);
                     setCurrentID(-1);
                 }
-                
+
             }
             setActiveBatches(updateBatchExtraCourse?.data?.updateBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
@@ -180,7 +214,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                     setTableData(_tableData);
                     setCurrentID(-1);
                 }
-                
+
             }
             setActiveBatches(deleteBatchExtraCourse?.data?.deleteBatchExtraCourse?.response?.activeBatches)
             setDialogShown(true);
@@ -224,14 +258,14 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
             let selectedCourseID = null;
             let selectedCourseCodeName = null;
             let extraCourses: Array<ExtraCourseType> = [];
-    
+
             for (let courseObject of data?.curriculumExtraCourses) {
                 if (courseObject?.extra === type && courseObject.courses) {
                     extraCourses = courseObject.courses;
                     break;
                 }
             }
-    
+
             parsedData.push({
                 id: id++,
                 type: type,
@@ -243,7 +277,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
         }
         setTableData(parsedData);
     }
-    
+
 
     data?.batchSelectedExtraCourses?.forEach((d) => {
         let foo = parsedData.filter((p)=> p.selectedCourseID === null && p.type === d?.courseType);
@@ -269,7 +303,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
                 <Column field="type" header="Extra" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} />
                 <Column field="selectedCourseCodeName" header="Selected" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} />
                 <Column body={actionBodyTemplate} headerStyle={{ minWidth: '5rem' }}></Column>
-                <Column field="isVerified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={isVerifiedTemplate} /> 
+                <Column field="isVerified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '6rem' }} body={isVerifiedTemplate} />
             </DataTable>
         </div>
     )

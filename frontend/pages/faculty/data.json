@@ -1,0 +1,71 @@
+{
+  "data": {
+    "allocationManagement": {
+      "batches": [
+        {
+          "id": "4",
+          "curriculumYear": 2018,
+          "curriculumName": "BCA",
+          "batchYear": 2018,
+          "batchSem": 4,
+          "courseLabs": [
+            {
+              "courseId": "30",
+              "labId": "33",
+              "__typename": "AllocationCourseLabType"
+            },
+            {
+              "courseId": "31",
+              "labId": "34",
+              "__typename": "AllocationCourseLabType"
+            }
+          ],
+          "courseAllocations": [
+            {
+              "id": "2",
+              "courseId": "27",
+              "facultyId": "10",
+              "__typename": "CourseAllocationType"
+            },
+            {
+              "id": "3",
+              "courseId": "28",
+              "facultyId": "10",
+              "__typename": "CourseAllocationType"
+            },
+            {
+              "id": "7",
+              "courseId": "29",
+              "facultyId": "3",
+              "__typename": "CourseAllocationType"
+            },
+            {
+              "id": "8",
+              "courseId": "31",
+              "facultyId": "2",
+              "__typename": "CourseAllocationType"
+            }
+          ],
+          "labAllocations": [
+            {
+              "id": "1",
+              "courseId": "34",
+              "facultyId": "2",
+              "isInCharge": true,
+              "__typename": "LabAllocationType"
+            }
+          ],
+          "courseIds": [
+            "27",
+            "28",
+            "29",
+            "30",
+            "31",
+            "32",
+            "33",
+            "34",
+            "35"
+          ],
+          "__typename": "AllocationBatchType"
+        }
+        ￼

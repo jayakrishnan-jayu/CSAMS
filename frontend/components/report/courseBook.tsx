@@ -1,17 +1,51 @@
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { useRef } from "react";
+import {useAllocationManagementQuery,AllocationManagementQuery} from "@/graphql/generated/graphql";
+
+
+const facultyIds: string[] = [];
+const courseIds : string[] = [] ;
+const FacultyNames  = [] ;
+const CourseInfo = []
 
 export default function CourseBook() {
-  const toast = useRef(null);
+    const toast = useRef(null);
 
-  const handleClick = () => {
-    toast.current.show({
-      severity: "success",
-      summary: "Report Generated",
-      life: 3000,
-    });
-  };
+    const [result] = useAllocationManagementQuery({requestPolicy: 'network-only'})
+    const {fetching, data, error} = result
+    GetFacultyCourseMapping(data)
+
+
+
+    const getCourseInfo = ()=>{
+        courseIds.forEach( (courseId)=> {
+        CourseInfo.push(data.allocationManagement?.courses?.find(c=>c.id == courseId))
+        })
+    }
+
+
+
+    const getFacultyName = ()=> {
+       FacultyNames.push (facultyIds.forEach((facultyId)=>{
+           FacultyNames.push(data.allocationManagement.faculties.find(f=>f.id == facultyId ))
+        }))
+    }
+
+    getCourseInfo()
+    console.log(CourseInfo)
+    getFacultyName()
+    console.log(FacultyNames)
+
+    const handleClick = () => {
+
+        toast.current.show({
+            severity: "success",
+            summary: "Report Generated",
+            life: 3000,
+        });
+    };
+
   return (
     <div className="mt-4">
       {/* <div className="card"> */}
@@ -26,3 +60,29 @@ export default function CourseBook() {
     </div>
   );
 }
+
+
+
+function GetFacultyCourseMapping(data: AllocationManagementQuery) {
+
+
+    data.allocationManagement.batches.forEach((batch) => {
+        batch.courseAllocations.forEach((allocation) => {
+            const { courseId, facultyId } = allocation
+            facultyIds.push(facultyId)
+            courseIds.push(courseId)
+
+        });
+
+        batch.labAllocations.forEach((allocation) => {
+            const { courseId, facultyId } = allocation
+            facultyIds.push(facultyId)
+            courseIds.push(courseId)
+        });
+    });
+
+}
+
+
+
+
