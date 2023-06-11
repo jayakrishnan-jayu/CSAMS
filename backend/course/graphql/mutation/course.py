@@ -50,6 +50,9 @@ class UpdateBatchExtraCourse(graphene.Mutation):
     @resolve_user
     @staff_privilege_required
     def mutate(self, info, batch_id: graphene.ID, old_extra_course_id: graphene.ID, new_extra_course_id: graphene.ID):
+        config = Config.objects.first()
+        if config.current_preference_sem.are_courses_verified:
+            raise APIException(message="Courses are already verified", code="ALREADY_VERIFIED")
         try:
             b = Batch.objects.get(id=batch_id)
         except Batch.DoesNotExist:
@@ -64,7 +67,6 @@ class UpdateBatchExtraCourse(graphene.Mutation):
         with transaction.atomic():
             b.remove_selected_extra_course(ec_old)
             b.add_selected_extra_course(ec_new)
-        config = Config.objects.first()
         qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
         return UpdateBatchExtraCourse(response=UpdateBatchExtraCourseResponse(old_extra_course=ec_old, new_extra_course=ec_new, active_batches=qs))
 

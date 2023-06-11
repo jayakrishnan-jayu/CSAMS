@@ -43,6 +43,15 @@ class AddCourseAllocation(graphene.Mutation):
         if LabAllocation.objects.filter(course=c, faculty=f).exists():
             raise APIException(message="Lab allocation already exists")
     
+        if c.is_elective:
+            elective_batch_courses = active_courses.filter(batch=c.batch, is_elective=True)
+            if (
+                CourseAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                or
+                LabAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                ):
+                raise APIException(message="Faculty already allocated to an elective course in this batch")
+    
         if c.is_lab:
             raise APIException(message="Course is of type lab component")
         
@@ -98,6 +107,15 @@ class AddLabAllocation(graphene.Mutation):
         if LabAllocation.objects.filter(course=c, faculty=f).exists():
             raise APIException(message="Lab allocation already exists")
     
+        if c.is_elective:
+            elective_batch_courses = active_courses.filter(batch=c.batch, is_elective=True)
+            if (
+                CourseAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                or
+                LabAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                ):
+                raise APIException(message="Faculty already allocated to an elective course in this batch")
+
         if not c.is_lab:
             raise APIException(message="Course is of type course component")
         
@@ -157,7 +175,16 @@ class UpdateCourseAllocation(graphene.Mutation):
         active_courses = Course.objects.filter(batch__in=active_batches)
         if not active_courses.filter(id=ca.course.id).exists():
             raise APIException(message="Invalid Course, course not found in current active batches")
-        
+        c: Course = ca.course
+        if c.is_elective:
+            elective_batch_courses = active_courses.filter(batch=c.batch, is_elective=True)
+            if (
+                CourseAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                or
+                LabAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                ):
+                raise APIException(message="Faculty already allocated to an elective course in this batch")
+            
         qs = CourseLab.objects.filter(course=ca.course)
         with transaction.atomic():
             if qs.exists():
@@ -207,6 +234,16 @@ class UpdateLabAllocation(graphene.Mutation):
         if not active_courses.filter(id=la.course.id).exists():
             raise APIException(message="Invalid Course, lab not found in current active batches")
         
+        c: Course = la.course
+        if c.is_elective:
+            elective_batch_courses = active_courses.filter(batch=c.batch, is_elective=True)
+            if (
+                CourseAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                or
+                LabAllocation.objects.filter(faculty=f, course__in=elective_batch_courses).exists()
+                ):
+                raise APIException(message="Faculty already allocated to an elective course in this batch")
+            
         qs = CourseLab.objects.filter(lab=la.course)
         with transaction.atomic():
             if qs.exists() and la.is_in_charge:
