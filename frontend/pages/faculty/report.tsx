@@ -31,25 +31,7 @@ export default function Report() {
     },
   ];
 
-  const currentBatchDropdown = [
 
-    {
-      name: "2018 S4 BCA",
-      code: "S4BCA",
-    },
-    {
-      name: "2018 S4 MCA",
-      code: "S4MCA",
-    },
-    {
-      name: "2019 S2 BCA",
-      code: "S2BCA",
-    },
-    {
-      name : "2019 S2 MCA",
-      code: "S2MCA"
-    }
-  ]
 
   return (
     <div>
@@ -61,13 +43,7 @@ export default function Report() {
           optionLabel="name"
           placeholder="Select"
         />
-        <Dropdown className="ml-4"
-            value={batchPrograms}
-            onChange={(e) => setbatchProgram(e.value)}
-            options={currentBatchDropdown}
-            optionLabel="name"
-            placeholder="Select"
-        />
+
         {dropdownValue?.code === "courseBook" && <CourseBook />}
         {dropdownValue?.code === "batchWise" && <BatchWise />}
       </div>
