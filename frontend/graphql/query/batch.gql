@@ -6,7 +6,11 @@ query batch($BATCHID: ID!){
     }
     year
     sem
-    semesterExtraCourses
+    semesterExtraCourses{
+      isElective
+      name
+      count
+    }
     selectedExtraCourses{
       name
       courseType
@@ -35,7 +39,11 @@ query batches ($IDENTIFIER: IdentifierInput) {
       year
     }
     
-    semesterExtraCourses
+    semesterExtraCourses{
+      isElective
+      name
+      count
+    }
     selectedExtraCourses{
       id
       code

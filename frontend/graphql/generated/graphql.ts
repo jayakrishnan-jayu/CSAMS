@@ -117,7 +117,7 @@ export type BatchType = {
   id?: Maybe<Scalars['ID']>;
   selectedExtraCourses?: Maybe<Array<Maybe<ExtraCourseType>>>;
   sem?: Maybe<Scalars['Int']>;
-  semesterExtraCourses?: Maybe<Array<Maybe<Scalars['String']>>>;
+  semesterExtraCourses?: Maybe<Array<Maybe<SemesterExtraCourseType>>>;
   year?: Maybe<Scalars['Int']>;
 };
 
@@ -607,6 +607,13 @@ export type ReleaseCoursesForFaculty = {
   response?: Maybe<Scalars['Boolean']>;
 };
 
+export type SemesterExtraCourseType = {
+  __typename?: 'SemesterExtraCourseType';
+  count?: Maybe<Scalars['Int']>;
+  isElective?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+};
+
 export type SemesterInput = {
   courseLabs: Array<InputMaybe<CourseLabInput>>;
   courses: Array<InputMaybe<CourseInput>>;
@@ -622,7 +629,8 @@ export type UpdateBatchCurriculumExtraCourse = {
 
 export type UpdateBatchCurriculumExtraCourseResponse = {
   __typename?: 'UpdateBatchCurriculumExtraCourseResponse';
-  semesterExtraCourses?: Maybe<Array<Maybe<Scalars['String']>>>;
+  activeBatches?: Maybe<Array<Maybe<ActiveBatchType>>>;
+  semesterExtraCourses?: Maybe<Array<Maybe<SemesterExtraCourseType>>>;
 };
 
 export type UpdateBatchExtraCourse = {
@@ -827,7 +835,7 @@ export type UpdateBatchCurriculumExtraCourseMutationVariables = Exact<{
 }>;
 
 
-export type UpdateBatchCurriculumExtraCourseMutation = { __typename?: 'Mutation', updateBatchCurriculumExtraCourse?: { __typename?: 'UpdateBatchCurriculumExtraCourse', response?: { __typename?: 'UpdateBatchCurriculumExtraCourseResponse', semesterExtraCourses?: Array<string | null> | null } | null } | null };
+export type UpdateBatchCurriculumExtraCourseMutation = { __typename?: 'Mutation', updateBatchCurriculumExtraCourse?: { __typename?: 'UpdateBatchCurriculumExtraCourse', response?: { __typename?: 'UpdateBatchCurriculumExtraCourseResponse', semesterExtraCourses?: Array<{ __typename?: 'SemesterExtraCourseType', isElective?: boolean | null, name?: string | null, count?: number | null } | null> | null, activeBatches?: Array<{ __typename?: 'ActiveBatchType', id?: string | null, program?: string | null, curriculumYear?: number | null, curriculumId?: string | null, sem?: number | null, year?: number | null, isComplete?: boolean | null } | null> | null } | null } | null };
 
 export type DeleteCurriculumUploadMutationVariables = Exact<{
   CURRICULUMUPLOADID: Scalars['ID'];
@@ -898,7 +906,7 @@ export type BatchQueryVariables = Exact<{
 }>;
 
 
-export type BatchQuery = { __typename?: 'Query', batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, semesterExtraCourses?: Array<string | null> | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', name?: string | null, courseType?: string | null } | null> | null } | null };
+export type BatchQuery = { __typename?: 'Query', batch?: { __typename?: 'BatchType', year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, semesterExtraCourses?: Array<{ __typename?: 'SemesterExtraCourseType', isElective?: boolean | null, name?: string | null, count?: number | null } | null> | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', name?: string | null, courseType?: string | null } | null> | null } | null };
 
 export type BatchManagementQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -910,7 +918,7 @@ export type BatchesQueryVariables = Exact<{
 }>;
 
 
-export type BatchesQuery = { __typename?: 'Query', batches?: Array<{ __typename?: 'BatchType', semesterExtraCourses?: Array<string | null> | null, extraCourseLeftToAssign?: number | null, year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, l?: number | null, t?: number | null, p?: number | null, credit?: number | null, hours?: number | null, courseType?: string | null } | null> | null } | null> | null };
+export type BatchesQuery = { __typename?: 'Query', batches?: Array<{ __typename?: 'BatchType', extraCourseLeftToAssign?: number | null, year?: number | null, sem?: number | null, curriculum?: { __typename?: 'CurriculumType', program?: string | null, year?: number | null } | null, semesterExtraCourses?: Array<{ __typename?: 'SemesterExtraCourseType', isElective?: boolean | null, name?: string | null, count?: number | null } | null> | null, selectedExtraCourses?: Array<{ __typename?: 'ExtraCourseType', id?: string | null, code?: string | null, name?: string | null, l?: number | null, t?: number | null, p?: number | null, credit?: number | null, hours?: number | null, courseType?: string | null } | null> | null } | null> | null };
 
 export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1539,8 +1547,9 @@ export default {
             "type": {
               "kind": "LIST",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
+                "kind": "OBJECT",
+                "name": "SemesterExtraCourseType",
+                "ofType": null
               }
             },
             "args": []
@@ -3641,6 +3650,37 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "SemesterExtraCourseType",
+        "fields": [
+          {
+            "name": "count",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isElective",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "name",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "UpdateBatchCurriculumExtraCourse",
         "fields": [
           {
@@ -3660,12 +3700,25 @@ export default {
         "name": "UpdateBatchCurriculumExtraCourseResponse",
         "fields": [
           {
+            "name": "activeBatches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ActiveBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "semesterExtraCourses",
             "type": {
               "kind": "LIST",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
+                "kind": "OBJECT",
+                "name": "SemesterExtraCourseType",
+                "ofType": null
               }
             },
             "args": []
@@ -4310,7 +4363,20 @@ export const UpdateBatchCurriculumExtraCourseDocument = gql`
     extraCourseType: $EXTRA_COURSE_TYPE
   ) {
     response {
-      semesterExtraCourses
+      semesterExtraCourses {
+        isElective
+        name
+        count
+      }
+      activeBatches {
+        id
+        program
+        curriculumYear
+        curriculumId
+        sem
+        year
+        isComplete
+      }
     }
   }
 }
@@ -4509,7 +4575,11 @@ export const BatchDocument = gql`
     }
     year
     sem
-    semesterExtraCourses
+    semesterExtraCourses {
+      isElective
+      name
+      count
+    }
     selectedExtraCourses {
       name
       courseType
@@ -4547,7 +4617,11 @@ export const BatchesDocument = gql`
       program
       year
     }
-    semesterExtraCourses
+    semesterExtraCourses {
+      isElective
+      name
+      count
+    }
     selectedExtraCourses {
       id
       code

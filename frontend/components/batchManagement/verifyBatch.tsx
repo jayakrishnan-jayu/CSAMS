@@ -15,6 +15,7 @@ import { Toast } from 'primereact/toast';
 import { confirmPopup, ConfirmPopup } from 'primereact/confirmpopup';
 import { useRouter } from 'next/navigation';
 import Deadline from '../deadline';
+import { Tag } from 'primereact/tag';
 
 interface ModeType {
     type: null | 'releaseCourse' | 'updateDeadline'
@@ -117,7 +118,7 @@ const VerifyBatch = () => {
                     <h6>Extra Course Types</h6>
                     {data.semesterExtraCourses?.map(c => 
                         <div className="field">
-                            <InputText value={c} type="text" disabled={true} />
+                            <InputText value={c.name} type="text" disabled={true} />
                         </div>
                     )}
                        

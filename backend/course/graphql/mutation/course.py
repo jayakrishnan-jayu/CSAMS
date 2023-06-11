@@ -129,11 +129,9 @@ class UpdateBatchCurriculumExtraCourse(graphene.Mutation):
             if bce.count <= b.selected_extra_courses.filter(course_type=ce).count():
                 raise APIException(message="extra course alloacted, can not delete extra course type")
             b.remove_extra(ce)
-        result = []
-        extras = b.extras
-        for bce in extras:
-            result += [bce.extra]*bce.count
-        return UpdateBatchCurriculumExtraCourse(response=UpdateBatchCurriculumExtraCourseResponse(semester_extra_courses=result))
+        config = Config.objects.first()
+        qs = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not config.current_preference_sem.is_even_sem , sem_year=config.current_preference_sem.year)
+        return UpdateBatchCurriculumExtraCourse(response=UpdateBatchCurriculumExtraCourseResponse(semester_extra_courses=b.extras, active_batches=qs))
 
 
 class VerifyCurriculumUpload(graphene.Mutation):

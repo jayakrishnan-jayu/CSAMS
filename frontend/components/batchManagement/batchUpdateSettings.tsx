@@ -1,4 +1,4 @@
-import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchCurriculumExtraCourseMutation, ExtraCourseType, ActiveBatchType } from '@/graphql/generated/graphql';
+import { useBatchQuery, useCurriculumExtraCoursesQuery, useAddBatchExtraCourseMutation, useUpdateBatchExtraCourseMutation, useDeleteBatchExtraCourseMutation, useUpdateBatchCurriculumExtraCourseMutation, ExtraCourseType, ActiveBatchType, SemesterExtraCourseType } from '@/graphql/generated/graphql';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import { useRef, useState } from 'react';
@@ -7,7 +7,6 @@ import { Column } from 'primereact/column';
 import { Toast } from 'primereact/toast';
 import { classNames } from 'primereact/utils';
 import { Button } from 'primereact/button';
-import {Dialog} from "primereact/dialog";
 
 interface BatchUpdateSettingsProps {
     batchID: string
@@ -15,9 +14,46 @@ interface BatchUpdateSettingsProps {
 }
 
 const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProps) => {
-    const [result] = useBatchQuery({variables:{BATCHID:batchID},requestPolicy:'network-only'})
+    let _initialMode: ModeType = {
+        type: null
+    }
+
+    const [result] = useBatchQuery({variables:{BATCHID:batchID}});
+    const [dialogShown, setDialogShown] = useState(true);
+    const [semesterExtraCourses, setSemesterExtraCourses] = useState<SemesterExtraCourseType[]>(null);
+    const [mode, setMode] = useState(_initialMode);
+    const [updateBatchCurriculumExtraCourse, updateBatchCurriculumExtraCourseMutation] = useUpdateBatchCurriculumExtraCourseMutation();
+
     const {fetching, data, error} = result;
     const toast = useRef(null);
+
+    if (semesterExtraCourses === null && data?.batch?.semesterExtraCourses) {
+        setSemesterExtraCourses(data.batch.semesterExtraCourses)
+    }
+
+    const onBatchCurriculumExtraCourse = async (extraCourseType: string, add: boolean) => {
+        await updateBatchCurriculumExtraCourseMutation({BATCH_ID: batchID, EXTRA_COURSE_TYPE: extraCourseType, ADD: add});
+        setDialogShown(false);
+        setMode(add ? {type: 'create'}: {type: 'delete'})
+    }
+
+    if (!dialogShown) {
+        if (updateBatchCurriculumExtraCourse?.error?.message) {
+            if (mode.type === 'create')  toast.current.show({ severity: 'error', summary: 'Error creating batch curriculum extra course', detail: updateBatchCurriculumExtraCourse.error.message, life: 3000 });
+            else toast.current.show({ severity: 'error', summary: 'Error deleting batch curriculum extra course', detail: updateBatchCurriculumExtraCourse.error.message, life: 3000 });
+            setMode({type: null})
+            setDialogShown(true);
+        }
+    
+        if (updateBatchCurriculumExtraCourse?.data?.updateBatchCurriculumExtraCourse?.response?.semesterExtraCourses) {
+            if (mode.type === 'create') toast.current.show({ severity: 'success', summary: 'Success', life: 3000 });
+            else toast.current.show({ severity: 'success', summary: 'Deleted', life: 3000 });
+            setMode({type: null})
+            setSemesterExtraCourses(updateBatchCurriculumExtraCourse.data?.updateBatchCurriculumExtraCourse?.response?.semesterExtraCourses);
+            setActiveBatches(updateBatchCurriculumExtraCourse.data?.updateBatchCurriculumExtraCourse?.response.activeBatches);
+            setDialogShown(true);
+        }
+    }
 
     if (error) return <div>Failed to fetch batch details: {error.message}</div>;
     if (fetching) return <div>Loading</div>
@@ -49,13 +85,24 @@ const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProp
                 </div>
             </div>
 
+            <div className="col-12 md:col-6">
+                    <h6>Additional Extra Course</h6>
+                    {data?.batch?.semesterExtraCourses?.filter(ec=>ec.isElective).map(c => 
+                        <div className="field">
+                            <Button onClick={()=>onBatchCurriculumExtraCourse(c.name, true)}>Add {c.name}</Button>
+                        </div>
+                    )}
+                       
+                </div>
+
             <ExtraCourseMappingTable
                 toast={toast}
                 batchID={batchID}
                 curriculumYear={data?.batch?.curriculum?.year}
-                extras={data?.batch?.semesterExtraCourses}
+                extras={semesterExtraCourses}
                 program={data?.batch?.curriculum?.program}
                 setActiveBatches={setActiveBatches}
+                onBatchCurriculumExtraCourse={onBatchCurriculumExtraCourse}
             />
 
         </div>
@@ -63,12 +110,13 @@ const BatchUpdateSettings = ({batchID, setActiveBatches}:BatchUpdateSettingsProp
 }
 
 interface ExtraCourseMappingTableProps {
-    extras: Array<string>,
+    extras: SemesterExtraCourseType[],
     program: string,
     curriculumYear: number,
     batchID: string,
     toast: any,
     setActiveBatches: (batches:  ActiveBatchType[] | null) => void
+    onBatchCurriculumExtraCourse: (extraCourseType:string, add: boolean) => Promise<void>
 }
 
 interface ExtraCourseTableData {
@@ -78,7 +126,7 @@ interface ExtraCourseTableData {
     selectedCourseCodeName: string | null,
     extraCourses: Array<ExtraCourseType>,
     isVerified: boolean,
-
+    isDuplicate: boolean,
 }
 
 interface ModeType {
@@ -91,16 +139,13 @@ interface Label {
 
 type ExtraCourseCustomType = ExtraCourseType & Label;
 
-const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toast, setActiveBatches}:ExtraCourseMappingTableProps) => {
-    let filteredExtras = extras.filter(function(item, pos) {
-        return extras.indexOf(item) == pos;
-    })
+const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toast, setActiveBatches, onBatchCurriculumExtraCourse}:ExtraCourseMappingTableProps) => {
+    let filteredExtras = extras.map(e=>e.name)
     let _initialMode: ModeType = {
         type: null
     }
 
     let parsedData: Array<ExtraCourseTableData> = [];
-    const [tableData, setTableData] = useState(parsedData);
     const [currentID, setCurrentID] = useState(-1);
 
 
@@ -111,9 +156,8 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
     const [updateBatchExtraCourse, updateBatchExtraCourseMutation] = useUpdateBatchExtraCourseMutation();
     const [deleteBatchExtraCourse, deleteBatchExtraCourseMutation] = useDeleteBatchExtraCourseMutation();
 
-    const [result] = useCurriculumExtraCoursesQuery({variables:{CURRICULUMYEAR: curriculumYear, EXTRAS: filteredExtras, PROGRAM: program, BATCHID: batchID}});
+    const [result] = useCurriculumExtraCoursesQuery({variables:{CURRICULUMYEAR: curriculumYear, EXTRAS: filteredExtras, PROGRAM: program, BATCHID: batchID}, requestPolicy: 'network-only'});
     const {fetching, data, error} = result;
-
     if (error?.message) {
         return <div>Failed to fetch extra courses: {error.message}</div>
     }
@@ -138,12 +182,12 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
         if (mode.type === 'create' && addBatchExtraCourse.data?.addBatchExtraCourse?.response) {
             toast.current.show({ severity: 'success', summary: 'Extra Course assigned', life: 3000 });
             if (currentID>=0) {
-                let row = tableData.filter(td=>td.id===currentID);
+                let row = parsedData.filter(td=>td.id===currentID);
                 if (row.length === 1) {
-                    let _tableData = [...tableData];
+                    let _tableData = [...parsedData];
                     let c = addBatchExtraCourse.data.addBatchExtraCourse.response?.extraCourse;
-                    _tableData[tableData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: c?.code + ' ' + c?.name, selectedCourseID: c?.id?.toString(), isVerified: c?.id !== null || c?.id !== undefined};
-                    setTableData(_tableData);
+                    _tableData[parsedData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: c?.code + ' ' + c?.name, selectedCourseID: c?.id?.toString(), isVerified: c?.id !== null || c?.id !== undefined};
+                    parsedData = _tableData;
                     setCurrentID(-1);
                 }
 
@@ -156,13 +200,13 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
 
             toast.current.show({ severity: 'success', summary: 'Extra Course updated', life: 3000 });
             if (currentID>=0) {
-                let row = tableData.filter(td=>td.id===currentID);
+                let row = parsedData.filter(td=>td.id===currentID);
                 if (row.length === 1) {
-                    let _tableData = [...tableData];
+                    let _tableData = [...parsedData];
                     let oec = updateBatchExtraCourse.data.updateBatchExtraCourse.response?.oldExtraCourse;
                     let nec = updateBatchExtraCourse.data.updateBatchExtraCourse.response?.newExtraCourse;
-                    _tableData[tableData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: nec?.code + ' ' + nec?.name, selectedCourseID: nec?.id?.toString(), isVerified: nec?.id !== null || nec?.id !== undefined,};
-                    setTableData(_tableData);
+                    _tableData[parsedData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: nec?.code + ' ' + nec?.name, selectedCourseID: nec?.id?.toString(), isVerified: nec?.id !== null || nec?.id !== undefined,};
+                    parsedData = _tableData;
                     setCurrentID(-1);
                 }
 
@@ -174,11 +218,11 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
         if (mode.type === 'delete' && deleteBatchExtraCourse.data?.deleteBatchExtraCourse) {
             toast.current.show({ severity: 'success', summary: 'Extra Course deleted', life: 3000 });
             if (currentID>=0) {
-                let row = tableData.filter(td=>td.id===currentID);
+                let row = parsedData.filter(td=>td.id===currentID);
                 if (row.length === 1) {
-                    let _tableData = [...tableData];
-                    _tableData[tableData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: "", selectedCourseID: null, isVerified: false};
-                    setTableData(_tableData);
+                    let _tableData = [...parsedData];
+                    _tableData[parsedData.indexOf(row[0])] = {...row[0], selectedCourseCodeName: "", selectedCourseID: null, isVerified: false};
+                    parsedData = _tableData;
                     setCurrentID(-1);
                 }
 
@@ -217,33 +261,36 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
     };
 
     const isVerifiedTemplate = (rowData: ExtraCourseTableData) => {
+        if (!rowData.isVerified && rowData.isDuplicate) return <Button severity='danger' onClick={()=>onBatchCurriculumExtraCourse(rowData?.type, false)}>Delete</Button>
         return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.isVerified, 'text-pink-500 pi-times-circle': !rowData.isVerified })}></i>;
     };
-    if (tableData.length === 0) {
-        let id = 0;
-        for (let type of extras) {
-            let selectedCourseID = null;
-            let selectedCourseCodeName = null;
-            let extraCourses: Array<ExtraCourseType> = [];
+    parsedData = [];
+    let id = 0;
 
-            for (let courseObject of data?.curriculumExtraCourses) {
-                if (courseObject?.extra === type && courseObject.courses) {
-                    extraCourses = courseObject.courses;
-                    break;
-                }
+    for (let type of extras) {
+        let selectedCourseID = null;
+        let selectedCourseCodeName = null;
+        let extraCourses: Array<ExtraCourseType> = [];
+
+        for (let courseObject of data?.curriculumExtraCourses) {
+            if (courseObject?.extra === type?.name && courseObject.courses) {
+                extraCourses = courseObject.courses;
+                break;
             }
-
+        }
+        for (let i=0; i< type?.count; i++) {
             parsedData.push({
                 id: id++,
-                type: type,
+                type: type?.name,
                 selectedCourseID: selectedCourseID,
                 selectedCourseCodeName: selectedCourseCodeName,
                 extraCourses: extraCourses,
                 isVerified: false,
+                isDuplicate: parsedData.filter(pd=>type?.name === pd?.type).length !== 0,
             });
         }
-        setTableData(parsedData);
     }
+
 
 
     data?.batchSelectedExtraCourses?.forEach((d) => {
@@ -257,7 +304,7 @@ const ExtraCourseMappingTable = ({extras, program, curriculumYear, batchID, toas
     return (
         <div>
             <DataTable
-                value={tableData}
+                value={parsedData}
                 dataKey="id"
                 rows={10}
                 loading={fetching}

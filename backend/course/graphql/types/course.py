@@ -52,6 +52,21 @@ class ExtraCourseType(graphene.ObjectType):
     def resolve_course_type(self, info):
         return self.course_type.name
 
+class SemesterExtraCourseType(graphene.ObjectType):
+    is_elective = graphene.Boolean()
+    name = graphene.String()
+    count = graphene.Int()
+
+    def resolve_is_elective(self, info):
+        if not isinstance(self, BatchCurriculumExtra):
+            raise APIException(message="BatchCurriculumExtra type not found")
+        return self.extra.is_elective
+    
+    def resolve_name(self, info):
+        if not isinstance(self, BatchCurriculumExtra):
+            raise APIException(message="BatchCurriculumExtra type not found")
+        return self.extra.name
+
 
 class CurriculumExtraCoursesType(graphene.ObjectType):
     extra = graphene.String()
@@ -70,7 +85,7 @@ class CurriculumExtraCoursesType(graphene.ObjectType):
 class BatchType(graphene.ObjectType):
     id = graphene.ID()
     curriculum = graphene.Field(CurriculumType)
-    semester_extra_courses = graphene.List(graphene.String)
+    semester_extra_courses = graphene.List(SemesterExtraCourseType)
     selected_extra_courses = graphene.List(ExtraCourseType)
     extra_course_left_to_assign = graphene.Int()
     year = graphene.Int()
@@ -81,10 +96,7 @@ class BatchType(graphene.ObjectType):
         if not isinstance(self, Batch):
             raise APIException('Batch not found', 'BATCH_NOT_FOUND')
         extras: List[BatchCurriculumExtra] = self.extras
-        result = []
-        for bce in extras:
-            result += [bce.extra]*bce.count
-        return result
+        return extras
     
     def resolve_selected_extra_courses(self, info):
         if not isinstance(self, Batch):
@@ -218,8 +230,6 @@ class CourseLabType(graphene.ObjectType):
     course = graphene.Field(CourseType)
     lab = graphene.Field(CourseType)
 
-class UpdateBatchCurriculumExtraCourseResponse(graphene.ObjectType):
-    semester_extra_courses = graphene.List(graphene.String)
 
 class ActiveBatchType(graphene.ObjectType):
     id = graphene.ID()
@@ -252,6 +262,10 @@ class ActiveBatchType(graphene.ObjectType):
         for e in self.extras:
             count += e.count
         return count == self.selected_extra_courses.count()
+
+class UpdateBatchCurriculumExtraCourseResponse(graphene.ObjectType):
+    semester_extra_courses = graphene.List(SemesterExtraCourseType)
+    active_batches = graphene.List(ActiveBatchType)
 
 class AddBatchExtraCourseResponse(graphene.ObjectType):
     extra_course = graphene.Field(ExtraCourseType)
