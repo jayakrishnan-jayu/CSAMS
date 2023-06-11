@@ -1,6 +1,6 @@
 import {AllocationBatchType, AllocationCourseLabType, AllocationPreferenceType, CourseAllocationType, CourseLabType, CourseType, FacultyType, LabAllocationType, PreferenceType, useAddCourseAllocationMutation, useAddLabAllocationMutation, useAllocationManagementQuery, useDeleteCourseAllocationMutation, useDeleteLabAllocationMutation, useUpdateCourseAllocationMutation, useUpdateLabAllocationMutation } from '@/graphql/generated/graphql';
 
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { classNames } from 'primereact/utils';
@@ -58,12 +58,13 @@ interface AllocationFields {
   allocated?: boolean
 }
 
-
-
-interface FacultyDropDownField{
-  id?: string
-  name?: string
+interface NameField {
+  search: string
 }
+
+type FacultyDropDownField = FacultyType & NameField
+
+
 
 
 type AllocationPreferenceCourseType = AllocationFields & CourseType
@@ -211,7 +212,8 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
     const newFacultyID = value?.id;
     if (type === 'Course') {
       const ca =  courseAllocations.find(ca=>ca.courseId===courseID)
-      if (value.id === "-1") {
+      console.log("value", value)
+      if (value === undefined) {
         await onCourseAllocationDelete(ca?.id, ca?.courseId)
         return
       }
@@ -224,7 +226,7 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
     }
     if (type === 'Lab') {
       const la = labAllocations.find(la=>la?.courseId === courseID && la?.isInCharge === (duty === 'Incharge'))
-      if (value.id === "-1") {
+      if (value === undefined) {
         await onLabAllocationDelete(la?.id, la?.courseId)
         return
       }
@@ -238,7 +240,8 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
   }
 
   if (facultyDropdownvalues.length === 0 && faculties !== null && faculties !== undefined) {
-    facultyDropdownvalues = [{id: "-1", name: "None"}].concat(faculties.map(f=> {return {id: f?.id, name: f?.user?.firstName + " " + f?.user?.lastName + " - " + f?.user?.email}}))
+    facultyDropdownvalues = faculties.map(f=> {return {...f, search: f?.user?.firstName + " " + f?.user?.lastName + " " + f?.user?.email}})
+      
   }
 
 
@@ -324,6 +327,28 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
     if (rowData?.isElective) return <Tag value="Elective"/>
     return <></>
   };
+
+  const selectedFacultyTemplate = (option: FacultyType, props: any) => {
+    if (option) {
+        return (
+            <div className="flex align-items-center">
+                <div>{option?.user?.firstName} {option?.user?.lastName} - {option?.workload}/{option?.maxWorkload}</div>
+            </div>
+        );
+    }
+
+    return <span>{props.placeholder}</span>;
+};
+
+const facultyOptionTemplate = (option: FacultyType) => {
+  return (
+      <div className="flex align-items-center">
+          <div>{option?.user?.firstName} {option?.user?.lastName} - {option?.user?.email} {option?.workload}/{option?.maxWorkload}</div>
+      </div>
+  );
+};
+
+
   
   const rowExpansionTemplate = (data: AllocationPreferenceCourseType) => {
     const value: CourseFacultyPreferenceTableDataType[] = data.allocationPreferences.map(p=> {return {
@@ -358,32 +383,43 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
             <h6>{inChargeAllocation ?  "Allocated In Charge Faculty" : "Allocate In Charge Faculty"}</h6>
             <Dropdown 
               className='mb-2' 
-              value={inChargeAllocation?.facultyId ? getFacultyDropdownValue(inChargeAllocation?.facultyId) : facultyDropdownvalues[0]}
+              value={inChargeAllocation?.facultyId ? getFacultyDropdownValue(inChargeAllocation?.facultyId) : null}
               onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Incharge')}  
               options={facultyDropdownvalues} 
-              optionLabel="name" 
+              valueTemplate={selectedFacultyTemplate}
+              itemTemplate={facultyOptionTemplate}
+              optionLabel="search"
+              placeholder="Select a Faculty"
               filter
+              showClear
             />
             {
             assistantAllocations.map(a=>
               <Dropdown 
                 className='mb-2' 
-                value={a?.facultyId ? getFacultyDropdownValue(a?.facultyId) : facultyDropdownvalues[0]}
+                value={a?.facultyId ? getFacultyDropdownValue(a?.facultyId) : null}
                 onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Assistant')}
                 options={facultyDropdownvalues} 
-                optionLabel="name" 
+                valueTemplate={selectedFacultyTemplate}
+                itemTemplate={facultyOptionTemplate}
+                optionLabel="search"
+                placeholder="Select a Faculty"
                 filter
+                showClear
               />
               )
             }
 
             <Dropdown 
               className='mb-2' 
-              value={facultyDropdownvalues[0]}
               onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Lab', 'Assistant', true)}  
               options={facultyDropdownvalues} 
-              optionLabel="name" 
+              valueTemplate={selectedFacultyTemplate}
+              itemTemplate={facultyOptionTemplate}
+              optionLabel="search"
+              placeholder="Select a Faculty"
               filter
+              showClear
             />
           </div>
           
@@ -411,11 +447,15 @@ const BatchAllocationPreferenceTable = ({batches, courses, preferences, facultie
               <h6>{facultyID ?  "Allocated Faculty" : "Allocate Faculty"}</h6>
               <Dropdown 
                   className='mb-2' 
-                  value={facultyID ? getFacultyDropdownValue(facultyID) : facultyDropdownvalues[0]} 
+                  value={facultyID ? getFacultyDropdownValue(facultyID) : null} 
                   onChange={(e) => onFacultyAllocationChange(e.value, data?.id, 'Course', 'Incharge')}  
                   options={facultyDropdownvalues} 
-                  optionLabel="name" 
+                  valueTemplate={selectedFacultyTemplate}
+                  itemTemplate={facultyOptionTemplate}
+                  placeholder="Select a Faculty"
+                  optionLabel="search"
                   filter
+                  showClear
                 />
             </div>
           </div>
