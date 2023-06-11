@@ -33,6 +33,7 @@ class Identifier(models.Model):
     end_timestamp = models.DateTimeField(null=True, blank=True) # Preference deadline for faculties - null : not set (not yet released)
     is_paused = models.BooleanField(default=True) # is Preference Paused for faculties
     are_courses_verified = models.BooleanField(default=False)
+    is_hod_approved = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.start_timestamp or self.end_timestamp:

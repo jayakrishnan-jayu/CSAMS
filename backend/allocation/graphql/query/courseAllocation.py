@@ -1,7 +1,8 @@
 
 import graphene
-from allocation.graphql.types.allocation import AllocationType, AllocationManagementType
+from allocation.graphql.types.allocation import ApprovedAllocationType, AllocationManagementType
 from course.graphql.types.course import IdentifierInput
+from course.models import Batch, Course, CourseLab
 from course.utils.allocation import Allocation
 from allocation.models import CourseAllocation, LabAllocation
 from preference.models import Config, Identifier
@@ -18,10 +19,11 @@ class AllocationQueries(graphene.ObjectType):
         AllocationManagementType,
         identifier=graphene.Argument(IdentifierInput, required=False)
     )
-    # allocations = graphene.Field(
-    #     AllocationType,
-    #     identifier=graphene.Argument(IdentifierInput, required=False)
-    #     )
+    allocations = graphene.Field(
+        ApprovedAllocationType,
+        identifier=graphene.Argument(IdentifierInput, required=True)
+    )
+
 
     # @login_required
     # @resolve_user
@@ -49,4 +51,29 @@ class AllocationQueries(graphene.ObjectType):
         a.allocate()
         return a
         
+    
+    @login_required
+    @resolve_user
+    def resolve_allocations(self, info, identifier:IdentifierInput):
+        try:
+            f = Faculty.objects.get(user=info.context.resolved_user)
+        except Faculty.DoesNotExist:
+            raise APIException(message="User is not an faculty")
+        try:
+            i = Identifier.objects.get(is_even_sem=identifier.is_even_sem, year=identifier.year)
+        except Identifier.DoesNotExist:
+            raise APIException(message="Invalid Identifier")
+        if not i.is_hod_approved:
+            raise APIException(message="HOD not approved")
+        faculties = Faculty.objects.filter(user__is_active=True)
+        batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not i.is_even_sem, sem_year=i.year)
+        courses = Course.objects.filter(batch__in=batches)
+
+        for b in batches:
+            b.course_labs = CourseLab.objects.filter(course__in=courses.filter(batch=b))
+            b.course_ids = courses.filter(batch=b).values_list('id', flat=True)
+            b.course_allocations = CourseAllocation.objects.filter(course__id__in=b.course_ids)
+            b.lab_allocations = LabAllocation.objects.filter(course__id__in=b.course_ids)
+        return ApprovedAllocationType(faculties=faculties, batches=batches, courses=courses)
+
             

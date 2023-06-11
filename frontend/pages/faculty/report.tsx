@@ -2,76 +2,58 @@ import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useContext, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
-import CourseBook from "@/components/report/courseBook";
-import BatchWise from "@/components/report/batchWise";
-import {AllocationManagementQuery, useAllocationManagementQuery} from "@/graphql/generated/graphql";
-import { jsPDF } from 'jspdf'
-import autoTable from 'jspdf-autotable'
-import AllocationManagement from "@/components/allocationManagement/allocationManagement";
+import { IdentifierInput } from "@/graphql/generated/graphql";
+
+export interface ReportInput {
+  identifier: IdentifierInput
+  format: 'xlsx' | 'pdf'
+  type: 'courseBook'
+}
 
 export default function Report() {
   const { metaData } = useContext(MetaDataContext);
 
+  const identifier: IdentifierInput = {isEvenSem: true, year:2020};
+  const data: ReportInput = {
+    identifier: identifier,
+    format: 'xlsx',
+    type: 'courseBook'
+  }
+
   const [dropdownValue, setDropdownValue] = useState(null);
   const [batchPrograms, setbatchProgram] = useState(null);
-  const [result] = useAllocationManagementQuery({requestPolicy: 'network-only'})
-  const {fetching, data, error} = result;
-  // console.log(data)
-  // extractFacultyIds(data)
+  const [message, setMessage] = useState('');
 
-  const dropdownValues = [
-    {
-      name: "Course Book",
-      code: "courseBook",
-    },
-    {
-      name: "Batch wise",
-      code: "batchWise",
-    },
-  ];
+  const postData = async () => {
+    try {
+      const response = await fetch('/api/report/xlsx', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        throw new Error(`Unexpected response ${response.statusText}`);
+      }
 
-  const currentBatchDropdown = [
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'data.xlsx';
+      link.click();
+      URL.revokeObjectURL(url);
 
-    {
-      name: "2018 S4 BCA",
-      code: "S4BCA",
-    },
-    {
-      name: "2018 S4 MCA",
-      code: "S4MCA",
-    },
-    {
-      name: "2019 S2 BCA",
-      code: "S2BCA",
-    },
-    {
-      name : "2019 S2 MCA",
-      code: "S2MCA"
+    } catch (error) {
+      console.error('Error:', error);
     }
-  ]
+  };
 
   return (
     <div>
-      <div className="card ">
-        <Dropdown
-          value={dropdownValue}
-          onChange={(e) => setDropdownValue(e.value)}
-          options={dropdownValues}
-          optionLabel="name"
-          placeholder="Select"
-        />
-        <Dropdown className="ml-4"
-            value={batchPrograms}
-            onChange={(e) => setbatchProgram(e.value)}
-            options={currentBatchDropdown}
-            optionLabel="name"
-            placeholder="Select"
-        />
-        {dropdownValue?.code === "courseBook" && <CourseBook />}
-        {dropdownValue?.code === "batchWise" && <BatchWise />}
-      </div>
-      <div className=""></div>
+      <button onClick={postData}>Make POST Request</button>
+      <p>{message}</p>
     </div>
   );
 }

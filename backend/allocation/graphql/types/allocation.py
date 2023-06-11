@@ -84,4 +84,8 @@ class AllocationManagementType(graphene.ObjectType):
     #     if not isinstance(self, Allocation):
     #         raise APIException(message="Not an instance of Allocation")
     #     return Faculty.objects.filter(user__is_active=True)
-    
+
+class ApprovedAllocationType(graphene.ObjectType):
+    faculties = graphene.List(FacultyType)
+    courses = graphene.List(CourseType)
+    batches = graphene.List(AllocationBatchType)

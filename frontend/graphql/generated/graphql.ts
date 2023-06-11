@@ -99,6 +99,13 @@ export type AllocationsType = {
   labs?: Maybe<Array<Maybe<LabAllocationType>>>;
 };
 
+export type ApprovedAllocationType = {
+  __typename?: 'ApprovedAllocationType';
+  batches?: Maybe<Array<Maybe<AllocationBatchType>>>;
+  courses?: Maybe<Array<Maybe<CourseType>>>;
+  faculties?: Maybe<Array<Maybe<FacultyType>>>;
+};
+
 export type BatchInfoType = {
   __typename?: 'BatchInfoType';
   info?: Maybe<Array<Maybe<BatchYearSemType>>>;
@@ -504,6 +511,7 @@ export type ProgramType = {
 export type Query = {
   __typename?: 'Query';
   allocationManagement?: Maybe<AllocationManagementType>;
+  allocations?: Maybe<ApprovedAllocationType>;
   batch?: Maybe<BatchType>;
   batchInfo?: Maybe<BatchInfoType>;
   batchManagement?: Maybe<BatchManagementType>;
@@ -531,6 +539,11 @@ export type Query = {
 
 export type QueryAllocationManagementArgs = {
   identifier?: InputMaybe<IdentifierInput>;
+};
+
+
+export type QueryAllocationsArgs = {
+  identifier: IdentifierInput;
 };
 
 
@@ -900,6 +913,13 @@ export type AllocationManagementQueryVariables = Exact<{
 
 
 export type AllocationManagementQuery = { __typename?: 'Query', allocationManagement?: { __typename?: 'AllocationManagementType', bestPreferences?: Array<string | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseLabs?: Array<{ __typename?: 'AllocationCourseLabType', courseId?: string | null, labId?: string | null } | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null, preferences?: Array<{ __typename?: 'AllocationPreferenceType', id?: string | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, score?: number | null } | null> | null, faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null } | null } | null> | null } | null };
+
+export type AllocationsQueryVariables = Exact<{
+  IDENTIFIER: IdentifierInput;
+}>;
+
+
+export type AllocationsQuery = { __typename?: 'Query', allocations?: { __typename?: 'ApprovedAllocationType', faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null } | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null } | null };
 
 export type BatchQueryVariables = Exact<{
   BATCHID: Scalars['ID'];
@@ -1439,6 +1459,49 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "LabAllocationType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ApprovedAllocationType",
+        "fields": [
+          {
+            "name": "batches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AllocationBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "courses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "faculties",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FacultyType",
                 "ofType": null
               }
             },
@@ -3197,6 +3260,26 @@ export default {
             ]
           },
           {
+            "name": "allocations",
+            "type": {
+              "kind": "OBJECT",
+              "name": "ApprovedAllocationType",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "identifier",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "batch",
             "type": {
               "kind": "OBJECT",
@@ -4565,6 +4648,65 @@ export const AllocationManagementDocument = gql`
 
 export function useAllocationManagementQuery(options?: Omit<Urql.UseQueryArgs<AllocationManagementQueryVariables>, 'query'>) {
   return Urql.useQuery<AllocationManagementQuery, AllocationManagementQueryVariables>({ query: AllocationManagementDocument, ...options });
+};
+export const AllocationsDocument = gql`
+    query allocations($IDENTIFIER: IdentifierInput!) {
+  allocations(identifier: $IDENTIFIER) {
+    faculties {
+      id
+      track
+      designation
+      minWorkload
+      maxWorkload
+      workload
+      user {
+        email
+        firstName
+        lastName
+        username
+      }
+    }
+    courses {
+      id
+      code
+      name
+      credit
+      hours
+      l
+      t
+      p
+      isExtra
+      isElective
+      program
+      curriculumYear
+      batchYear
+      sem
+    }
+    batches {
+      id
+      curriculumYear
+      curriculumName
+      batchYear
+      batchSem
+      courseIds
+      courseAllocations {
+        id
+        courseId
+        facultyId
+      }
+      labAllocations {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
+  }
+}
+    `;
+
+export function useAllocationsQuery(options: Omit<Urql.UseQueryArgs<AllocationsQueryVariables>, 'query'>) {
+  return Urql.useQuery<AllocationsQuery, AllocationsQueryVariables>({ query: AllocationsDocument, ...options });
 };
 export const BatchDocument = gql`
     query batch($BATCHID: ID!) {

@@ -68,3 +68,57 @@ query allocationManagement($IDENTIFIER: IdentifierInput){
     
   }
 }
+
+query allocations($IDENTIFIER: IdentifierInput!){
+  allocations(identifier: $IDENTIFIER){
+      faculties{
+        id
+        track
+        designation
+        minWorkload
+        maxWorkload
+        workload
+        user{
+          email
+          firstName
+          lastName
+          username
+        }
+      }
+      courses{
+        id
+        code
+        name
+        credit
+        hours
+        l
+        t
+        p
+        isExtra
+        isElective
+        program
+        curriculumYear
+        batchYear
+        sem
+      }
+      batches{
+        id
+        curriculumYear
+        curriculumName
+        batchYear
+        batchSem
+        courseIds
+        courseAllocations{
+          id
+          courseId
+          facultyId
+        }
+        labAllocations{
+          id
+          courseId
+          facultyId
+          isInCharge
+        }
+      }
+    }
+}
