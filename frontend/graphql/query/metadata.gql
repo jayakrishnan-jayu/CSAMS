@@ -10,6 +10,7 @@ query metadata {
             isActive
         }
         faculty {
+            id
             track
             designation
         }

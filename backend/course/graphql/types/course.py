@@ -194,6 +194,7 @@ class CourseType(graphene.ObjectType):
     program = graphene.String()
     curriculum_year = graphene.Int()
     batch_year = graphene.Int()
+    batch_id = graphene.ID()
     sem = graphene.Int()
     preferences = graphene.List(CoursePreferenceType)
 

@@ -64,9 +64,6 @@ interface NameField {
 
 type FacultyDropDownField = FacultyType & NameField
 
-
-
-
 type AllocationPreferenceCourseType = AllocationFields & CourseType
 
 type ModeType =  null | 'addLabAllocation' | 'addCourseAllocation' | 'updateLabAllocation' | 'updateCourseAllocation' | 'deleteLabAllocation' | 'deleteCourseAllocation'

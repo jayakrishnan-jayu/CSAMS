@@ -1,17 +1,50 @@
 mutation addPreference ($COURSEID: ID!, $EXPERIENCE: Int!, $WEIGHTAGE:Int!){
     addPreference(courseId:$COURSEID, experience:$EXPERIENCE, weightage:$WEIGHTAGE){
-        response
+        response{
+            preferences{
+                id
+                identifierYear
+                identifierIsEvenSem
+                facultyId
+                courseId
+                weigtage
+                experience
+                timestamp
+            }
+        }
     }
 }
 
 mutation updatePreference ($ID: ID!, $EXPERIENCE: Int, $WEIGHTAGE:Int){
     updatePreference(id:$ID, experience:$EXPERIENCE, weightage:$WEIGHTAGE){
-        response
+        response{
+            preferences{
+                id
+                identifierYear
+                identifierIsEvenSem
+                facultyId
+                courseId
+                weigtage
+                experience
+                timestamp
+            }
+        }
     }
 }
 
 mutation deletePreference ($ID: ID!){
     deletePreference(id:$ID){
-        response
+        response{
+            preferences{
+                id
+                identifierYear
+                identifierIsEvenSem
+                facultyId
+                courseId
+                weigtage
+                experience
+                timestamp
+            }
+        }
     }
 }

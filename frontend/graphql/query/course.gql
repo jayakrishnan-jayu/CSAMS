@@ -6,37 +6,69 @@ query programs {
   }
 }
 
-query coursesForPreference($IDENTIFIER: IdentfierInput, $USERID: ID ) {
-  courses(identifier: $IDENTIFIER) {
-    id
-    code
-    name
-    credit
-    isExtra
-    program
-    curriculumYear
-    batchYear
-    sem
+query coursesForPreference {
+  coursesForPreference{
     preferences{
       id
+      identifierYear
+      identifierIsEvenSem
+      facultyId
       courseId
-      faculty{
-        user{
-          id
-        }
-      }
       weigtage
       experience
       timestamp
     }
-  }
-  preferences(identifier: $IDENTIFIER, userId: $USERID) {
-    id
-    course {
+    faculties{
       id
+      track
+      designation
+      minWorkload
+      maxWorkload
+      workload
+      user{
+        id
+        email
+        firstName
+        lastName        
+      }
     }
-    weigtage
-    experience
+    courses{
+      id
+      code
+      name
+      credit
+      hours
+      l
+      t
+      p
+      isExtra
+      isElective
+      batchId
+      sem
+    }
+    batches{
+      id
+      curriculumYear
+      curriculumName
+      batchYear
+      batchSem
+      courseLabs{
+        courseId
+        labId
+      }
+      courseIds
+      courseAllocations{
+        id
+        courseId
+        facultyId
+      }
+      labAllocations{
+        id
+        courseId
+        facultyId
+        isInCharge
+      }      
+    }
   }
 }
 

@@ -8,12 +8,18 @@ import { InputText } from 'primereact/inputtext';
 import { usePreferencesQuery } from '@/graphql/generated/graphql';
 import { AllocationCoursePreferenceType } from './allocationManagement/facultyPreferenceAllocationTable';
 
+type PreferenceExcludeType = 'program' | 'curriculum' | 'batch' | 'course';
+
+type PreferenceIncludeType = 'faculty';
+
 interface PreferenceTableProps {
-    preferences?: AllocationCoursePreferenceType[]
+    preferences?: AllocationCoursePreferenceType[] | any
     courseID?: number,
+    exclude?: PreferenceExcludeType[]
+    include?: PreferenceIncludeType[]
 }
 
-const PreferenceTable = ({courseID, preferences}: PreferenceTableProps) => {
+const PreferenceTable = ({courseID, preferences, exclude, include}: PreferenceTableProps) => {
     const prefNums = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
     let variables = {}
     if (courseID) {
@@ -122,10 +128,11 @@ const PreferenceTable = ({courseID, preferences}: PreferenceTableProps) => {
             responsiveLayout="scroll"
             emptyMessage="No prefereces found."
         >
-            <Column field="course" header="Course"  style={{ minWidth: '10rem' }} />
-            <Column field="program" header="Program" body={programBodyTemplate}/>
-            <Column field="curriculum" header="Curriculum" style={{ minWidth: '2rem' }}/>
-            <Column field="batch" header="Batch" style={{ minWidth: '2rem' }} />
+            {include?.includes("faculty") && <Column field="faculty" header="Faculty"  style={{ minWidth: '10rem' }} />}
+            {!exclude?.includes("course") && <Column field="course" header="Course"  style={{ minWidth: '10rem' }} />}
+            {!exclude?.includes("program") && <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>}
+            {!exclude?.includes('curriculum') && <Column field="curriculum" header="Curriculum" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>}
+            {!exclude?.includes('batch') &&<Column field="batch" header="Batch" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter/>}
             <Column field="weigtage" header="Pref." style={{ minWidth: '2rem' }} body={prefBodyTemplate}/>
             <Column field="experience" header="Exp."  style={{ minWidth: '2rem' }} />
             <Column field="timestamp" header="At"  style={{ minWidth: '2rem' }}  body={dateTimeBodyTemplate}/>
@@ -193,10 +200,10 @@ const PreferenceTable = ({courseID, preferences}: PreferenceTableProps) => {
             header={header}
         >
             <Column field="username" header="Name" filter filterPlaceholder="Search by username" style={{ minWidth: '10rem' }} />
-            <Column field="course" header="Course" filter filterPlaceholder="Search by course" style={{ minWidth: '10rem' }} />
-            <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>
-            <Column field="curriculum" header="Curriculum" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
-            <Column field="batch" header="Batch" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter/>
+            {!exclude?.includes("course") && <Column field="course" header="Course" filter filterPlaceholder="Search by course" style={{ minWidth: '10rem' }} />}
+            {!exclude?.includes("program") && <Column field="program" header="Program" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter body={programBodyTemplate} filterElement={programFilterTemplate}/>}
+            {!exclude?.includes('curriculum') && <Column field="curriculum" header="Curriculum" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>}
+            {!exclude?.includes('batch') &&<Column field="batch" header="Batch" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} filter/>}
             <Column field="weigtage" header="Pref." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} body={prefBodyTemplate} filter filterElement={perfFilterTemplate} />
             <Column field="experience" header="Exp." filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }} sortable/>
             <Column field="timestamp" header="At" filterMenuStyle={{ width: '16rem' }} style={{ minWidth: '2rem' }}  body={dateTimeBodyTemplate} sortable/>

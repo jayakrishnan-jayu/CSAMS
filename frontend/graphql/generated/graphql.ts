@@ -51,7 +51,7 @@ export type AddLabAllocation = {
 
 export type AddPreference = {
   __typename?: 'AddPreference';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<PrefernceMutationResponse>;
 };
 
 export type AllocationBatchType = {
@@ -140,6 +140,18 @@ export type ConfigType = {
   preferenceCount?: Maybe<Scalars['Int']>;
 };
 
+export type CourseAllocationPreferenceType = {
+  __typename?: 'CourseAllocationPreferenceType';
+  courseId?: Maybe<Scalars['ID']>;
+  experience?: Maybe<Scalars['Int']>;
+  facultyId?: Maybe<Scalars['ID']>;
+  id?: Maybe<Scalars['ID']>;
+  identifierIsEvenSem?: Maybe<Scalars['Boolean']>;
+  identifierYear?: Maybe<Scalars['Int']>;
+  timestamp?: Maybe<Scalars['DateTime']>;
+  weigtage?: Maybe<Scalars['Int']>;
+};
+
 export type CourseAllocationType = {
   __typename?: 'CourseAllocationType';
   courseId?: Maybe<Scalars['ID']>;
@@ -181,6 +193,7 @@ export type CoursePreferenceType = {
 
 export type CourseType = {
   __typename?: 'CourseType';
+  batchId?: Maybe<Scalars['ID']>;
   batchYear?: Maybe<Scalars['Int']>;
   code?: Maybe<Scalars['String']>;
   credit?: Maybe<Scalars['Int']>;
@@ -257,7 +270,7 @@ export type DeleteLabAllocation = {
 
 export type DeletePreference = {
   __typename?: 'DeletePreference';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<PrefernceMutationResponse>;
 };
 
 export type ExtraCourseType = {
@@ -489,6 +502,14 @@ export type MutationVerifyCurriculumUploadArgs = {
   curriculumUploadID: Scalars['ID'];
 };
 
+export type PreferenceAllocationFacultyType = {
+  __typename?: 'PreferenceAllocationFacultyType';
+  batches?: Maybe<Array<Maybe<AllocationBatchType>>>;
+  courses?: Maybe<Array<Maybe<CourseType>>>;
+  faculties?: Maybe<Array<Maybe<FacultyType>>>;
+  preferences?: Maybe<Array<Maybe<CourseAllocationPreferenceType>>>;
+};
+
 export type PreferenceType = {
   __typename?: 'PreferenceType';
   course?: Maybe<CourseType>;
@@ -499,6 +520,11 @@ export type PreferenceType = {
   identifierYear?: Maybe<Scalars['Int']>;
   timestamp?: Maybe<Scalars['DateTime']>;
   weigtage?: Maybe<Scalars['Int']>;
+};
+
+export type PrefernceMutationResponse = {
+  __typename?: 'PrefernceMutationResponse';
+  preferences?: Maybe<Array<Maybe<CourseAllocationPreferenceType>>>;
 };
 
 export type ProgramType = {
@@ -520,6 +546,7 @@ export type Query = {
   course?: Maybe<CourseType>;
   courseLabs?: Maybe<Array<Maybe<CourseLabType>>>;
   courses?: Maybe<Array<Maybe<CourseType>>>;
+  coursesForPreference?: Maybe<PreferenceAllocationFacultyType>;
   curriculumExtraCourses?: Maybe<Array<Maybe<CurriculumExtraCoursesType>>>;
   curriculumUpload?: Maybe<CurriculumUploadType>;
   curriculumUploads?: Maybe<Array<Maybe<CurriculumUploadType>>>;
@@ -675,7 +702,7 @@ export type UpdateLabAllocation = {
 
 export type UpdatePreference = {
   __typename?: 'UpdatePreference';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<PrefernceMutationResponse>;
 };
 
 export type UpdatePreferenceCount = {
@@ -879,7 +906,7 @@ export type AddPreferenceMutationVariables = Exact<{
 }>;
 
 
-export type AddPreferenceMutation = { __typename?: 'Mutation', addPreference?: { __typename?: 'AddPreference', response?: boolean | null } | null };
+export type AddPreferenceMutation = { __typename?: 'Mutation', addPreference?: { __typename?: 'AddPreference', response?: { __typename?: 'PrefernceMutationResponse', preferences?: Array<{ __typename?: 'CourseAllocationPreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null } | null> | null } | null } | null };
 
 export type UpdatePreferenceMutationVariables = Exact<{
   ID: Scalars['ID'];
@@ -888,14 +915,14 @@ export type UpdatePreferenceMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePreferenceMutation = { __typename?: 'Mutation', updatePreference?: { __typename?: 'UpdatePreference', response?: boolean | null } | null };
+export type UpdatePreferenceMutation = { __typename?: 'Mutation', updatePreference?: { __typename?: 'UpdatePreference', response?: { __typename?: 'PrefernceMutationResponse', preferences?: Array<{ __typename?: 'CourseAllocationPreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null } | null> | null } | null } | null };
 
 export type DeletePreferenceMutationVariables = Exact<{
   ID: Scalars['ID'];
 }>;
 
 
-export type DeletePreferenceMutation = { __typename?: 'Mutation', deletePreference?: { __typename?: 'DeletePreference', response?: boolean | null } | null };
+export type DeletePreferenceMutation = { __typename?: 'Mutation', deletePreference?: { __typename?: 'DeletePreference', response?: { __typename?: 'PrefernceMutationResponse', preferences?: Array<{ __typename?: 'CourseAllocationPreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null } | null> | null } | null } | null };
 
 export type UpdateWorkloadMutationVariables = Exact<{
   TRACK: Scalars['String'];
@@ -945,13 +972,10 @@ export type ProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ProgramsQuery = { __typename?: 'Query', programs?: Array<{ __typename?: 'ProgramType', id?: string | null, name?: string | null, duration?: string | null } | null> | null };
 
-export type CoursesForPreferenceQueryVariables = Exact<{
-  IDENTIFIER?: InputMaybe<IdentfierInput>;
-  USERID?: InputMaybe<Scalars['ID']>;
-}>;
+export type CoursesForPreferenceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CoursesForPreferenceQuery = { __typename?: 'Query', courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, isExtra?: boolean | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null, preferences?: Array<{ __typename?: 'CoursePreferenceType', id?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', id?: string | null } | null } | null } | null> | null } | null> | null, preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, weigtage?: number | null, experience?: number | null, course?: { __typename?: 'CourseType', id?: string | null } | null } | null> | null };
+export type CoursesForPreferenceQuery = { __typename?: 'Query', coursesForPreference?: { __typename?: 'PreferenceAllocationFacultyType', preferences?: Array<{ __typename?: 'CourseAllocationPreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, facultyId?: string | null, courseId?: string | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null } | null> | null, faculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, minWorkload?: number | null, maxWorkload?: number | null, workload?: number | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null } | null } | null> | null, courses?: Array<{ __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, hours?: number | null, l?: number | null, t?: number | null, p?: number | null, isExtra?: boolean | null, isElective?: boolean | null, batchId?: string | null, sem?: number | null } | null> | null, batches?: Array<{ __typename?: 'AllocationBatchType', id?: string | null, curriculumYear?: number | null, curriculumName?: string | null, batchYear?: number | null, batchSem?: number | null, courseIds?: Array<string | null> | null, courseLabs?: Array<{ __typename?: 'AllocationCourseLabType', courseId?: string | null, labId?: string | null } | null> | null, courseAllocations?: Array<{ __typename?: 'CourseAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null } | null> | null, labAllocations?: Array<{ __typename?: 'LabAllocationType', id?: string | null, courseId?: string | null, facultyId?: string | null, isInCharge?: boolean | null } | null> | null } | null> | null } | null };
 
 export type VerifyNewCurriculumQueryVariables = Exact<{
   PROGRAM: Scalars['String'];
@@ -995,7 +1019,7 @@ export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtr
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null } | null } | null } | null };
+export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null } | null } | null } | null };
 
 export type PreferencesQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
@@ -1182,8 +1206,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "PrefernceMutationResponse",
+              "ofType": null
             },
             "args": []
           }
@@ -1680,6 +1705,77 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "CourseAllocationPreferenceType",
+        "fields": [
+          {
+            "name": "courseId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "experience",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "facultyId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierIsEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "identifierYear",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "timestamp",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "weigtage",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "CourseAllocationType",
         "fields": [
           {
@@ -1810,6 +1906,14 @@ export default {
         "kind": "OBJECT",
         "name": "CourseType",
         "fields": [
+          {
+            "name": "batchId",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
           {
             "name": "batchYear",
             "type": {
@@ -2160,8 +2264,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "PrefernceMutationResponse",
+              "ofType": null
             },
             "args": []
           }
@@ -3136,6 +3241,61 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "PreferenceAllocationFacultyType",
+        "fields": [
+          {
+            "name": "batches",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AllocationBatchType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "courses",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "faculties",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FacultyType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "preferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseAllocationPreferenceType",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "PreferenceType",
         "fields": [
           {
@@ -3201,6 +3361,25 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PrefernceMutationResponse",
+        "fields": [
+          {
+            "name": "preferences",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "CourseAllocationPreferenceType",
+                "ofType": null
+              }
             },
             "args": []
           }
@@ -3447,6 +3626,15 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "coursesForPreference",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PreferenceAllocationFacultyType",
+              "ofType": null
+            },
+            "args": []
           },
           {
             "name": "curriculumExtraCourses",
@@ -3916,8 +4104,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "PrefernceMutationResponse",
+              "ofType": null
             },
             "args": []
           }
@@ -4523,7 +4712,18 @@ export const AddPreferenceDocument = gql`
     experience: $EXPERIENCE
     weightage: $WEIGHTAGE
   ) {
-    response
+    response {
+      preferences {
+        id
+        identifierYear
+        identifierIsEvenSem
+        facultyId
+        courseId
+        weigtage
+        experience
+        timestamp
+      }
+    }
   }
 }
     `;
@@ -4534,7 +4734,18 @@ export function useAddPreferenceMutation() {
 export const UpdatePreferenceDocument = gql`
     mutation updatePreference($ID: ID!, $EXPERIENCE: Int, $WEIGHTAGE: Int) {
   updatePreference(id: $ID, experience: $EXPERIENCE, weightage: $WEIGHTAGE) {
-    response
+    response {
+      preferences {
+        id
+        identifierYear
+        identifierIsEvenSem
+        facultyId
+        courseId
+        weigtage
+        experience
+        timestamp
+      }
+    }
   }
 }
     `;
@@ -4545,7 +4756,18 @@ export function useUpdatePreferenceMutation() {
 export const DeletePreferenceDocument = gql`
     mutation deletePreference($ID: ID!) {
   deletePreference(id: $ID) {
-    response
+    response {
+      preferences {
+        id
+        identifierYear
+        identifierIsEvenSem
+        facultyId
+        courseId
+        weigtage
+        experience
+        timestamp
+      }
+    }
   }
 }
     `;
@@ -4799,37 +5021,69 @@ export function useProgramsQuery(options?: Omit<Urql.UseQueryArgs<ProgramsQueryV
   return Urql.useQuery<ProgramsQuery, ProgramsQueryVariables>({ query: ProgramsDocument, ...options });
 };
 export const CoursesForPreferenceDocument = gql`
-    query coursesForPreference($IDENTIFIER: IdentfierInput, $USERID: ID) {
-  courses(identifier: $IDENTIFIER) {
-    id
-    code
-    name
-    credit
-    isExtra
-    program
-    curriculumYear
-    batchYear
-    sem
+    query coursesForPreference {
+  coursesForPreference {
     preferences {
       id
+      identifierYear
+      identifierIsEvenSem
+      facultyId
       courseId
-      faculty {
-        user {
-          id
-        }
-      }
       weigtage
       experience
       timestamp
     }
-  }
-  preferences(identifier: $IDENTIFIER, userId: $USERID) {
-    id
-    course {
+    faculties {
       id
+      track
+      designation
+      minWorkload
+      maxWorkload
+      workload
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
     }
-    weigtage
-    experience
+    courses {
+      id
+      code
+      name
+      credit
+      hours
+      l
+      t
+      p
+      isExtra
+      isElective
+      batchId
+      sem
+    }
+    batches {
+      id
+      curriculumYear
+      curriculumName
+      batchYear
+      batchSem
+      courseLabs {
+        courseId
+        labId
+      }
+      courseIds
+      courseAllocations {
+        id
+        courseId
+        facultyId
+      }
+      labAllocations {
+        id
+        courseId
+        facultyId
+        isInCharge
+      }
+    }
   }
 }
     `;
@@ -4931,6 +5185,7 @@ export const MetadataDocument = gql`
       isActive
     }
     faculty {
+      id
       track
       designation
     }

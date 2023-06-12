@@ -1,18 +1,22 @@
 import graphene
+from allocation.graphql.types.allocation import AllocationBatchType
 from backend.api import APIException
 from backend.api.decorator import login_required, resolve_user
 from course.models import Course, Batch
+from preference.graphql.types.preference import CourseAllocationPreferenceType
 from preference.models import Config, Preference, Identifier
 from user.models import Faculty
 from django.utils import timezone
 
+class PrefernceMutationResponse(graphene.ObjectType):
+    preferences = graphene.List(CourseAllocationPreferenceType)
 
 class AddPreference(graphene.Mutation):
     class Arguments:
         course_id = graphene.ID(required=True)
         weightage = graphene.Int(required=True)
         experience = graphene.Int(required=True)
-    response = graphene.Boolean()
+    response = graphene.Field(PrefernceMutationResponse)
 
     @login_required
     @resolve_user
@@ -61,14 +65,17 @@ class AddPreference(graphene.Mutation):
             raise APIException(message="Preference weightage already", code="COURSE_PREFERENCE_WEIGHTAGE_EXISTS")
         Preference.objects.create(preference_sem_identifier=identifier, faculty=faculty, course=course, weigtage=weightage, experience=experience)
 
-        return AddPreference(response=True)
+        preferences = Preference.objects.filter(preference_sem_identifier=identifier)
+
+
+        return AddPreference(response=PrefernceMutationResponse(preferences=preferences))
 
 class UpdatePreference(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
         weightage = graphene.Int(required=False)
         experience = graphene.Int(required=False)
-    response = graphene.Boolean()
+    response = graphene.Field(PrefernceMutationResponse)
 
     @login_required
     @resolve_user
@@ -106,19 +113,20 @@ class UpdatePreference(graphene.Mutation):
             raise APIException(message="Invalid preference ID", code="INVALID_ARGUMENT")
         
         if weightage is not None:
-            if qs.exclude(id=id).filter(weightage=weightage).exists():
+            if qs.exclude(id=id).filter(weigtage=weightage).exists():
                 raise APIException(message="Weightage already exists for another coures preference")
             preference.weigtage = weightage
         if experience is not None:
             preference.experience = experience
         
-        preference.save() 
-        return UpdatePreference(response=True)
+        preference.save()
+        preferences = Preference.objects.filter(preference_sem_identifier=identifier)
+        return UpdatePreference(response=PrefernceMutationResponse(preferences=preferences))
     
 class DeletePreference(graphene.Mutation):
     class Arguments:
         id = graphene.ID(required=True)
-    response = graphene.Boolean()
+    response = graphene.Field(PrefernceMutationResponse)
 
     @login_required
     @resolve_user
@@ -148,7 +156,8 @@ class DeletePreference(graphene.Mutation):
         except Preference.DoesNotExist:
             raise APIException(message="Invalid preference ID", code="INVALID_ARGUMENT")
         preference.delete()
-        return UpdatePreference(response=True)
+        preferences = Preference.objects.filter(preference_sem_identifier=identifier)
+        return DeletePreference(response=PrefernceMutationResponse(preferences=preferences))
 
 class PrefMutation(graphene.ObjectType):
     add_preference = AddPreference.Field()
