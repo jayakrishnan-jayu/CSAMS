@@ -16,7 +16,8 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
         staticMenuDesktopInactive: false,
         overlayMenuActive: false,
         profileSidebarVisible: false,
-        configSidebarVisible: false,
+        // configSidebarVisible: false,
+        darkMode: false,
         staticMenuMobileActive: false,
         menuHoverActive: false
     });

@@ -1,13 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from 'next/link';
+import PrimeReact from 'primereact/api';
 import { classNames } from 'primereact/utils';
 import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
-import { AppTopbarRef } from '../../types/types';
+import { AppTopbarRef, LayoutConfig, LayoutState } from '../../types/types';
 import { LayoutContext } from './context/layoutcontext';
+import { InputSwitch } from 'primereact/inputswitch';
 
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
-  const { layoutConfig, layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
+  const { layoutConfig, setLayoutConfig, layoutState, setLayoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
@@ -17,6 +19,20 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     topbarmenu: topbarmenuRef.current,
     topbarmenubutton: topbarmenubuttonRef.current,
   }));
+
+  const onThemeChange = () => {
+    const _isDarkMode = !layoutState.darkMode;
+    setLayoutState((prevState: LayoutState) => ({ ...prevState, darkMode: _isDarkMode }));
+    if (_isDarkMode) {
+      PrimeReact.changeTheme?.(layoutConfig.theme, 'bootstrap4-dark-blue', 'theme-css', () => {
+        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme:'bootstrap4-dark-blue', colorScheme:'dark' }));
+      });
+    } else {
+      PrimeReact.changeTheme?.(layoutConfig.theme, 'lara-light-indigo', 'theme-css', () => {
+        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme: 'lara-light-indigo', colorScheme:'light' }));
+      });
+    }
+};
 
   return (
     <div className="layout-topbar">
@@ -55,20 +71,24 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
           "layout-topbar-menu-mobile-active": layoutState.profileSidebarVisible,
         })}
       >
-        <button type="button" className="p-link layout-topbar-button">
-          <i className="pi pi-calendar"></i>
-          <span>Calendar</span>
-        </button>
-        <button type="button" className="p-link layout-topbar-button">
-          <i className="pi pi-user"></i>
-          <span>Profile</span>
-        </button>
-        <Link href="/documentation" legacyBehavior>
+        <Link href="/profile">
+          <button type="button" className="p-link layout-topbar-button">
+            <i className="pi pi-user"></i>
+            <span>Profile</span>
+          </button>
+        </Link>
+        <Link href="/settings">
           <button type="button" className="p-link layout-topbar-button">
             <i className="pi pi-cog"></i>
             <span>Settings</span>
           </button>
         </Link>
+
+        <button type="button" className="p-link layout-topbar-button" onClick={()=>onThemeChange()}>
+          <i className={layoutState.darkMode ? "pi pi-moon" : "pi pi-sun"} ></i>
+          <span>Settings</span>
+        </button>
+    
       </div>
     </div>
   );
