@@ -7,7 +7,7 @@ import { IdentifierInput } from "@/graphql/generated/graphql";
 export interface ReportInput {
   identifier: IdentifierInput
   format: 'xlsx' | 'pdf'
-  type: 'courseBook'
+  type: 'courseBook'| 'facultyWorkload'
 }
 
 export default function Report() {
@@ -17,7 +17,7 @@ export default function Report() {
   const data: ReportInput = {
     identifier: identifier,
     format: 'xlsx',
-    type: 'courseBook'
+    type: 'facultyWorkload'
   }
 
   const [dropdownValue, setDropdownValue] = useState(null);
@@ -36,12 +36,17 @@ export default function Report() {
       if (!response.ok) {
         throw new Error(`Unexpected response ${response.statusText}`);
       }
+      console.log(response);
 
+      const header = response.headers.get('Content-Disposition');
+      const parts = header!.split(';');
+      const filename = parts[1].split('=')[1];
+      
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'data.xlsx';
+      link.download = filename;
       link.click();
       URL.revokeObjectURL(url);
 
