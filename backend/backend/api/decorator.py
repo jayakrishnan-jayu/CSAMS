@@ -53,6 +53,8 @@ def resolve_user(func):
             raise APIException(message='User not authenticated', code='AUTHENTICATION_FAILURE')
         try:
             user = User.objects.get(sub=userID)
+            if not user.is_active:
+                raise APIException(message="User is not active", code='AUTHENTICATION_FAILURE')
             info.context.resolved_user = user
             return func(parent, info, *args, **kwargs)
         except User.DoesNotExist:

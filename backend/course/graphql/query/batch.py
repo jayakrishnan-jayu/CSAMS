@@ -48,6 +48,7 @@ class BatchQueries(graphene.ObjectType):
     )
 
     @login_required
+    @resolve_user
     def resolve_programs(self, info):
         programs = Program.objects.all()
         if not programs.exists():
@@ -55,6 +56,7 @@ class BatchQueries(graphene.ObjectType):
         return programs
     
     @login_required
+    @resolve_user
     def resolve_curriculums(self, info, program:str=None, year:int=None):
         curriculums = Curriculum.objects.all()
         if year is not None:
@@ -71,6 +73,7 @@ class BatchQueries(graphene.ObjectType):
         return curriculums
     
     @login_required
+    @resolve_user
     def resolve_batch(self, info, batch_id:int):
         try:
             batch = Batch.objects.get(id=batch_id)
@@ -79,6 +82,7 @@ class BatchQueries(graphene.ObjectType):
         return batch
     
     @login_required
+    @resolve_user
     def resolve_batches(self, info, identifier:IdentifierInput = None):
         if identifier is None:
             identifier = Config.objects.first().current_preference_sem
@@ -86,6 +90,7 @@ class BatchQueries(graphene.ObjectType):
         return batches
     
     @login_required
+    @resolve_user
     def resolve_batch_info(self, info, program:str):
         try:
             p = Program.objects.get(name=program)

@@ -40,6 +40,20 @@ query faculties {
   }
 }
 
+query allocatedFaculties($IDENTIFIER: IdentifierInput!) {
+  allocatedFaculties(identifier: $IDENTIFIER){
+    id
+    user{
+      id
+      email
+      firstName
+      lastName
+    }
+    track
+    designation
+  }
+}
+
 query workloads{
   workloads{
     track

@@ -542,6 +542,7 @@ export type ProgramType = {
 
 export type Query = {
   __typename?: 'Query';
+  allocatedFaculties?: Maybe<Array<Maybe<FacultyType>>>;
   allocationManagement?: Maybe<AllocationManagementType>;
   allocations?: Maybe<ApprovedAllocationType>;
   batch?: Maybe<BatchType>;
@@ -568,6 +569,11 @@ export type Query = {
   users?: Maybe<Array<Maybe<UserType>>>;
   verifyNewCurriculum?: Maybe<Array<Maybe<BatchType>>>;
   workloads?: Maybe<Array<Maybe<WorkloadType>>>;
+};
+
+
+export type QueryAllocatedFacultiesArgs = {
+  identifier: IdentifierInput;
 };
 
 
@@ -1055,6 +1061,13 @@ export type FacultiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type FacultiesQuery = { __typename?: 'Query', faculties?: Array<{ __typename?: 'FacultyType', track?: string | null, designation?: string | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null } | null> | null };
+
+export type AllocatedFacultiesQueryVariables = Exact<{
+  IDENTIFIER: IdentifierInput;
+}>;
+
+
+export type AllocatedFacultiesQuery = { __typename?: 'Query', allocatedFaculties?: Array<{ __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null, user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null } | null } | null> | null };
 
 export type WorkloadsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3457,6 +3470,29 @@ export default {
         "name": "Query",
         "fields": [
           {
+            "name": "allocatedFaculties",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "FacultyType",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "identifier",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "allocationManagement",
             "type": {
               "kind": "OBJECT",
@@ -5360,6 +5396,25 @@ export const FacultiesDocument = gql`
 
 export function useFacultiesQuery(options?: Omit<Urql.UseQueryArgs<FacultiesQueryVariables>, 'query'>) {
   return Urql.useQuery<FacultiesQuery, FacultiesQueryVariables>({ query: FacultiesDocument, ...options });
+};
+export const AllocatedFacultiesDocument = gql`
+    query allocatedFaculties($IDENTIFIER: IdentifierInput!) {
+  allocatedFaculties(identifier: $IDENTIFIER) {
+    id
+    user {
+      id
+      email
+      firstName
+      lastName
+    }
+    track
+    designation
+  }
+}
+    `;
+
+export function useAllocatedFacultiesQuery(options: Omit<Urql.UseQueryArgs<AllocatedFacultiesQueryVariables>, 'query'>) {
+  return Urql.useQuery<AllocatedFacultiesQuery, AllocatedFacultiesQueryVariables>({ query: AllocatedFacultiesDocument, ...options });
 };
 export const WorkloadsDocument = gql`
     query workloads {

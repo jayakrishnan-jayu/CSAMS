@@ -1,4 +1,4 @@
-import { IdentifierType } from "@/graphql/generated/graphql";
+import { IdentifierType, useAllocatedFacultiesQuery } from "@/graphql/generated/graphql";
 import { ReportInput, ReportType } from "@/pages/faculty/report";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
@@ -6,6 +6,7 @@ import { Menu } from "primereact/menu";
 
 import { useRef, useState } from "react";
 import CourseBookTable from "./courseBookTable";
+import { Skeleton } from "primereact/skeleton";
 
 
 interface ReportDropdownType {
@@ -15,17 +16,22 @@ interface ReportDropdownType {
 
 interface ReportViewProps {
     timePeriods: IdentifierType[]
+    facultyId: string
 }
 
-const ReportView = ({timePeriods}: ReportViewProps) => {
+
+const ReportView = ({timePeriods, facultyId}: ReportViewProps) => {
 
   const reportOptions: ReportDropdownType[]  = [
     {key: 'courseBook', text: 'Course Book'},
     {key: 'facultyWorkload', text: 'Faculty Workload'},
+    {key: 'allocation', text: 'Allocations'},
   ]
 
   const [reportType, setReportType] = useState<ReportDropdownType>();
   const [timePeriod, setTimePeriod] = useState<IdentifierType>();
+  const [faculty, setFaculty] = useState(null);
+
 
 
   const downloadXLSX = async (reportArgs: ReportInput) => {
@@ -63,16 +69,16 @@ const ReportView = ({timePeriods}: ReportViewProps) => {
     downloadXLSX({format: 'xlsx', identifier: {isEvenSem: timePeriod?.isEvenSem, year: timePeriod?.year}, type: reportType?.key})
   }
 
-  const onPdfDownloadClick = () => {
-    downloadXLSX({format: 'xlsx', identifier: {isEvenSem: timePeriod?.isEvenSem, year: timePeriod?.year}, type: reportType?.key})
-  }
+//   const onPdfDownloadClick = () => {
+//     downloadXLSX({format: 'xlsx', identifier: {isEvenSem: timePeriod?.isEvenSem, year: timePeriod?.year}, type: reportType?.key})
+//   }
 
   const downloadMenuItems = [
-    {
-        label: 'As PDF',
-        icon: 'pi pi-file-pdf',
-        command: onPdfDownloadClick
-    },
+    // {
+    //     label: 'As PDF',
+    //     icon: 'pi pi-file-pdf',
+    //     command: onPdfDownloadClick
+    // },
     {
         label: 'As Excel',
         icon: 'pi pi-file-excel',
@@ -99,8 +105,38 @@ const selectedCountryTemplate = (option: IdentifierType, props: any) => {
 
 const renderTable = () => {
     if (!reportType || !timePeriod) return <></>;
-    if (reportType.key === 'courseBook' || reportType.key === 'facultyWorkload') return <CourseBookTable identifier={timePeriod} type={reportType.key}/>
-    return <div>selected</div>;
+    if (reportType.key === 'courseBook' || reportType.key === 'facultyWorkload' || reportType.key === 'allocation') {
+        if (reportType.key !== 'allocation') return <CourseBookTable identifier={timePeriod} type={reportType.key} />
+        if (faculty) return <CourseBookTable identifier={timePeriod} type={reportType.key} facultyId={faculty?.facultyId}/>
+        return <></>
+    }
+        
+    return <></>;
+}
+
+const renderButton = () => {
+    if (reportType && timePeriod) {
+        if (reportType?.key  === 'courseBook' || reportType?.key === 'facultyWorkload') {
+            return (
+            <div className="flex justify-content-center col-12 md:col-4">
+                <div className="flex align-items-center">
+                    <Menu ref={menu} model={downloadMenuItems} popup />
+                    <Button type="button" label="Export As" icon="pi pi-angle-down" onClick={toggleMenu} style={{ width: 'auto' }} />
+                </div>
+            </div>);
+        }
+
+        return (
+            <div className="field col-12 md:col-4">
+                <span className="">
+                    <h5>Faculty</h5>
+                    <FacultyDropdown identifier={timePeriod} facultyId={facultyId} faculty={faculty} setFaculty={setFaculty}/>
+                </span>
+            </div>
+        );
+
+    }
+    return <></>;
 }
 
   return (
@@ -144,14 +180,7 @@ const renderTable = () => {
                     </span>
                 </div>
 
-                {reportType && timePeriod && 
-                <div className="flex justify-content-center col-12 md:col-4">
-                    <div className="flex align-items-center">
-                    <Menu ref={menu} model={downloadMenuItems} popup />
-                    <Button type="button" label="Download As" icon="pi pi-angle-down" onClick={toggleMenu} style={{ width: 'auto' }} />
-                    </div>
-                </div>
-                }
+            {renderButton()}                
 
             </div>
             </div>
@@ -161,6 +190,40 @@ const renderTable = () => {
       
     </div>
   );
+}
+
+interface FacultyDropdownProps {
+    identifier: IdentifierType
+    facultyId: string
+    faculty: any
+    setFaculty: any
+}
+
+const FacultyDropdown = ({identifier, facultyId, faculty, setFaculty}: FacultyDropdownProps) => {
+    const [result] = useAllocatedFacultiesQuery({variables: {IDENTIFIER: {isEvenSem: identifier.isEvenSem, year: identifier.year}}});
+    const {fetching, data, error} = result;
+    
+    if (fetching) return <Skeleton width="4rem" height="2rem"/>;
+    if (error) return <span>Error : {error?.message}</span>;
+    const dropdownValue =data?.allocatedFaculties?.map(f => {
+        const isMe = facultyId === f?.id;
+        return {facultyId: f?.id, name: f?.user?.firstName + " " + f?.user?.lastName, email: f?.user?.email, isMe: isMe };
+    })
+    if (!faculty) {
+        const _f = dropdownValue?.find(f => f?.facultyId === facultyId);
+        if (_f) setFaculty(_f);
+    }
+    return <Dropdown
+        value={faculty}
+        options={dropdownValue}
+        onChange={(e)=>setFaculty(e.value)}
+        optionLabel="name"
+        itemTemplate={(i)=><><span>{i?.name} - {i?.email}</span> {i?.isMe && <i className="pi pi-user ml-3" />}</>}
+        valueTemplate={(i, props: any)=>{if (i) return <span>{i?.name}</span>; return <span>{props.placeholder}</span>}}
+        placeholder="Select a faculty"
+        filter
+    />
+
 }
 
 export default ReportView;

@@ -2,7 +2,7 @@ import graphene
 from allocation.models import CourseAllocation, LabAllocation
 from course.models import Batch, Course, CourseLab
 from preference.models import Identifier, Preference, Config
-from backend.api.decorator import login_required
+from backend.api.decorator import login_required, resolve_user
 from backend.api import APIException
 from user.models import Faculty
 from ..types.preference import PreferenceType, IdentfierInput, PreferenceAllocationFacultyType, IdentifierType
@@ -27,6 +27,7 @@ class PreferenceQueries(graphene.ObjectType):
 
 
     @login_required
+    @resolve_user
     def resolve_courses_for_preference(self, info):
         if Config.objects.first() is None:
             raise APIException("Identifier Not Set", code="IDENTIFIER_NOT_SET")
@@ -47,6 +48,7 @@ class PreferenceQueries(graphene.ObjectType):
         return PreferenceAllocationFacultyType(faculties=faculties, batches=batches, courses=courses, preferences=preferences)
 
     @login_required
+    @resolve_user
     def resolve_preferences(self, info, identifier: IdentfierInput = None, course_id: int = None, user_id: int = None):
         if Config.objects.first() is None:
             raise APIException("Identifier Not Set", code="IDENTIFIER_NOT_SET")
@@ -69,6 +71,7 @@ class PreferenceQueries(graphene.ObjectType):
         return qs.filter(faculty=user_id)
 
     @login_required
+    @resolve_user
     def resolve_report_time_periods(self, info):
         return Identifier.objects.filter(is_hod_approved=True)
 

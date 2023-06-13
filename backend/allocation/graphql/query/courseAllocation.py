@@ -79,7 +79,6 @@ class AllocationQueries(graphene.ObjectType):
             b.course_allocations = CourseAllocation.objects.filter(course__id__in=b.course_ids)
             ca = b.course_allocations.values_list('faculty_id',flat=True).distinct()
             if ca:
-                print("updating ", [*ca])
                 faculty_ids.update([*ca])    
             b.lab_allocations = LabAllocation.objects.filter(course__id__in=b.course_ids)
             la = b.lab_allocations.values_list('faculty_id',flat=True).distinct()

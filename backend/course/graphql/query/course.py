@@ -4,7 +4,7 @@ from course.models import Course, Program, Batch, CourseLab, CurriculumExtras,Cu
 from preference.graphql.types.preference import IdentfierInput
 from preference.models import Config, Identifier
 from backend.api import APIException
-from backend.api.decorator import login_required
+from backend.api.decorator import login_required, resolve_user
 from typing import List
 from django.db.models import F
 
@@ -38,6 +38,7 @@ class CourseQueries(graphene.ObjectType):
     )
 
     @login_required
+    @resolve_user
     def resolve_course(self, info, code: str):
         try:
             course = Course.objects.get(code=code)
@@ -47,6 +48,7 @@ class CourseQueries(graphene.ObjectType):
     
 
     @login_required
+    @resolve_user
     def resolve_courses(self, info, identifier:IdentfierInput=None):
         config = Config.objects.first()
         if identifier is None:
@@ -65,6 +67,7 @@ class CourseQueries(graphene.ObjectType):
     
 
     @login_required
+    @resolve_user
     def resolve_courseLabs(self, info, program:str, year:int, sem=None):
         try:
             p = Program.objects.get(name=program)
@@ -87,6 +90,7 @@ class CourseQueries(graphene.ObjectType):
             raise APIException("Program not found", code="PROGRAM_NOT_FOUND")
     
     @login_required
+    @resolve_user
     def resolve_curriculum_extra_courses(self, info, extras:List[str], program:str, curriculum_year:int):
         if len(extras) == 0 or len(extras) > 10:
             raise APIException(message="Invalid lengths of array extras passed")
@@ -109,6 +113,7 @@ class CourseQueries(graphene.ObjectType):
         return qs
     
     @login_required
+    @resolve_user
     def resolve_batch_selected_extra_courses(self, info, batch_id: int):
         try:
             b = Batch.objects.get(id=batch_id)

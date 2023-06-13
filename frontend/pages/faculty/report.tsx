@@ -5,7 +5,7 @@ import { IdentifierInput, useReportTimePeriodsQuery } from "@/graphql/generated/
 import ReportView from "@/components/report/ReportView";
 
 
-export type ReportType = 'courseBook' | 'facultyWorkload'
+export type ReportType = 'courseBook' | 'facultyWorkload' | 'allocation'
 
 export interface ReportInput {
   identifier: IdentifierInput
@@ -22,7 +22,7 @@ export default function Report() {
   if (metaData?.metadata?.faculty === undefined) return <div>Internal Error, faculty data not found</div>
   if (fetching) return <div>Loading</div>;
   if (error?.message) return <div>Error: {error?.message}</div>
-  return <ReportView timePeriods={data?.reportTimePeriods}/>
+  return <ReportView timePeriods={data?.reportTimePeriods} facultyId={metaData?.metadata?.faculty?.id}/>
 }
 
 
