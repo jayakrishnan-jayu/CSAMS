@@ -151,11 +151,11 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         let fileName = '';
 
         if (inp.type === "courseBook") {    
-            fileName = 'Coursebook_JAN_MAY_2023';
+            fileName = 'Coursebook_JAN_MAY_'+Number(inp?.identifier?.year).toString();
             courseBookXLSX(worksheet, batches, courses, faculties);
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Course Book'); // Add the worksheet to the workbook
         } else {
-            fileName = 'Faculty_Workload_JAN_MAY_2023';
+            fileName = 'Faculty_Workload_JAN_MAY_'+Number(inp?.identifier?.year).toString();
             console.log(fileName);
             workloadXLSX(worksheet, batches, courses, faculties);
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Faculty Workload');

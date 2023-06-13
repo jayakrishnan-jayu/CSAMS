@@ -1,21 +1,28 @@
 import { MetaDataContext } from "@/components/layout/context/metadatacontext";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useContext } from "react";
-import { IdentifierInput } from "@/graphql/generated/graphql";
+import { IdentifierInput, useReportTimePeriodsQuery } from "@/graphql/generated/graphql";
 import ReportView from "@/components/report/ReportView";
+
+
+export type ReportType = 'courseBook' | 'facultyWorkload'
 
 export interface ReportInput {
   identifier: IdentifierInput
   format: 'xlsx' | 'pdf'
-  type: 'courseBook'| 'facultyWorkload'
+  type: ReportType
 }
 
 export default function Report() {
   const { metaData } = useContext(MetaDataContext);
 
-  if (metaData?.metadata?.faculty === undefined) return <div>Internal Error, faculty data not found</div>
+  const [result] = useReportTimePeriodsQuery();
+  const {data, fetching, error} = result;
 
-  return <ReportView/>
+  if (metaData?.metadata?.faculty === undefined) return <div>Internal Error, faculty data not found</div>
+  if (fetching) return <div>Loading</div>;
+  if (error?.message) return <div>Error: {error?.message}</div>
+  return <ReportView timePeriods={data?.reportTimePeriods}/>
 }
 
 

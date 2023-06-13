@@ -49,4 +49,7 @@ class IdentfierInput(graphene.InputObjectType):
     year = graphene.Int(required=True, description="Year at which the preference was recorded")
     is_even_sem = graphene.Boolean(required=True, description="Odd/Even Sem")
 
-
+class IdentifierType(graphene.ObjectType):
+    year = graphene.Int()
+    is_even_sem = graphene.Boolean()
+    

@@ -36,6 +36,7 @@ const AllocationManagement = () => {
   const courses = data?.allocationManagement?.courses;
   if ((courseAllocations === null || courseAllocations === undefined) && (courses !== null || courses !== undefined)) {
     const data = retriveCourseAllocations();
+    console.log("courseallocationset", data);
     if (data !== undefined && data !== null) setCourseAllocations(data);
   }
   if ((labAllocations === null || labAllocations === undefined) &&  (courses !== null || courses !== undefined)) {

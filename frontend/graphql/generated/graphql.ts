@@ -325,6 +325,12 @@ export type IdentifierInput = {
   year: Scalars['Int'];
 };
 
+export type IdentifierType = {
+  __typename?: 'IdentifierType';
+  isEvenSem?: Maybe<Scalars['Boolean']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
 export type LabAllocationType = {
   __typename?: 'LabAllocationType';
   courseId?: Maybe<Scalars['ID']>;
@@ -558,6 +564,7 @@ export type Query = {
   metadata?: Maybe<MetaDataType>;
   preferences?: Maybe<Array<Maybe<PreferenceType>>>;
   programs?: Maybe<Array<Maybe<ProgramType>>>;
+  reportTimePeriods?: Maybe<Array<Maybe<IdentifierType>>>;
   users?: Maybe<Array<Maybe<UserType>>>;
   verifyNewCurriculum?: Maybe<Array<Maybe<BatchType>>>;
   workloads?: Maybe<Array<Maybe<WorkloadType>>>;
@@ -1028,6 +1035,11 @@ export type PreferencesQueryVariables = Exact<{
 
 
 export type PreferencesQuery = { __typename?: 'Query', preferences?: Array<{ __typename?: 'PreferenceType', id?: string | null, identifierYear?: number | null, identifierIsEvenSem?: boolean | null, weigtage?: number | null, experience?: number | null, timestamp?: any | null, faculty?: { __typename?: 'FacultyType', user?: { __typename?: 'UserType', firstName?: string | null, lastName?: string | null, username?: string | null, email?: string | null } | null } | null, course?: { __typename?: 'CourseType', id?: string | null, code?: string | null, name?: string | null, credit?: number | null, l?: number | null, t?: number | null, p?: number | null, program?: string | null, curriculumYear?: number | null, batchYear?: number | null, sem?: number | null } | null } | null> | null };
+
+export type ReportTimePeriodsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ReportTimePeriodsQuery = { __typename?: 'Query', reportTimePeriods?: Array<{ __typename?: 'IdentifierType', year?: number | null, isEvenSem?: boolean | null } | null> | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2473,6 +2485,29 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "IdentifierType",
+        "fields": [
+          {
+            "name": "isEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "year",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "LabAllocationType",
         "fields": [
           {
@@ -3839,6 +3874,18 @@ export default {
               "ofType": {
                 "kind": "OBJECT",
                 "name": "ProgramType",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "reportTimePeriods",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "IdentifierType",
                 "ofType": null
               }
             },
@@ -5244,6 +5291,18 @@ export const PreferencesDocument = gql`
 
 export function usePreferencesQuery(options?: Omit<Urql.UseQueryArgs<PreferencesQueryVariables>, 'query'>) {
   return Urql.useQuery<PreferencesQuery, PreferencesQueryVariables>({ query: PreferencesDocument, ...options });
+};
+export const ReportTimePeriodsDocument = gql`
+    query reportTimePeriods {
+  reportTimePeriods {
+    year
+    isEvenSem
+  }
+}
+    `;
+
+export function useReportTimePeriodsQuery(options?: Omit<Urql.UseQueryArgs<ReportTimePeriodsQueryVariables>, 'query'>) {
+  return Urql.useQuery<ReportTimePeriodsQuery, ReportTimePeriodsQueryVariables>({ query: ReportTimePeriodsDocument, ...options });
 };
 export const MeDocument = gql`
     query me {

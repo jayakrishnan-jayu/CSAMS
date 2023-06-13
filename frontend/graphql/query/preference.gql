@@ -31,3 +31,10 @@ query preferences($IDENTIFIER: IdentfierInput, $COURSEID: ID) {
   }
 }
 
+
+query reportTimePeriods {
+  reportTimePeriods{
+    year
+    isEvenSem
+  }
+}

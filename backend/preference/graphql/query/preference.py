@@ -5,7 +5,7 @@ from preference.models import Identifier, Preference, Config
 from backend.api.decorator import login_required
 from backend.api import APIException
 from user.models import Faculty
-from ..types.preference import PreferenceType, IdentfierInput, PreferenceAllocationFacultyType
+from ..types.preference import PreferenceType, IdentfierInput, PreferenceAllocationFacultyType, IdentifierType
 from django.db.models import F
 
 
@@ -19,6 +19,10 @@ class PreferenceQueries(graphene.ObjectType):
 
     courses_for_preference = graphene.Field(
         PreferenceAllocationFacultyType
+    )
+
+    report_time_periods = graphene.List(
+        IdentifierType
     )
 
 
@@ -63,6 +67,10 @@ class PreferenceQueries(graphene.ObjectType):
         if course_id is not None:
             return qs.filter(course=course_id)
         return qs.filter(faculty=user_id)
+
+    @login_required
+    def resolve_report_time_periods(self, info):
+        return Identifier.objects.filter(is_hod_approved=True)
 
 __all__ = [
     'PreferenceQueries'

@@ -54,26 +54,39 @@ class AllocationQueries(graphene.ObjectType):
     
     @login_required
     @resolve_user
-    def resolve_allocations(self, info, identifier:IdentifierInput):
+    def resolve_allocations(self, info, identifier:IdentifierInput = None):
         try:
             f = Faculty.objects.get(user=info.context.resolved_user)
         except Faculty.DoesNotExist:
             raise APIException(message="User is not an faculty")
-        try:
-            i = Identifier.objects.get(is_even_sem=identifier.is_even_sem, year=identifier.year)
-        except Identifier.DoesNotExist:
-            raise APIException(message="Invalid Identifier")
+        if identifier is None:
+            i = Config.objects.first().current_preference_sem
+        else:
+            try:
+                i = Identifier.objects.get(is_even_sem=identifier.is_even_sem, year=identifier.year)
+            except Identifier.DoesNotExist:
+                raise APIException(message="Invalid Identifier")
         if not i.is_hod_approved:
             raise APIException(message="HOD not approved")
-        faculties = Faculty.objects.filter(user__is_active=True)
+        
         batches = Batch.objects.annotate(odd=F('sem') % 2, sem_year=F('year')+(F('sem')-1)/2).filter(odd=not i.is_even_sem, sem_year=i.year)
         courses = Course.objects.filter(batch__in=batches)
 
+        faculty_ids = set()
         for b in batches:
             b.course_labs = CourseLab.objects.filter(course__in=courses.filter(batch=b))
             b.course_ids = courses.filter(batch=b).values_list('id', flat=True)
             b.course_allocations = CourseAllocation.objects.filter(course__id__in=b.course_ids)
+            ca = b.course_allocations.values_list('faculty_id',flat=True).distinct()
+            if ca:
+                print("updating ", [*ca])
+                faculty_ids.update([*ca])    
             b.lab_allocations = LabAllocation.objects.filter(course__id__in=b.course_ids)
+            la = b.lab_allocations.values_list('faculty_id',flat=True).distinct()
+            if la:
+                faculty_ids.update([*la])
+        
+        faculties = Faculty.objects.filter(id__in=faculty_ids)
         return ApprovedAllocationType(faculties=faculties, batches=batches, courses=courses)
 
             
