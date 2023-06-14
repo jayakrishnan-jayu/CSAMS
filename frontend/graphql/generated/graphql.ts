@@ -303,6 +303,11 @@ export type FacultyType = {
   workload?: Maybe<Scalars['Int']>;
 };
 
+export type HodApproval = {
+  __typename?: 'HodApproval';
+  response?: Maybe<IdentiferType>;
+};
+
 export type IdentfierInput = {
   /** Odd/Even Sem */
   isEvenSem: Scalars['Boolean'];
@@ -315,6 +320,7 @@ export type IdentiferType = {
   areCoursesVerified?: Maybe<Scalars['Boolean']>;
   endTimestamp?: Maybe<Scalars['DateTime']>;
   isEvenSem?: Maybe<Scalars['Boolean']>;
+  isHodApproved?: Maybe<Scalars['Boolean']>;
   isPaused?: Maybe<Scalars['Boolean']>;
   startTimestamp?: Maybe<Scalars['DateTime']>;
   year?: Maybe<Scalars['Int']>;
@@ -357,6 +363,7 @@ export type Mutation = {
   deleteCurriculumUpload?: Maybe<DeleteCurriculumUpload>;
   deleteLabAllocation?: Maybe<DeleteLabAllocation>;
   deletePreference?: Maybe<DeletePreference>;
+  hodApproval?: Maybe<HodApproval>;
   releaseCoursesForFaculty?: Maybe<ReleaseCoursesForFaculty>;
   updateBatchCurriculumExtraCourse?: Maybe<UpdateBatchCurriculumExtraCourse>;
   updateBatchExtraCourse?: Maybe<UpdateBatchExtraCourse>;
@@ -424,6 +431,11 @@ export type MutationDeleteLabAllocationArgs = {
 
 export type MutationDeletePreferenceArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationHodApprovalArgs = {
+  identifier: IdentifierInput;
 };
 
 
@@ -657,7 +669,7 @@ export type QueryVerifyNewCurriculumArgs = {
 
 export type ReleaseCoursesForFaculty = {
   __typename?: 'ReleaseCoursesForFaculty';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<IdentiferType>;
 };
 
 export type SemesterExtraCourseType = {
@@ -705,7 +717,7 @@ export type UpdateCourseAllocation = {
 
 export type UpdateDeadline = {
   __typename?: 'UpdateDeadline';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<IdentiferType>;
 };
 
 export type UpdateLabAllocation = {
@@ -720,12 +732,12 @@ export type UpdatePreference = {
 
 export type UpdatePreferenceCount = {
   __typename?: 'UpdatePreferenceCount';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<IdentiferType>;
 };
 
 export type UpdateSemIdentifier = {
   __typename?: 'UpdateSemIdentifier';
-  response?: Maybe<Scalars['Boolean']>;
+  response?: Maybe<IdentiferType>;
 };
 
 export type UpdateUser = {
@@ -823,7 +835,7 @@ export type UpdatePreferenceCountMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePreferenceCountMutation = { __typename?: 'Mutation', updatePreferenceCount?: { __typename?: 'UpdatePreferenceCount', response?: boolean | null } | null };
+export type UpdatePreferenceCountMutation = { __typename?: 'Mutation', updatePreferenceCount?: { __typename?: 'UpdatePreferenceCount', response?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null };
 
 export type UpdateSemIdentifierMutationVariables = Exact<{
   ISEVENSEM: Scalars['Boolean'];
@@ -831,14 +843,14 @@ export type UpdateSemIdentifierMutationVariables = Exact<{
 }>;
 
 
-export type UpdateSemIdentifierMutation = { __typename?: 'Mutation', updateSemIdentifier?: { __typename?: 'UpdateSemIdentifier', response?: boolean | null } | null };
+export type UpdateSemIdentifierMutation = { __typename?: 'Mutation', updateSemIdentifier?: { __typename?: 'UpdateSemIdentifier', response?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null };
 
 export type ReleaseCoursesForFacultyMutationVariables = Exact<{
   IDENTIFIER: IdentifierInput;
 }>;
 
 
-export type ReleaseCoursesForFacultyMutation = { __typename?: 'Mutation', releaseCoursesForFaculty?: { __typename?: 'ReleaseCoursesForFaculty', response?: boolean | null } | null };
+export type ReleaseCoursesForFacultyMutation = { __typename?: 'Mutation', releaseCoursesForFaculty?: { __typename?: 'ReleaseCoursesForFaculty', response?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null };
 
 export type UpdateDeadlineMutationVariables = Exact<{
   IDENTIFIER: IdentifierInput;
@@ -847,7 +859,14 @@ export type UpdateDeadlineMutationVariables = Exact<{
 }>;
 
 
-export type UpdateDeadlineMutation = { __typename?: 'Mutation', updateDeadline?: { __typename?: 'UpdateDeadline', response?: boolean | null } | null };
+export type UpdateDeadlineMutation = { __typename?: 'Mutation', updateDeadline?: { __typename?: 'UpdateDeadline', response?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null };
+
+export type HodApprovalMutationVariables = Exact<{
+  IDENTIFIER: IdentifierInput;
+}>;
+
+
+export type HodApprovalMutation = { __typename?: 'Mutation', hodApproval?: { __typename?: 'HodApproval', response?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null };
 
 export type UploadCurriculumMutationVariables = Exact<{
   CURRICULUM: CurriculumUploadInput;
@@ -1032,7 +1051,7 @@ export type CurriculumExtraCoursesQuery = { __typename?: 'Query', curriculumExtr
 export type MetadataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null } | null } | null } | null };
+export type MetadataQuery = { __typename?: 'Query', metadata?: { __typename?: 'MetaDataType', user?: { __typename?: 'UserType', id?: string | null, email?: string | null, firstName?: string | null, lastName?: string | null, username?: string | null, isStaff?: boolean | null, isActive?: boolean | null } | null, faculty?: { __typename?: 'FacultyType', id?: string | null, track?: string | null, designation?: string | null } | null, config?: { __typename?: 'ConfigType', preferenceCount?: number | null, currentPreferenceSem?: { __typename?: 'IdentiferType', year?: number | null, isEvenSem?: boolean | null, startTimestamp?: any | null, endTimestamp?: any | null, isPaused?: boolean | null, areCoursesVerified?: boolean | null, isHodApproved?: boolean | null } | null } | null } | null };
 
 export type PreferencesQueryVariables = Exact<{
   IDENTIFIER?: InputMaybe<IdentfierInput>;
@@ -2443,6 +2462,22 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "HodApproval",
+        "fields": [
+          {
+            "name": "response",
+            "type": {
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "IdentiferType",
         "fields": [
           {
@@ -2463,6 +2498,14 @@ export default {
           },
           {
             "name": "isEvenSem",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "isHodApproved",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -2856,6 +2899,26 @@ export default {
             "args": [
               {
                 "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "hodApproval",
+            "type": {
+              "kind": "OBJECT",
+              "name": "HodApproval",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "identifier",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -3994,8 +4057,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
             },
             "args": []
           }
@@ -4156,8 +4220,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
             },
             "args": []
           }
@@ -4203,8 +4268,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
             },
             "args": []
           }
@@ -4218,8 +4284,9 @@ export default {
           {
             "name": "response",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "OBJECT",
+              "name": "IdentiferType",
+              "ofType": null
             },
             "args": []
           }
@@ -4557,7 +4624,15 @@ export function useDeleteLabAllocationMutation() {
 export const UpdatePreferenceCountDocument = gql`
     mutation updatePreferenceCount($COUNT: Int!) {
   updatePreferenceCount(count: $COUNT) {
-    response
+    response {
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }
     `;
@@ -4568,7 +4643,15 @@ export function useUpdatePreferenceCountMutation() {
 export const UpdateSemIdentifierDocument = gql`
     mutation updateSemIdentifier($ISEVENSEM: Boolean!, $YEAR: Int!) {
   updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
-    response
+    response {
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }
     `;
@@ -4579,7 +4662,15 @@ export function useUpdateSemIdentifierMutation() {
 export const ReleaseCoursesForFacultyDocument = gql`
     mutation releaseCoursesForFaculty($IDENTIFIER: IdentifierInput!) {
   releaseCoursesForFaculty(identifier: $IDENTIFIER) {
-    response
+    response {
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }
     `;
@@ -4594,13 +4685,40 @@ export const UpdateDeadlineDocument = gql`
     startTimestamp: $START_TIMESTAMP
     endTimestamp: $END_TIMESTAMP
   ) {
-    response
+    response {
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }
     `;
 
 export function useUpdateDeadlineMutation() {
   return Urql.useMutation<UpdateDeadlineMutation, UpdateDeadlineMutationVariables>(UpdateDeadlineDocument);
+};
+export const HodApprovalDocument = gql`
+    mutation hodApproval($IDENTIFIER: IdentifierInput!) {
+  hodApproval(identifier: $IDENTIFIER) {
+    response {
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
+  }
+}
+    `;
+
+export function useHodApprovalMutation() {
+  return Urql.useMutation<HodApprovalMutation, HodApprovalMutationVariables>(HodApprovalDocument);
 };
 export const UploadCurriculumDocument = gql`
     mutation uploadCurriculum($CURRICULUM: CurriculumUploadInput!) {
@@ -5281,6 +5399,7 @@ export const MetadataDocument = gql`
         endTimestamp
         isPaused
         areCoursesVerified
+        isHodApproved
       }
     }
   }

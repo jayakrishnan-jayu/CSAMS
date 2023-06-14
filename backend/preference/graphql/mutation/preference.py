@@ -24,7 +24,8 @@ class AddPreference(graphene.Mutation):
         config: Config = Config.objects.first()
         pref_count = config.preference_count
         identifier: Identifier = config.current_preference_sem
-
+        if identifier.is_hod_approved:
+            raise APIException(message="HOD Approved coursebook, can not update preference")
         user = info.context.resolved_user
         try:
             faculty = Faculty.objects.get(user=user)
@@ -85,6 +86,8 @@ class UpdatePreference(graphene.Mutation):
         config: Config = Config.objects.first()
         pref_count = config.preference_count
         identifier: Identifier = config.current_preference_sem
+        if identifier.is_hod_approved:
+            raise APIException(message="HOD Approved coursebook, can not update preference")
         user = info.context.resolved_user
         try:
             faculty = Faculty.objects.get(user=user)
@@ -134,7 +137,8 @@ class DeletePreference(graphene.Mutation):
         config: Config = Config.objects.first()
         pref_count = config.preference_count
         identifier: Identifier = config.current_preference_sem
-
+        if identifier.is_hod_approved:
+            raise APIException(message="HOD Approved coursebook, can not update preference")
         user = info.context.resolved_user
         try:
             faculty = Faculty.objects.get(user=user)

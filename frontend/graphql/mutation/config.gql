@@ -1,28 +1,68 @@
 mutation updatePreferenceCount ($COUNT: Int!){
     updatePreferenceCount(count: $COUNT) {
-        response
+        response{
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
     }
 }
 mutation updateSemIdentifier ($ISEVENSEM: Boolean!, $YEAR: Int!) {
     updateSemIdentifier(isEvenSem: $ISEVENSEM, year: $YEAR) {
-        response
+        response{
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
     }
 }
 
 mutation releaseCoursesForFaculty ($IDENTIFIER: IdentifierInput!) {
   releaseCoursesForFaculty(identifier: $IDENTIFIER){
-    response
-  }
-}
-
-mutation releaseCoursesForFaculty ($IDENTIFIER: IdentifierInput!) {
-  releaseCoursesForFaculty(identifier: $IDENTIFIER){
-    response
+    response{
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }
 
 mutation updateDeadline($IDENTIFIER: IdentifierInput!, $START_TIMESTAMP: DateTime!, $END_TIMESTAMP: DateTime!) {
   updateDeadline(identifier: $IDENTIFIER, startTimestamp:$START_TIMESTAMP, endTimestamp: $END_TIMESTAMP){
-    response
+    response{
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
+  }
+}
+
+mutation hodApproval($IDENTIFIER: IdentifierInput!){
+  hodApproval(identifier: $IDENTIFIER) {
+    response{
+      year
+      isEvenSem
+      startTimestamp
+      endTimestamp
+      isPaused
+      areCoursesVerified
+      isHodApproved
+    }
   }
 }

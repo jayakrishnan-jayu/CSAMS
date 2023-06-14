@@ -123,7 +123,6 @@ const ReportTable = ({identifier, type, facultyId}: ReportTableProps) => {
     };
 
     const renderFacultyAllocationsTable = () => {
-        console.log(faculties, facultyId);
         const f = faculties.find(f=> f?.id === facultyId);
         const tableData = batches.flatMap(b=>{
             const ca = b.courseAllocations.filter(ca=>ca.facultyId===f.id).map(ca=>ca.courseId);

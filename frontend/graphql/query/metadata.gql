@@ -23,6 +23,7 @@ query metadata {
                 endTimestamp
                 isPaused
                 areCoursesVerified
+                isHodApproved
             }
         }
     }

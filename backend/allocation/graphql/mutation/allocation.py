@@ -23,6 +23,8 @@ class AddCourseAllocation(graphene.Mutation):
     def mutate(self, info, facultyID: graphene.ID,  courseID: graphene.ID):
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             f = Faculty.objects.get(id=facultyID)
         except Faculty.DoesNotExist:
@@ -87,6 +89,8 @@ class AddLabAllocation(graphene.Mutation):
 
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             f = Faculty.objects.get(id=facultyID)
         except Faculty.DoesNotExist:
@@ -160,6 +164,8 @@ class UpdateCourseAllocation(graphene.Mutation):
     def mutate(self, info, allocationID: graphene.ID, oldFacultyID: graphene.ID, newFacultyID: graphene.ID):
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             ca = CourseAllocation.objects.get(id=allocationID, faculty_id=oldFacultyID)
         except CourseAllocation.DoesNotExist:
@@ -218,6 +224,8 @@ class UpdateLabAllocation(graphene.Mutation):
     def mutate(self, info, allocationID: graphene.ID, oldFacultyID: graphene.ID, newFacultyID: graphene.ID):
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             la = LabAllocation.objects.get(id=allocationID, faculty_id=oldFacultyID)
         except LabAllocation.DoesNotExist:
@@ -278,7 +286,8 @@ class DeleteCourseAllocation(graphene.Mutation):
     def mutate(self, info, allocationID: graphene.ID, courseID: graphene.ID):
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
-
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             ca = CourseAllocation.objects.get(id=allocationID, course_id=courseID)
         except CourseAllocation.DoesNotExist:
@@ -317,7 +326,8 @@ class DeleteLabAllocation(graphene.Mutation):
     def mutate(self, info, allocationID: graphene.ID, courseID: graphene.ID):
         config = Config.objects.first()
         i: Identifier = config.current_preference_sem
-
+        if i.is_hod_approved:
+            raise APIException(message="HOD Approved Allocation")
         try:
             la = LabAllocation.objects.get(id=allocationID, course_id=courseID)
         except LabAllocation.DoesNotExist:

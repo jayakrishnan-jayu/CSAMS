@@ -119,7 +119,7 @@ const PreferenceView = () => {
         toast.current.show({
           severity: "error",
           summary: "Error deleting preference",
-          detail: addPreference.error.message,
+          detail: deletePreference.error.message,
           life: 3000,
         });
         setDialogShown(true);
@@ -188,18 +188,17 @@ const PreferenceView = () => {
     }
   
     const editCourses = (course: CourseType) => {
-      //@ts-ignore
-      const c = preferences.filter(p => p.courseId === course.id && p.facultyId === metaData?.metadata?.faculty?.id);
-      console.log(c);
+      const facultyPrefs = preferences.filter(p => p.facultyId === metaData?.metadata?.faculty?.id)
+      const c = facultyPrefs.filter(p => p.courseId === course.id);
       // const c = course.preferences.filter(p => p.facultyId === metaData?.metadata?.faculty?.id && p.courseId === course.id);
       // setCurrentDropdownValues(dropdownValues.filter(d => d.code !=))
       let _pref = {...preference, courseName: course.code + " " + course.name, courseId: course.id };
       if (c.length === 1) {
         _pref = {..._pref, experience: c[0].experience, weightage: c[0].weigtage, id: c[0].id}
-        setCurrentDropdownValues(dropdownValues.filter(d => d.code === c[0].weigtage || !preferences.map(e => e.weigtage).includes(d.code)))
+        setCurrentDropdownValues(dropdownValues.filter(d => d.code === c[0].weigtage || !facultyPrefs.map(e => e.weigtage).includes(d.code)))
         setIsUpdateMutation(true);
       } else {
-        setCurrentDropdownValues(dropdownValues.filter(d => !preferences.map(e => e.weigtage).includes(d.code)))
+        setCurrentDropdownValues(dropdownValues.filter(d => !facultyPrefs.map(e => e.weigtage).includes(d.code)))
         setIsUpdateMutation(false);
       }
       setPreference(_pref);
@@ -216,6 +215,11 @@ const PreferenceView = () => {
   
     
     const prefDialogFooter = () => {
+      if (metaData?.metadata?.config?.currentPreferenceSem?.isHodApproved) return (
+          <>
+            <Button label="Course Book has been approved by HOD" className="p-button-text" severity="info" disabled/>
+          </>
+      );
       return (
       <>
         <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}

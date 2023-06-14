@@ -15,7 +15,6 @@ import { Toast } from 'primereact/toast';
 import { confirmPopup, ConfirmPopup } from 'primereact/confirmpopup';
 import { useRouter } from 'next/navigation';
 import Deadline from '../deadline';
-import { Tag } from 'primereact/tag';
 
 interface ModeType {
     type: null | 'releaseCourse' | 'updateDeadline'
@@ -78,14 +77,14 @@ const VerifyBatch = () => {
             toast.current.show({ severity: 'success', summary: 'Courses released for faculties!', life: 3000 });
             setDialogShown(true);
             setMode({type: null});
-            router.refresh()
+            metaData.metadata.config.currentPreferenceSem = releaseCoursesForFaculty.data.releaseCoursesForFaculty.response
         }
 
         if (mode.type === "updateDeadline" && updateDeadline?.data?.updateDeadline) {
             toast.current.show({ severity: 'success', summary: 'Deadline Updated!', life: 3000 });
             setDialogShown(true);
             setMode({type: null});
-            router.refresh();
+            metaData.metadata.config.currentPreferenceSem = updateDeadline.data.updateDeadline.response
         }
 
     }

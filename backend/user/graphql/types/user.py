@@ -45,6 +45,7 @@ class IdentiferType(graphene.ObjectType):
     end_timestamp = graphene.DateTime()
     is_paused = graphene.Boolean()
     are_courses_verified = graphene.Boolean()
+    is_hod_approved = graphene.Boolean()
 
 class ConfigType(graphene.ObjectType):
     preference_count = graphene.Int()

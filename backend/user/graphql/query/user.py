@@ -84,7 +84,7 @@ class UserQueries(graphene.ObjectType):
     @login_required
     @resolve_user
     @staff_privilege_required
-    def resolve_faculties(self, info, identifier: IdentifierInput):
+    def resolve_faculties(self, info):
         return Faculty.objects.all()
     
     @login_required
