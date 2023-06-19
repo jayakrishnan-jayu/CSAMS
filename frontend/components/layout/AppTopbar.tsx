@@ -1,15 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from 'next/link';
-import PrimeReact from 'primereact/api';
 import { classNames } from 'primereact/utils';
-import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react';
-import { AppTopbarRef, LayoutConfig, LayoutState } from '../../types/types';
+import React, {forwardRef, useContext, useImperativeHandle, useRef} from 'react';
+import { AppTopbarRef } from '../../types/types';
 import { LayoutContext } from './context/layoutcontext';
-import { InputSwitch } from 'primereact/inputswitch';
 
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
-  const {  layoutState,  onMenuToggle, showProfileSidebar , handleThemeChange ,layoutConfig ,setLayoutConfig ,setLayoutState} = useContext(LayoutContext);
+  const { layoutState, setLayoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
@@ -24,14 +22,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
 
   const onThemeChange = () => {
       localStorage.setItem("dark_mode", JSON.stringify(!layoutState.darkMode))
-      const _isDarkMode = localStorage.getItem("dark_mode")
-      if(_isDarkMode == "true")
-      {
-          handleThemeChange(true)
-      }
-      else {
-          handleThemeChange(false)
-      }
+      setLayoutState((prevLayoutState) => ({ ...prevLayoutState,  darkMode: !layoutState.darkMode  }));
   }
 
 

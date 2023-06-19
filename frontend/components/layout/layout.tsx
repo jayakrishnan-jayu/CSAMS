@@ -128,6 +128,7 @@ const Layout = ({ children }: ChildContainerProps) => {
                 <title>CSAMS</title>
                 <meta charSet="UTF-8" />
                 <link rel="icon" href={`${contextPath}/favicon.ico`} type="image/x-icon"></link>
+                 <link id="theme-css" href={layoutState.darkMode ? `/themes/bootstrap4-dark-blue/theme.css` : `/themes/lara-light-indigo/theme.css`} rel="stylesheet"></link>
             </Head>
 
             <div className={containerClass}>
