@@ -1,18 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 
 import Link from 'next/link';
-import PrimeReact from 'primereact/api';
 import { classNames } from 'primereact/utils';
-import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
-import { AppTopbarRef, LayoutConfig, LayoutState } from '../../types/types';
+import React, {forwardRef, useContext, useImperativeHandle, useRef} from 'react';
+import { AppTopbarRef } from '../../types/types';
 import { LayoutContext } from './context/layoutcontext';
-import { InputSwitch } from 'primereact/inputswitch';
 
 const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
-  const { layoutConfig, setLayoutConfig, layoutState, setLayoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
+  const { layoutState, setLayoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
+
 
   useImperativeHandle(ref, () => ({
     menubutton: menubuttonRef.current,
@@ -20,21 +19,16 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
     topbarmenubutton: topbarmenubuttonRef.current,
   }));
 
+
   const onThemeChange = () => {
-    const _isDarkMode = !layoutState.darkMode;
-    setLayoutState((prevState: LayoutState) => ({ ...prevState, darkMode: _isDarkMode }));
-    if (_isDarkMode) {
-      PrimeReact.changeTheme?.(layoutConfig.theme, 'bootstrap4-dark-blue', 'theme-css', () => {
-        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme:'bootstrap4-dark-blue', colorScheme:'dark' }));
-      });
-    } else {
-      PrimeReact.changeTheme?.(layoutConfig.theme, 'lara-light-indigo', 'theme-css', () => {
-        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme: 'lara-light-indigo', colorScheme:'light' }));
-      });
-    }
-};
+      localStorage.setItem("dark_mode", JSON.stringify(!layoutState.darkMode))
+      setLayoutState((prevLayoutState) => ({ ...prevLayoutState,  darkMode: !layoutState.darkMode  }));
+  }
+
+
 
   return (
+
     <div className="layout-topbar">
       <button
         ref={menubuttonRef}
@@ -88,7 +82,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
           <i className={layoutState.darkMode ? "pi pi-moon" : "pi pi-sun"} ></i>
           <span>Settings</span>
         </button>
-    
+
       </div>
     </div>
   );

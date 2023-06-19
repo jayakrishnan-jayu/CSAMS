@@ -19,7 +19,7 @@ const Layout = ({ children }: ChildContainerProps) => {
     const topbarRef = useRef<AppTopbarRef>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
-    
+
     const router = useRouter();
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
         type: 'click',
@@ -110,6 +110,8 @@ const Layout = ({ children }: ChildContainerProps) => {
         unbindProfileMenuOutsideClickListener();
     });
 
+
+
     const containerClass = classNames('layout-wrapper', {
         'layout-overlay': layoutConfig.menuMode === 'overlay',
         'layout-static': layoutConfig.menuMode === 'static',
@@ -126,6 +128,7 @@ const Layout = ({ children }: ChildContainerProps) => {
                 <title>CSAMS</title>
                 <meta charSet="UTF-8" />
                 <link rel="icon" href={`${contextPath}/favicon.ico`} type="image/x-icon"></link>
+                 <link id="theme-css" href={layoutState.darkMode ? `/themes/bootstrap4-dark-blue/theme.css` : `/themes/lara-light-indigo/theme.css`} rel="stylesheet"></link>
             </Head>
 
             <div className={containerClass}>
