@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import PrimeReact from 'primereact/api';
 import { classNames } from 'primereact/utils';
-import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'react';
+import React, {forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import { AppTopbarRef, LayoutConfig, LayoutState } from '../../types/types';
 import { LayoutContext } from './context/layoutcontext';
 import { InputSwitch } from 'primereact/inputswitch';
@@ -14,6 +14,30 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
 
+  const [darkMode,setdarkMode] = useState(true)
+
+  useEffect(()=>{
+      if(darkMode){
+          PrimeReact.changeTheme?.(layoutConfig.theme, 'bootstrap4-dark-blue', 'theme-css', () => {
+              setLayoutConfig((prevState: LayoutConfig) => ({
+                  ...prevState,
+                  theme:'bootstrap4-dark-blue',
+                  colorScheme:'dark' }));
+          });
+          console.log("Dark")
+      }
+      else {
+          PrimeReact.changeTheme?.(layoutConfig.theme, 'lara-light-indigo', 'theme-css', () => {
+              setLayoutConfig((prevState: LayoutConfig) => ({
+                  ...prevState,
+                  theme: 'lara-light-indigo',
+                  colorScheme: 'light'
+              }));
+          });
+          console.log("Light")
+      }
+  },[darkMode])
+
   useImperativeHandle(ref, () => ({
     menubutton: menubuttonRef.current,
     topbarmenu: topbarmenuRef.current,
@@ -21,17 +45,31 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
   }));
 
   const onThemeChange = () => {
-    const _isDarkMode = !layoutState.darkMode;
-    setLayoutState((prevState: LayoutState) => ({ ...prevState, darkMode: _isDarkMode }));
-    if (_isDarkMode) {
-      PrimeReact.changeTheme?.(layoutConfig.theme, 'bootstrap4-dark-blue', 'theme-css', () => {
-        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme:'bootstrap4-dark-blue', colorScheme:'dark' }));
-      });
-    } else {
-      PrimeReact.changeTheme?.(layoutConfig.theme, 'lara-light-indigo', 'theme-css', () => {
-        setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme: 'lara-light-indigo', colorScheme:'light' }));
-      });
-    }
+
+      localStorage.setItem("dark_mode", JSON.stringify(!layoutState.darkMode))
+
+      const _isDarkMode  = localStorage.getItem("dark_mode" )
+
+        //usestate
+
+
+      if (_isDarkMode == "true") {
+
+
+          // PrimeReact.changeTheme?.(layoutConfig.theme, 'bootstrap4-dark-blue', 'theme-css', () => {
+          //     setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme:'bootstrap4-dark-blue', colorScheme:'dark' }));
+          // });
+          localStorage.setItem("dark_mode" , JSON.stringify(true))
+          setLayoutState((prevState: LayoutState) => ({ ...prevState, darkMode: true }));
+          setdarkMode(true)
+      } else if (_isDarkMode == "false") {
+          // PrimeReact.changeTheme?.(layoutConfig.theme, 'lara-light-indigo', 'theme-css', () => {
+          //     setLayoutConfig((prevState: LayoutConfig) => ({ ...prevState, theme: 'lara-light-indigo', colorScheme:'light'  }));
+          // });
+          localStorage.setItem("dark_mode" , JSON.stringify(false))
+          setLayoutState((prevState: LayoutState) => ({ ...prevState, darkMode: false }));
+          setdarkMode(false)
+      }
 };
 
   return (
@@ -85,10 +123,10 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
         </Link>
 
         <button type="button" className="p-link layout-topbar-button" onClick={()=>onThemeChange()}>
-          <i className={layoutState.darkMode ? "pi pi-moon" : "pi pi-sun"} ></i>
+          <i className={darkMode ? "pi pi-moon" : "pi pi-sun"} ></i>
           <span>Settings</span>
         </button>
-    
+
       </div>
     </div>
   );
