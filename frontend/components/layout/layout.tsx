@@ -19,7 +19,7 @@ const Layout = ({ children }: ChildContainerProps) => {
     const topbarRef = useRef<AppTopbarRef>(null);
     const sidebarRef = useRef<HTMLDivElement>(null);
     const contextPath = getConfig().publicRuntimeConfig.contextPath;
-    
+
     const router = useRouter();
     const [bindMenuOutsideClickListener, unbindMenuOutsideClickListener] = useEventListener({
         type: 'click',
@@ -109,6 +109,8 @@ const Layout = ({ children }: ChildContainerProps) => {
         unbindMenuOutsideClickListener();
         unbindProfileMenuOutsideClickListener();
     });
+
+
 
     const containerClass = classNames('layout-wrapper', {
         'layout-overlay': layoutConfig.menuMode === 'overlay',
